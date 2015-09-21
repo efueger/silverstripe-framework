@@ -7,6 +7,7 @@ use Injector;
 use InvalidArgumentException;
 use League\Flysystem\Exception;
 use League\Flysystem\Filesystem;
+use League\Flysystem\Util;
 use SilverStripe\Filesystem\Storage\AssetNameGenerator;
 use SilverStripe\Filesystem\Storage\AssetStore;
 
@@ -63,33 +64,113 @@ class FlysystemAssetStore implements AssetStore {
 		return $this->getFilesystem()->getPublicUrl($fileID);
 	}
 
-	public function setFromLocalFile($path, $filename = null, $conflictResolution = null) {
+	public function setFromLocalFile($path, $filename = null, $conflictResolution = null) {		
+		// Validate this file exists
+		if(!file_exists($path)) {
+			throw new InvalidArgumentException("$path does not exist");
+		}
+
 		// Get filename to save to
 		if(empty($filename)) {
 			$filename = basename($path);
 		}
-		
-		// Get local content
-		$content = file_get_contents($path);
-		if($content === false) {
-			throw new InvalidArgumentException("$path does not exist");
-		}
 
-		// Write as string
-		return $this->setFromString($content, $filename, $conflictResolution);
-	}
+		// Callback for saving content
+		$filesystem = $this->getFilesystem();
+		$callback = function($fileID) use ($filesystem, $path) {
+			// Read contents as string into flysystem
+			$handle = fopen($path, 'r');
+			if($handle === false) {
+				throw new InvalidArgumentException("$path could not be opened for reading");
+			}
+			$result = $filesystem->putStream($fileID, $handle);
+			fclose($handle);
+			return $result;
+		};
 
-	public function setFromStream($stream, $filename, $conflictResolution = null) {
-		$content = stream_get_contents($stream);
-		if($content === false) {
-			throw new InvalidArgumentException("Could not read from stream");
-		}
-
-		return $this->setFromString($content, $filename, $conflictResolution);
+		// Submit to conflict check
+		$hash = sha1_file($path);
+		return $this->requestStorage($callback, $hash, $filename, $conflictResolution);
 	}
 
 	public function setFromString($data, $filename, $conflictResolution = null) {
+		// Callback for saving content
+		$filesystem = $this->getFilesystem();
+		$callback = function($fileID) use ($filesystem, $data) {
+			return $filesystem->put($fileID, $data);
+		};
+
+		// Submit to conflict check
 		$hash = sha1($data);
+		return $this->requestStorage($callback, $hash, $filename, $conflictResolution);
+	}
+
+	public function setFromStream($stream, $filename, $conflictResolution = null) {
+		// If the stream isn't rewindable, write to a temporary filename
+		if(!Util::isSeekableStream($stream)) {
+			$path = $this->getStreamAsFile($stream);
+			return $this->setFromLocalFile($path, $filename, $conflictResolution);
+		}
+
+		// Callback for saving content
+		$filesystem = $this->getFilesystem();
+		$callback = function($fileID) use ($filesystem, $stream) {
+			return $filesystem->putStream($fileID, $stream);
+		};
+
+		// Submit to conflict check
+		$hash = $this->getStreamSHA1($stream);
+		return $this->requestStorage($callback, $hash, $filename, $conflictResolution);
+	}
+
+	/**
+	 * get sha1 hash from stream
+	 *
+	 * @param resource $stream
+	 * @return string str1 hash
+	 */
+	protected function getStreamSHA1($stream) {
+		Util::rewindStream($stream);
+		$context = hash_init('sha1');
+		hash_update_stream($context, $stream);
+		return hash_final($context);
+	}
+
+	/**
+	 * Get stream as a file
+	 *
+	 * @param resource $stream
+	 * @return string Filename of resulting stream content
+	 */
+	protected function getStreamAsFile($stream) {
+		Util::rewindStream($stream);
+		$file = tmpfile();
+		$buffer = fopen($file, 'w+');
+        if (!$buffer) {
+            throw new Exception("Could not create temporary file");
+        }
+
+        stream_copy_to_stream($stream, $buffer);
+
+        if (! fclose($buffer)) {
+            throw new Exception("Could not write stream to temporary file");
+        }
+
+		return $file;
+	}
+
+	/**
+	 * Invokes the conflict resolution scheme on the given content, and invokes a callback if
+	 * the storage request is approved.
+	 *
+	 * @param callable $callback Will be invoked and passed a fileID if the file should be stored
+	 * @param string $hash SHA1 of the file content
+	 * @param string $filename Name for the resulting file
+	 * @param string $conflictResolution {@see AssetStore}. Will default to one chosen by the backend
+	 * @return array Tuple associative array (Filename, Hash, Variant)
+	 * @throws Exception
+	 */
+	protected function requestStorage($callback, $hash, $filename, $conflictResolution = null) {
 		$filename = $this->cleanFilename($filename);
 		$fileID = $this->getFileID($hash, $filename);
 
@@ -97,12 +178,15 @@ class FlysystemAssetStore implements AssetStore {
 		$resolvedID = $this->resolveConflicts($conflictResolution, $fileID);
 		if($resolvedID === false) {
 			// If defering to the existing file, return the sha of the existing file
-			$data = $this->getFilesystem()->read($fileID);
-			$hash = sha1($data);
+			$stream = $this
+				->getFilesystem()
+				->readStream($fileID);
+			$hash = $this->getStreamSHA1($stream);
 		} else {
-			$result = $this->getFilesystem()->put($resolvedID, $data);
+			// Submit and validate result
+			$result = $callback($resolvedID);
 			if(!$result) {
-				throw new Exception("Could not save {$filename} from string");
+				throw new Exception("Could not save {$filename}");
 			}
 			
 			// in case conflict resolution renamed the file, return the renamed

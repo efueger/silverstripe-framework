@@ -1029,6 +1029,7 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				var node = this.getSelection(),
 					hasItems = Boolean(this.find('.ss-htmleditorfield-file').length),
 					editingSelected = node.is('img'),
+					insertingURL = this.hasClass('insertingURL');
 					header = this.find('.header-edit');
 
 				// Only show second step if files are selected
@@ -1041,8 +1042,8 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 					.toggleClass('ui-state-disabled', !hasItems); 
 					
 				// Hide file selection and step labels when editing an existing file
-				this.find('.htmleditorfield-from-computer')[editingSelected ? 'hide' : 'show']();
-				this.find('.htmleditorfield-from-cms')[editingSelected ? 'hide' : 'show']();
+				this.find('.htmleditorfield-from-computer')[editingSelected || insertingURL ? 'hide' : 'show']();
+				this.find('.htmleditorfield-from-cms')[editingSelected || insertingURL ? 'hide' : 'show']();
 				if (editingSelected) {
 					this.find('.htmleditorfield-from-web').hide();
 				}

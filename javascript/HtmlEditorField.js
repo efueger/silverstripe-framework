@@ -1125,6 +1125,18 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				});
 
 				return dfr.promise();
+			},
+			updateSelected: function() {
+				var selectedFiles = [];
+
+				this.find('.ss-htmleditorfield-file').each(function() {
+					var dataid = $(this).data('id');
+					if (typeof dataid !== 'undefined' && selectedFiles.indexOf(dataid) < 0) {
+						selectedFiles.push(dataid);
+					}
+				});
+				
+				$(document).trigger('htmleditorfield.update-selected', [selectedFiles]);
 			}
 		});
 
@@ -1546,6 +1558,7 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				var form = this.closest('form'), file = this.closest('ss-uploadfield-item');
 				form.find('.ss-gridfield-item[data-id=' + file.data('id') + ']').removeClass('ui-selected');
 				this.closest('.ss-uploadfield-item').remove();
+				form.updateSelected();
 				form.redraw();
 				e.preventDefault();
 			}
@@ -1705,23 +1718,14 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				
 				//Keep selected state of files when navigating folders
 				$(document).on('asset-gallery-field.folder-changed', function () {
-					var selectedFiles = [];
-
-					form.find('.ss-htmleditorfield-file').each(function() {
-						var dataid = $(this).data('id');
-						if (typeof dataid !== 'undefined' && selectedFiles.indexOf(dataid) < 0) {
-							selectedFiles.push(dataid);
-						}
-					});
-					
-					$('.asset-gallery').trigger('htmleditorfield.update-selected', [selectedFiles]);
+					form.updateSelected();
 				});
 				
 				$(document).on('asset-gallery-field.file-select', function (event, file) {
 					//Don't select folders
 					if (file.category === 'folder') {
 						if (!file.selected) {
-							$('.asset-gallery').trigger('htmleditorfield.deselect-folder', file);
+							$(document).trigger('htmleditorfield.deselect-folder', file);
 						}
 						
 						return null;

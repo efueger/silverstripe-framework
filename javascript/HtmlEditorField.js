@@ -1094,7 +1094,7 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				this.find('.ss-htmleditorfield-file').remove(); // Remove any existing views
 				this.find('.ss-gridfield-items .ui-selected').removeClass('ui-selected'); // Unselect all items
 				this.find('li.ss-uploadfield-item').remove(); // Remove all selected items
-				$('.asset-gallery').trigger('htmleditorfield.clear-selected'); // Remove selected items in gallery view
+				$(document).trigger('htmleditorfield.clear-selected'); // Remove selected items in gallery view
 				this.redraw();
 
 				this._super();

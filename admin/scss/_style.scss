@@ -1787,6 +1787,12 @@ body.cms-dialog {
 
         .item {
 			width: 33.3333%;
+			
+			&.folder {
+				.item__actions__action--select {
+					display: none;
+				}
+			}
         }
 		
 		@media screen and (max-width:880px) {

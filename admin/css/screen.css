@@ -888,6 +888,7 @@ body.cms-dialog { overflow: auto; background: #ECEFF1; position: relative; }
 .htmleditorfield-dialog .htmleditorfield-from-gallery.asset-gallery .gallery__sort { top: 68px; right: 20px; }
 .htmleditorfield-dialog .htmleditorfield-from-gallery.asset-gallery .gallery__back { top: 64px; left: 16px; }
 .htmleditorfield-dialog .htmleditorfield-from-gallery.asset-gallery .item { width: 33.3333%; }
+.htmleditorfield-dialog .htmleditorfield-from-gallery.asset-gallery .item.folder .item__actions__action--select { display: none; }
 @media screen and (max-width: 880px) { .htmleditorfield-dialog .htmleditorfield-from-gallery.asset-gallery .item { width: 50%; } }
 .htmleditorfield-dialog .htmleditorfield-from-web { text-align: center; margin-bottom: 8px; }
 .htmleditorfield-dialog .htmleditorfield-from-web.CompositeField { overflow: hidden; *zoom: 1; }

@@ -1078,7 +1078,6 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				this.find('.ss-uploadfield-item-preview')[editingSelected ? 'hide' : 'show']();
 				this.find('.Actions .media-update')[editingSelected ? 'show' : 'hide']();
 				this.find('.ss-uploadfield-item-editform').toggleEditForm(editingSelected);
-				this.find('.htmleditorfield-from-cms .field.treedropdown').css('left', $('.htmleditorfield-mediaform-heading:visible').outerWidth());
 				this.closest('.ui-dialog').addClass('ss-uploadfield-dropzone');
 				this.closest('.ui-dialog')
 					.find('.ui-dialog-buttonpane .media-insert .ui-button-text')
@@ -1628,13 +1627,17 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 			onadd: function() {
 				this._super();
 
-				// TODO Custom event doesn't fire in IE if registered through object literal
-				var self = this;
-				this.bind('change', function() {
-					var fileList = self.closest('form').find('.ss-gridfield');
-					fileList.setState('ParentID', self.getValue());
+				this.on('change', function() {
+					var fileList = this.closest('form').find('.ss-gridfield'),
+						id = this.getValue();
+
+					// Update the GridField
+					fileList.setState('ParentID', id);
 					fileList.reload();
-				});
+
+					// Update the GalleryField
+					$(document).trigger('htmleditorfield.folder-changed', id);
+				}.bind(this));
 			}
 		});
 
@@ -1678,7 +1681,10 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 				uploadField.css('marginLeft', '0');
 			}
 		});
-		
+
+		/**
+		 * AssetGallery
+		 */
 		$('.htmleditorfield-from-gallery.asset-gallery').entwine({
 			/**
 			 * Listeners / callbacks which get passed into the GalleryField.
@@ -1708,6 +1714,17 @@ ss.editorWrappers['default'] = ss.editorWrappers.tinyMCE;
 							this.setState({
 								'selectedFiles': []
 							})
+						},
+						'htmleditorfield.folder-changed': function (event, id) {
+							var folder = this.getFileById(id),
+								folderName = folder !== null ? folder.filename : '';
+
+							if (folderName === '' && id !== '') {
+								// Trying to navigate to a folder that's not in the current state.
+								this.props.backend.fetch(id);
+							} else {
+								this.onNavigate(folderName, true);
+							}
 						}
 					}
 				})

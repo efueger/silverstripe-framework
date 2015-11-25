@@ -1959,14 +1959,9 @@ body.cms-dialog {
 }
 
 .htmleditorfield-mediaform {
-	.ss-gridfield {
-		.gridfield-button-delete {
-			// TODO Remove from PHP instead of hiding
-			display: none; // delete action shouldn't be allowed here
-		}
-	}
 
-	.htmleditorfield-from-web, .htmleditorfield-from-cms {
+	.htmleditorfield-from-web,
+	.htmleditorfield-from-cms {
 		&.ss-uploadfield {
 			.middleColumn {
 				width:auto;
@@ -1974,6 +1969,32 @@ body.cms-dialog {
 				border:none;
 				min-width: 0;
 			}
+		}
+	}
+
+	/**
+	 * Choose folder dropdown in the Insert Media dialog.
+	 */
+	.cms-content-header {
+		.field.treedropdown {
+			display: inline-block;
+			vertical-align: middle;
+			width: 220px;
+			margin-left: $grid-x*2;
+		}
+
+		.treedropdownfield-title {
+			width: auto;
+			padding: 5px 2px 5px 4px;
+			max-width: 200px;
+			font-size: 14px;
+			font-weight: bold;
+		}
+
+		.TreeDropdownField {
+			background: 0;
+			box-shadow: none;
+			border: 0;
 		}
 	}
 
@@ -1988,42 +2009,6 @@ body.cms-dialog {
 			.middleColumn {
 				min-width: 0; // fit within available space
 				clear: none; // headline and dropdown on same line
-			}
-
-			.field.treedropdown {
-				border-bottom: 0; // don't show border, dropdown and gridfield visually belong together
-				padding: 0;
-				position: absolute;
-				margin: 0;
-				top: 12px;
-				left: 160px;
-				width: auto;
-				min-width: 200px;
-			}
-
-			.treedropdownfield-title {
-				width: auto;
-				padding: 5px 2px 5px 4px;
-				max-width: 200px;
-				font-size: 14px;
-				font-weight: bold;
-			}
-
-			.treedropdownfield-toggle-panel-link {
-				padding: 5px 4px 5px 0;
-
-				a {
-					background: url(../images/sitetree_ss_default_icons.png);
-					background-position: -18px -4px;
-					height: 14px;
-					opacity: .8;
-				}
-			}
-
-			.TreeDropdownField {
-				background: 0;
-				box-shadow: none;
-				border: 0;
 			}
 		}
 	}

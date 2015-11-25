@@ -283,11 +283,9 @@ class HtmlEditorField_Toolbar extends RequestHandler {
 			new GridFieldSortableHeader(),
 			new GridFieldDataColumns(),
 			new GridFieldPaginator(7),
-			// TODO Shouldn't allow delete here, its too confusing with a "remove from editor view" action.
-			// Remove once we can fit the search button in the last actual title column
-			new GridFieldDeleteAction(),
 			new GridFieldDetailForm()
 		);
+
 		$fileField = GridField::create('Files', false, null, $fileFieldConfig);
 		$fileField->setList($this->getFiles($parentID));
 		$fileField->setAttribute('data-selectable', true);
@@ -303,15 +301,10 @@ class HtmlEditorField_Toolbar extends RequestHandler {
 		));
 
 		$fromCMS = new CompositeField(
-			$select = TreeDropdownField::create('ParentID', "", 'Folder')
-				->addExtraClass('noborder')
-				->setValue($parentID),
 			$fileField
 		);
 
 		$fromCMS->addExtraClass('content ss-uploadfield htmleditorfield-from-cms');
-		$select->addExtraClass('content-select');
-
 
 		$URLDescription = _t('HtmlEditorField.URLDESCRIPTION', 'Insert videos and images from the web into your page simply by entering the URL of the file. Make sure you have the rights or permissions before sharing media directly from the web.<br /><br />Please note that files are not added to the file store of the CMS but embeds the file from its original location, if for some reason the file is no longer available in its original location it will no longer be viewable on this page.');
 		$fromWeb = new CompositeField(
@@ -334,8 +327,11 @@ class HtmlEditorField_Toolbar extends RequestHandler {
 		$computerUploadField->setTemplate('HtmlEditorField_UploadField');
 		$computerUploadField->setFolderName(Config::inst()->get('Upload', 'uploads_folder'));
 
-		$fromCMSGallery = AssetGalleryField::create('Assets')->setCurrentPath('')->setLimit(15)->disableBulkActions();
-		$fromCMSGallery->addExtraClass('htmleditorfield-from-gallery');
+		$fromCMSGallery = AssetGalleryField::create('Assets')
+			->setCurrentPath('')
+			->setLimit(15)
+			->disableBulkActions()
+			->addExtraClass('htmleditorfield-from-gallery');
 
 		$tabSet = new TabSet(
 			"MediaFormInsertMediaTabs",
@@ -373,14 +369,17 @@ class HtmlEditorField_Toolbar extends RequestHandler {
 
 		$allFields->addExtraClass('ss-insert-media');
 
-		$headings = new CompositeField(
-			new LiteralField(
+		$headings = CompositeField::create(
+			LiteralField::create(
 				'Heading',
-				sprintf('<h3 class="htmleditorfield-mediaform-heading insert">%s</h3>',
-					_t('HtmlEditorField.INSERTMEDIA', 'Insert media from')).
-				sprintf('<h3 class="htmleditorfield-mediaform-heading update">%s</h3>',
-					_t('HtmlEditorField.UpdateMEDIA', 'Update media'))
-			)
+				sprintf(
+					'<h3 class="htmleditorfield-mediaform-heading insert">%s</h3>',
+					_t('HtmlEditorField.INSERTMEDIA', 'Insert media from')
+				)
+			),
+			TreeDropdownField::create('ParentID', '', 'Folder')
+				->setValue($parentID)
+				->addExtraClass('content-select noborder')
 		);
 
 		$headings->addExtraClass('cms-content-header');

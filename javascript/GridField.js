@@ -41,7 +41,17 @@
 						// Replace the grid field with response, not the form.
 						// TODO Only replaces all its children, to avoid replacing the current scope
 						// of the executing method. Means that it doesn't retrigger the onmatch() on the main container.
-						self.empty().append($(data).children());
+						var $grid = $(data),
+							attributes = {};
+
+						// While we're not replacing the GridField element, some of its attributes may have changed.
+						$.each($grid[0].attributes, function (i, attribute) {
+							attributes[attribute.name] = attribute.value;
+						});
+
+						self.attr(attributes)
+							.empty()
+							.append($grid.children());
 
 						// Refocus previously focused element. Useful e.g. for finding+adding
 						// multiple relationships via keyboard.

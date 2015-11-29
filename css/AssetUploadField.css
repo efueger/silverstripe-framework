@@ -10,12 +10,12 @@
 /*Mixin used to generate slightly smaller text and forms
 Used in side panels and action tabs
 */
-.ss-uploadfield-view-allowed-extensions { margin-top: -42px; float: right; }
-.ss-uploadfield-view-allowed-extensions .toggle-content { opacity: 0; box-sizing: border-box; position: absolute; z-index: 1; padding: 20px 16px; width: 280px; right: -280px; top: 0; bottom: 0; border-left: 1px solid #C1C7CC; box-shadow: 0 0 3px #C1C7CC; background: #ECEFF1; transition: all .3s linear; }
-.ss-uploadfield-view-allowed-extensions .toggle-content h4 { margin: 0 0 6px; padding-right: 20px; }
-.ss-uploadfield-view-allowed-extensions.active .toggle-content { right: 0; opacity: 1; }
-.ss-uploadfield-view-allowed-extensions .toggle { cursor: pointer; font-size: 16px; float: right; color: #66727d; width: 16px; height: 16px; overflow: hidden; }
-.ss-uploadfield-view-allowed-extensions .toggle:hover, .ss-uploadfield-view-allowed-extensions .toggle:active, .ss-uploadfield-view-allowed-extensions .toggle:focus { text-decoration: none; color: #4f5861; }
+.AssetAdmin .ss-uploadfield-view-allowed-extensions { float: right; margin-top: 3px; }
+.AssetAdmin .ss-uploadfield-view-allowed-extensions .toggle-content { opacity: 0; box-sizing: border-box; position: absolute; z-index: 1; padding: 20px 16px; width: 280px; right: -280px; top: 0; bottom: 0; border-left: 1px solid #C1C7CC; box-shadow: 0 0 3px #C1C7CC; background: #ECEFF1; transition: all .3s linear; }
+.AssetAdmin .ss-uploadfield-view-allowed-extensions .toggle-content h4 { margin: 0 0 6px; padding-right: 20px; }
+.AssetAdmin .ss-uploadfield-view-allowed-extensions.active .toggle-content { right: 0; opacity: 1; }
+.AssetAdmin .ss-uploadfield-view-allowed-extensions .toggle { cursor: pointer; font-size: 16px; float: right; color: #66727d; width: 16px; height: 16px; overflow: hidden; }
+.AssetAdmin .ss-uploadfield-view-allowed-extensions .toggle:hover, .AssetAdmin .ss-uploadfield-view-allowed-extensions .toggle:active, .AssetAdmin .ss-uploadfield-view-allowed-extensions .toggle:focus { text-decoration: none; color: #4f5861; }
 
 .backlink { padding-left: 12px; }
 
@@ -76,7 +76,7 @@ body.cms.ss-uploadfield-edit-iframe .fieldholder-small label, .composite.ss-asse
 .ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info { margin: 0; }
 .ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info > span { display: block; padding: 0; line-height: 1; color: #9ba5ae; margin-top: -12px; }
 .ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-item-info .upload-url::before { font-size: 23px; }
-.ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-fromcomputer { margin: 12px 2px; overflow: hidden; font-weight: normal; }
+.ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-fromcomputer { overflow: hidden; font-weight: normal; }
 .ss-insert-media .ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-fromcomputer { margin: 0 8px 0 0; }
 .ss-assetuploadfield .ss-uploadfield-addfile .ss-uploadfield-fromcomputer::before { font-size: 23px; margin-right: 6px; }
 

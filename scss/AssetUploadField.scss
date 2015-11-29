@@ -6,10 +6,10 @@
 @import "../admin/scss/_mixins";
 @import "_elementMixins";
 
-.ss-uploadfield-view-allowed-extensions {	
-	margin-top: -42px;
+.AssetAdmin .ss-uploadfield-view-allowed-extensions {
 	float: right;
-	
+	margin-top: 3px;
+
 	.toggle-content {
 		opacity: 0;
 		box-sizing: border-box;
@@ -332,7 +332,6 @@ body.cms.ss-uploadfield-edit-iframe {
 		}
 
 		.ss-uploadfield-fromcomputer {
-			margin: 12px 2px;
 			overflow: hidden;
 			font-weight: normal;
 			

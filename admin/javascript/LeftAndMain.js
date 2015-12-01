@@ -418,12 +418,12 @@ jQuery.noConflict();
 				this.saveTabState();
 
 				if(window.History.enabled) {
-					$.extend(data, {__forceReferer: forceReferer});
+					$.extend(true, data, {__forceReferer: forceReferer});
 					// Active menu item is set based on X-Controller ajax header,
 					// which matches one class on the menu
 					if(forceReload) {
 						// Add a parameter to make sure the page gets reloaded even if the URL is the same.
-						$.extend(data, {__forceReload: Math.random()});
+						$.extend(true, data, {__forceReload: Math.random()});
 						window.History.replaceState(data, title, url);
 					} else {
 						window.History.pushState(data, title, url);

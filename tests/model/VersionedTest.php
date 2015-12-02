@@ -15,6 +15,8 @@ class VersionedTest extends SapphireTest {
 		'VersionedTest_RelatedWithoutVersion',
 		'VersionedTest_SingleStage',
 		'VersionedTest_WithIndexes',
+		'VersionedTest_PublicStage',
+		'VersionedTest_PublicViaExtension'
 	);
 
 	protected $requiredExtensions = array(
@@ -595,43 +597,47 @@ class VersionedTest extends SapphireTest {
 	/**
 	 * Tests that reading mode persists between requests
 	 */
-	public function testReadingPersistent() {
+	public function testReadingPersistent()
+	{
 		$session = Injector::inst()->create('Session', array());
+		$adminID = $this->logInWithPermission('ADMIN');
+		$session->inst_set('loggedInAs', $adminID);
 
 		// Set to stage
 		Director::test('/?stage=Stage', null, $session);
 		$this->assertEquals(
-			'Stage.Stage',
-			$session->inst_get('readingMode'),
-			'Check querystring changes reading mode to Stage'
+				'Stage.Stage',
+				$session->inst_get('readingMode'),
+				'Check querystring changes reading mode to Stage'
 		);
 		Director::test('/', null, $session);
 		$this->assertEquals(
-			'Stage.Stage',
-			$session->inst_get('readingMode'),
-			'Check that subsequent requests in the same session remain in Stage mode'
+				'Stage.Stage',
+				$session->inst_get('readingMode'),
+				'Check that subsequent requests in the same session remain in Stage mode'
 		);
 
 		// Test live persists
 		Director::test('/?stage=Live', null, $session);
 		$this->assertEquals(
-			'Stage.Live',
-			$session->inst_get('readingMode'),
-			'Check querystring changes reading mode to Live'
+				'Stage.Live',
+				$session->inst_get('readingMode'),
+				'Check querystring changes reading mode to Live'
 		);
 		Director::test('/', null, $session);
 		$this->assertEquals(
-			'Stage.Live',
-			$session->inst_get('readingMode'),
-			'Check that subsequent requests in the same session remain in Live mode'
+				'Stage.Live',
+				$session->inst_get('readingMode'),
+				'Check that subsequent requests in the same session remain in Live mode'
 		);
 
 		// Test that session doesn't redundantly store the default stage if it doesn't need to
 		$session2 = Injector::inst()->create('Session', array());
+		$session2->inst_set('loggedInAs', $adminID);
 		Director::test('/', null, $session2);
-		$this->assertEmpty($session2->inst_changedData());
+		$this->assertArrayNotHasKey('readingMode', $session2->inst_changedData());
 		Director::test('/?stage=Live', null, $session2);
-		$this->assertEmpty($session2->inst_changedData());
+		$this->assertArrayNotHasKey('readingMode', $session2->inst_changedData());
 
 		// Test choose_site_stage
 		Session::set('readingMode', 'Stage.Stage');
@@ -643,6 +649,16 @@ class VersionedTest extends SapphireTest {
 		Session::clear('readingMode');
 		Versioned::choose_site_stage();
 		$this->assertEquals('Stage.Live', Versioned::get_reading_mode());
+	}
+
+	/**
+	 * Test that stage parameter is blocked by non-administrative users
+	 */
+	public function testReadingModeSecurity()
+	{
+		$this->setExpectedException('SS_HTTPResponse_Exception', 'Invalid request');
+		$session = Injector::inst()->create('Session', array());
+		$result = Director::test('/?stage=Stage', null, $session);
 	}
 
 	/**
@@ -750,6 +766,54 @@ class VersionedTest extends SapphireTest {
 		$testData->NewField = 'Test';
 		$testData->write();
 	}
+
+	public function testCanView() {
+		$public1ID = $this->idFromFixture('VersionedTest_PublicStage', 'public1');
+		$public2ID = $this->idFromFixture('VersionedTest_PublicViaExtension', 'public2');
+		$privateID = $this->idFromFixture('VersionedTest_DataObject', 'page1');
+
+		// Test that all (and only) public pages are viewable in stage mode
+		Session::clear("loggedInAs");
+		Versioned::reading_stage('Stage');
+		$public1 = Versioned::get_one_by_stage('VersionedTest_PublicStage', 'Stage', array('"ID"' => $public1ID));
+		$public2 = Versioned::get_one_by_stage('VersionedTest_PublicViaExtension', 'Stage', array('"ID"' => $public2ID));
+		$private = Versioned::get_one_by_stage('VersionedTest_DataObject', 'Stage', array('"ID"' => $privateID));
+
+		$this->assertTrue($public1->canView());
+		$this->assertTrue($public2->canView());
+		$this->assertFalse($private->canView());
+
+		// Adjusting the current stage should not allow objects loaded in stage to be viewable
+		Versioned::reading_stage('Live');
+		$this->assertTrue($public1->canView());
+		$this->assertTrue($public2->canView());
+		$this->assertFalse($private->canView());
+
+		// Writing the private page to live should be fine though
+		$private->publish("Stage", "Live");
+		$privateLive = Versioned::get_one_by_stage('VersionedTest_DataObject', 'Live', array('"ID"' => $privateID));
+		$this->assertTrue($private->canView());
+		$this->assertTrue($privateLive->canView());
+
+		// But if the private version becomes different to the live version, it's once again disallowed
+		Versioned::reading_stage('Stage');
+		$private->Title = 'Secret Title';
+		$private->write();
+		$this->assertFalse($private->canView());
+		$this->assertTrue($privateLive->canView());
+
+		// And likewise, viewing a live page (when mode is draft) should be ok
+		Versioned::reading_stage('Stage');
+		$this->assertFalse($private->canView());
+		$this->assertTrue($privateLive->canView());
+
+		// Logging in as admin should allow all permissions
+		$this->logInWithPermission('ADMIN');
+		Versioned::reading_stage('Stage');
+		$this->assertTrue($public1->canView());
+		$this->assertTrue($public2->canView());
+		$this->assertTrue($private->canView());
+	}
 }
 
 
@@ -776,6 +840,14 @@ class VersionedTest_DataObject extends DataObject implements TestOnly {
 		'Related' => 'VersionedTest_RelatedWithoutVersion'
 	);
 
+
+	public function canView($member = null) {
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
+		return true;
+	}
 }
 
 class VersionedTest_WithIndexes extends DataObject implements TestOnly {
@@ -850,4 +922,62 @@ class VersionedTest_SingleStage extends DataObject implements TestOnly {
 	private static $extensions = array(
 		'Versioned("Stage")'
 	);
+}
+
+/**
+ * Versioned dataobject with public stage mode
+ */
+class VersionedTest_PublicStage extends DataObject implements TestOnly {
+	private static $db = array(
+		'Title' => 'Varchar'
+	);
+
+	private static $extensions = array(
+		"Versioned('Stage', 'Live')"
+	);
+
+	public function canView($member = null) {
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
+		return true;
+	}
+
+	public function canViewVersioned($member = null) {
+		// All non-live modes are public
+		return true;
+	}
+}
+
+/**
+ * Public access is provided via extension rather than overriding canViewVersioned
+ */
+class VersionedTest_PublicViaExtension extends DataObject implements TestOnly {
+
+	public function canView($member = null) {
+		$extended = $this->extendedCan(__FUNCTION__, $member);
+		if($extended !== null) {
+			return $extended;
+		}
+		return true;
+	}
+
+	private static $db = array(
+		'Title' => 'Varchar'
+	);
+
+	private static $extensions = array(
+		"Versioned('Stage', 'Live')",
+		"VersionedTest_PublicExtension"
+	);
+}
+
+/**
+ * Alters stage mode of extended object to be public
+ */
+class VersionedTest_PublicExtension extends DataExtension implements TestOnly {
+	public function canViewDraft($member = null) {
+		return true;
+	}
 }

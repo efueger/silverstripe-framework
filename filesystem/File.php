@@ -89,6 +89,8 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer {
 		"File" =>"DBFile",
 		// Only applies to files, doesn't inherit for folder
 		'ShowInSearch' => 'Boolean(1)',
+		'CanViewType' => "Enum('Anyone, LoggedInUsers, OnlyTheseUsers, Inherit', 'Inherit')",
+		'CanEditType' => "Enum('LoggedInUsers, OnlyTheseUsers, Inherit', 'Inherit')",
 	);
 
 	private static $has_one = array(
@@ -352,6 +354,8 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer {
 	 * @return boolean
 	 */
 	public function canEdit($member = null) {
+		$checker = Injector::inst()->get('HierarchyPermissionChecker');
+
 		if(!$member) {
 			$member = Member::currentUser();
 		}
@@ -361,7 +365,7 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer {
 			return $result;
 		}
 
-		return Permission::checkMember($member, array('CMS_ACCESS_AssetAdmin', 'CMS_ACCESS_LeftAndMain'));
+		return true;
 	}
 
 	/**

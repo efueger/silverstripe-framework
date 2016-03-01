@@ -62,30 +62,6 @@ var supportedBrowsers = [
     'Opera >= 12'
 ];
 
-var blueimpFileUploadConfig = {
-    src: PATHS.MODULES + '/blueimp-file-upload',
-    dest: PATHS.FRAMEWORK_THIRDPARTY + '/jquery-fileupload',
-    files: [
-        '/cors/jquery.postmessage-transport.js',
-        '/cors/jquery.xdr-transport.js',
-        '/jquery.fileupload-ui.js',
-        '/jquery.fileupload.js',
-        '/jquery.iframe-transport.js'
-    ]
-};
-
-var blueimpLoadImageConfig = {
-    src: PATHS.MODULES + '/blueimp-load-image',
-    dest: PATHS.FRAMEWORK_THIRDPARTY + '/javascript-loadimage',
-    files: ['/load-image.js']
-};
-
-var blueimpTmplConfig = {
-    src: PATHS.MODULES + '/blueimp-tmpl',
-    dest: PATHS.FRAMEWORK_THIRDPARTY + '/javascript-templates',
-    files: ['/tmpl.js']
-};
-
 var jquerySizesConfig = {
     src: PATHS.MODULES + '/jquery-sizes',
     dest: PATHS.ADMIN_THIRDPARTY + '/jsizes',
@@ -167,7 +143,7 @@ if (isDev) {
 
 gulp.task('build', ['umd', 'bundle']);
 
-gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-react']);
+gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-uploadfield', 'bundle-react']);
 
 gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
     var bundleFileName = 'bundle-leftandmain.js';
@@ -217,6 +193,29 @@ gulp.task('bundle-lib', function bundleLib() {
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });
 
+gulp.task('bundle-uploadfield', function bundleUploadfield() {
+    var bundleFileName = 'bundle-uploadfield.js';
+
+    return browserify(Object.assign({}, browserifyOptions, {
+            entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/bundles/uploadfield.js'
+        }))
+        .transform(babelify.configure({
+            presets: ['es2015'],
+            ignore: /(thirdparty)/,
+            comments: false
+        }))
+        .on('log', function (msg) { gulpUtil.log('Finished ' + bundleFileName) })
+        .on('update', bundleUploadfield)
+        .external('jQuery')
+        .external('i18n')
+        .bundle()
+        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
+        .pipe(source(bundleFileName))
+        .pipe(buffer())
+        .pipe(gulpif(!isDev, uglify()))
+        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
+});
+
 gulp.task('bundle-react', function bundleReact() {
     var bundleFileName = 'bundle-react.js';
 
@@ -244,9 +243,6 @@ gulp.task('bundle-react', function bundleReact() {
 });
 
 gulp.task('sanity', function () {
-    diffFiles(blueimpFileUploadConfig);
-    diffFiles(blueimpLoadImageConfig);
-    diffFiles(blueimpTmplConfig);
     diffFiles(jquerySizesConfig);
 });
 
@@ -264,9 +260,6 @@ gulp.task('bootstrap-css', function () {
 });
 
 gulp.task('thirdparty', ['bootstrap-css'], function () {
-    copyFiles(blueimpFileUploadConfig);
-    copyFiles(blueimpLoadImageConfig);
-    copyFiles(blueimpTmplConfig);
     copyFiles(jquerySizesConfig);
 });
 

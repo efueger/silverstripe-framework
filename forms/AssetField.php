@@ -494,18 +494,12 @@ class AssetField extends FileField {
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/ssui.core.js');
 		Requirements::add_i18n_javascript(FRAMEWORK_DIR . '/javascript/lang');
 
-		Requirements::combine_files('uploadfield.js', array(
-			// @todo jquery templates is a project no longer maintained and should be retired at some point.
-			THIRDPARTY_DIR . '/javascript-templates/tmpl.js',
-			THIRDPARTY_DIR . '/javascript-loadimage/load-image.js',
-			THIRDPARTY_DIR . '/jquery-fileupload/jquery.iframe-transport.js',
-			THIRDPARTY_DIR . '/jquery-fileupload/cors/jquery.xdr-transport.js',
-			THIRDPARTY_DIR . '/jquery-fileupload/jquery.fileupload.js',
-			THIRDPARTY_DIR . '/jquery-fileupload/jquery.fileupload-ui.js',
-			FRAMEWORK_DIR . '/javascript/dist/UploadField_uploadtemplate.js',
-			FRAMEWORK_DIR . '/javascript/dist/UploadField_downloadtemplate.js',
-			FRAMEWORK_DIR . '/javascript/dist/UploadField.js',
-		));
+		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/bundle-uploadfield.js', [
+			'provides' => [
+				FRAMEWORK_DIR . '/javascript/dist/UploadField.js'
+			]
+		]);
+
 		Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css'); // TODO hmmm, remove it?
 		Requirements::css(FRAMEWORK_DIR . '/css/UploadField.css');
 

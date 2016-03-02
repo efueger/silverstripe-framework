@@ -245,6 +245,7 @@ gulp.task('bundle-react', function bundleReact() {
         .require('react-redux', { expose: 'react-redux' })
         .require('redux-thunk', { expose: 'redux-thunk' })
         .require('isomorphic-fetch', { expose: 'isomorphic-fetch' })
+        .require('react-addons-css-transition-group', { expose: 'react-addons-css-transition-group' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/SilverStripeComponent', { expose: 'silverstripe-component' })
         .bundle()
         .on('update', bundleReact)

@@ -4052,6 +4052,10 @@
         }
       }
     },
+    "deep-freeze": {
+      "version": "0.0.1",
+      "resolved": "https://registry.npmjs.org/deep-freeze/-/deep-freeze-0.0.1.tgz"
+    },
     "event-stream": {
       "version": "3.3.2",
       "resolved": "https://registry.npmjs.org/event-stream/-/event-stream-3.3.2.tgz",

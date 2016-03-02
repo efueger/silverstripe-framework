@@ -237,6 +237,7 @@ gulp.task('bundle-react', function bundleReact() {
             presets: ['es2015'],
             ignore: /(node_modules)/
         }))
+        .require('deep-freeze', { expose: 'deep-freeze' })
         .require('react-addons-test-utils', { expose: 'react-addons-test-utils' })
         .require('react', { expose: 'react' })
         .require('react-dom', { expose: 'react-dom' })

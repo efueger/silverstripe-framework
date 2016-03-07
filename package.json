@@ -7,7 +7,7 @@
     "test": "tests"
   },
   "engines": {
-    "node": "~4.2.0"
+    "node": "4.x"
   },
   "scripts": {
     "build": "gulp build",

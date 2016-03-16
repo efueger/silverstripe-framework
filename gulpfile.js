@@ -181,7 +181,7 @@ if (isDev) {
 
 gulp.task('build', ['umd', 'bundle']);
 
-gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-react']);
+gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-react', 'bundle-campaign-admin']);
 
 gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
     var bundleFileName = 'bundle-leftandmain.js';
@@ -249,6 +249,36 @@ gulp.task('bundle-react', function bundleReact() {
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/SilverStripeComponent', { expose: 'silverstripe-component' })
         .bundle()
         .on('update', bundleReact)
+        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
+        .pipe(source(bundleFileName))
+        .pipe(buffer())
+        .pipe(gulpif(!isDev, uglify()))
+        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
+});
+
+gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
+    var bundleFileName = 'campaign-admin.js';
+
+    return browserify(Object.assign({}, browserifyOptions, {
+            entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/boot/campaign-admin.js'
+        }))
+        .transform(babelify.configure({
+            presets: ['es2015', 'react'],
+            ignore: /(node_modules)/
+        }))
+        .external('deep-freeze')
+        .external('i18n')
+        .external('jQuery')
+        .external('page.js')
+        .external('react')
+        .external('react-addons-test-utils')
+        .external('react-dom')
+        .external('react-redux')
+        .external('redux')
+        .external('redux-thunk')
+        .external('silverstripe-component')
+        .bundle()
+        .on('update', bundleCampaignAdmin)
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))
         .pipe(buffer())

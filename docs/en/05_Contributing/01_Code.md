@@ -290,6 +290,18 @@ $ npm run sanity
 This script makes sure files in `thirdparty` match files copied from `node_modules`. You should never commit custom changes to a library file. This script will catch them if you do :smile:
 
 ```
+$ npm run test
+```
+
+This script runs the JavaScript unit tests.
+
+```
+$ npm run coverage
+```
+
+This script generates a coverage report for the JavaScript unit tests. The report is generated in the `coverage` directory.
+
+```
 $ npm run css
 ```
 

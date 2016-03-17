@@ -451,7 +451,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 				FRAMEWORK_DIR . '/client/dist/js/GridField.js',
 				FRAMEWORK_DIR . '/client/dist/js/i18n.js',
 				FRAMEWORK_ADMIN_DIR . '/client/dist/js/sspath.js',
-				FRAMEWORK_ADMIN_DIR . '/client/dist/js/ssui.core.js',
+				FRAMEWORK_ADMIN_DIR . '/client/dist/js/ssui.core.js'
 			]
 		]);
 
@@ -469,7 +469,8 @@ class LeftAndMain extends Controller implements PermissionProvider {
 				FRAMEWORK_ADMIN_DIR . '/client/dist/js/LeftAndMain.BatchActions.js',
 				FRAMEWORK_ADMIN_DIR . '/client/dist/js/LeftAndMain.FieldHelp.js',
 				FRAMEWORK_ADMIN_DIR . '/client/dist/js/LeftAndMain.FieldDescriptionToggle.js',
-				FRAMEWORK_ADMIN_DIR . '/client/dist/js/LeftAndMain.TreeDropdownField.js'
+				FRAMEWORK_ADMIN_DIR . '/client/dist/js/LeftAndMain.TreeDropdownField.js',
+				FRAMEWORK_ADMIN_DIR . '/client/dist/js/AddToCampaignForm.js'
 			]
 		]);
 

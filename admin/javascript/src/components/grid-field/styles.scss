@@ -1,3 +1,6 @@
-.grid-field-component {
-
+table.grid-field-component {
+    margin-top: 1rem;
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
 }

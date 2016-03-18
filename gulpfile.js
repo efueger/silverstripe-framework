@@ -349,6 +349,9 @@ gulp.task('css', ['compile:css'], function () {
         rootCompileFolders.forEach(function (folder) {
             gulp.watch(folder + '/scss/**/*.scss', ['compile:css']);
         });
+        
+        // Watch the .scss files in react components
+        gulp.watch('./admin/javascript/src/**/*.scss', ['compile:css']);
     }
 })
 

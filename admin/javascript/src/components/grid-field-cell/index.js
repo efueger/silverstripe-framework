@@ -5,7 +5,7 @@ class GridFieldCellComponent extends SilverStripeComponent {
 
     render() {
         return (
-            <td className='grid-field-cell-component'>{this.props.children}</td>
+            <div href="#" className='grid-field-cell-component'>{this.props.children}</div>
         );
     }
 

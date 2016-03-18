@@ -1,9 +1,5 @@
 <?php
 
-use Convert;
-use SS_HTTPRequest;
-use SS_HTTPResponse;
-
 /**
  * Campaign section of the CMS
  *
@@ -19,7 +15,7 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 		'deleteCampaign',
 	];
 
-	private static $menu_priority = 999;
+	private static $menu_priority = 11;
 
 	private static $menu_title = 'Campaigns';
 
@@ -35,8 +31,10 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 	public function init() {
 		parent::init();
 
+		Requirements::block(FRAMEWORK_ADMIN_DIR . '/javascript/src/LeftAndMain.Layout.js');
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/bundle-react.js');
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/campaign-admin.js');
+		Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/bootstrap/bootstrap.css');
 	}
 
 	public function getEditForm($id = null, $fields = null) {

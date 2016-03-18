@@ -5,4 +5,7 @@
  */
 
 @import "variables";
-@import "../../../node_modules/bootstrap/scss/bootstrap";
+//Only including bootstrap in the CampaignAdmin section for now
+.CampaignAdmin {
+    @import "../../../node_modules/bootstrap/scss/bootstrap";
+}

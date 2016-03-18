@@ -182,7 +182,7 @@ gulp.task('build', ['umd', 'bundle'], function () {
     }
 });
 
-gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-react', 'bundle-campaign-admin']);
+gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-boot', 'bundle-react', 'bundle-campaign-admin']);
 
 gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
     var bundleFileName = 'bundle-leftandmain.js';
@@ -216,6 +216,7 @@ gulp.task('bundle-lib', function bundleLib() {
         .require(PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/jQuery.js', { expose: 'jQuery' })
         .require(PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/i18n.js', { expose: 'i18n' })
         .require(PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/router.js', { expose: 'router' })
+        .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/reducer-register.js', { expose: 'reducer-register' })
         .bundle()
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))
@@ -250,6 +251,23 @@ gulp.task('bundle-react', function bundleReact() {
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });
 
+gulp.task('bundle-boot', function bundleBoot() {
+    var bundleFileName = 'boot.js';
+
+    return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/boot/index.js' }))
+        .transform(babelify.configure({
+            presets: ['es2015'],
+            ignore: /(node_modules)/
+        }))
+        .external('reducer-register')
+        .bundle()
+        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
+        .pipe(source(bundleFileName))
+        .pipe(buffer())
+        .pipe(gulpif(!isDev, uglify()))
+        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
+});
+
 gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
     var bundleFileName = 'campaign-admin.js';
 
@@ -269,6 +287,7 @@ gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
         .external('redux')
         .external('redux-thunk')
         .external('silverstripe-component')
+        .external('reducer-register')
         .bundle()
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))

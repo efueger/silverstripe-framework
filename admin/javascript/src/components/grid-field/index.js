@@ -5,10 +5,10 @@ class GridFieldComponent extends SilverStripeComponent {
 
     render() {
         return (
-            <div className='grid-field-component [ list-group ]'>
+            <ul className='grid-field-component [ list-group ]'>
                 {this.generateHeader()}
                 {this.generateRows()}
-            </div>
+            </ul>
         );
     }
 

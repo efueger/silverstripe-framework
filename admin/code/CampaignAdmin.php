@@ -31,7 +31,6 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 	public function init() {
 		parent::init();
 
-		Requirements::block(FRAMEWORK_ADMIN_DIR . '/javascript/src/LeftAndMain.Layout.js');
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/bundle-react.js');
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/campaign-admin.js');
 		Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/bootstrap/bootstrap.css');

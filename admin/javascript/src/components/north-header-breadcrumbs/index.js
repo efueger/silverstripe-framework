@@ -17,16 +17,16 @@ class NorthHeaderBreadcrumbsComponent extends SilverStripeComponent {
 
     getBreadcrumbs() {
         if (typeof this.props.crumbs === 'undefined') {
-            return;
+            return null;
         }
 
         var breadcrumbs = this.props.crumbs.map((crumb, index, crumbs) => {
             // If its the last item in the array
             if (index === crumbs.length - 1) {
-                return <span className="crumb last">{crumb.text}</span>;
+                return <span key={index} className="crumb last">{crumb.text}</span>;
             } else {
                 return [
-                    <a className="cms-panel-link crumb" href={crumb.href}>{crumb.text}</a>,
+                    <a key={index} className="cms-panel-link crumb" href={crumb.href}>{crumb.text}</a>,
                     <span className="sep">/</span>
                 ];
             }

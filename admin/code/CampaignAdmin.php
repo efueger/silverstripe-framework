@@ -33,7 +33,6 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/bundle-react.js');
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/campaign-admin.js');
-		Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/bootstrap/bootstrap.css');
 	}
 
 	public function getEditForm($id = null, $fields = null) {

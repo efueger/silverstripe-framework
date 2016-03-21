@@ -453,7 +453,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/boot.js');
 		
-		Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/bootstrap/bootstrap-reboot.css');
+		Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/bootstrap/bootstrap.css');
 		Requirements::css(FRAMEWORK_ADMIN_DIR . '/thirdparty/jquery-notice/jquery.notice.css');
 		Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');
 		Requirements::css(FRAMEWORK_ADMIN_DIR .'/thirdparty/chosen/chosen/chosen.css');

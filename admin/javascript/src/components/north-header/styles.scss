@@ -1,8 +1,4 @@
 .north-header-component {
     @extend .cms-content-header;
     width: 100%;
-
-    .breadcrumbs-wrapper .crumb {
-        padding: 8px 0;
-    }
 }

@@ -18,7 +18,7 @@ class CampaignAdminContainer extends SilverStripeComponent {
 }
 
 CampaignAdminContainer.propTypes = {
-    forms: React.PropTypes.shape({
+    config: React.PropTypes.shape({
         data: React.PropTypes.shape({
             forms: React.PropTypes.shape({
                 editForm: React.PropTypes.shape({

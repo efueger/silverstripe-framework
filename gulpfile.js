@@ -5,6 +5,7 @@ var gulp = require('gulp'),
     notify = require('gulp-notify'),
     postcss = require('gulp-postcss'),
     sass = require('gulp-sass'),
+    sourcemaps = require('gulp-sourcemaps'),
     uglify = require('gulp-uglify'),
     gulpUtil = require('gulp-util'),
     uglify = require('gulp-uglify'),
@@ -44,7 +45,7 @@ var PATHS = {
 // Folders which contain both scss and css folders to be compiled
 var rootCompileFolders = [PATHS.FRAMEWORK, PATHS.ADMIN, PATHS.FRAMEWORK_DEV_INSTALL]
 
-var browserifyOptions = {};
+var browserifyOptions = { debug: true };
 
 // Used for autoprefixing css properties (same as Bootstrap Aplha.2 defaults)
 var supportedBrowsers = [
@@ -169,10 +170,6 @@ if (!semver.satisfies(process.versions.node, packageJson.engines.node)) {
     process.exit(1);
 }
 
-if (isDev) {
-    browserifyOptions.debug = true;
-}
-
 gulp.task('build', ['umd', 'bundle'], function () {
     if (isDev) {
         gulp.watch([
@@ -292,10 +289,12 @@ gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
         .external('redux-thunk')
         .external('silverstripe-component')
         .bundle()
-        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))
         .pipe(buffer())
-        .pipe(gulpif(!isDev, uglify()))
+        .pipe(sourcemaps.init({ loadMaps: true }))
+        .pipe(uglify())
+        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });
 

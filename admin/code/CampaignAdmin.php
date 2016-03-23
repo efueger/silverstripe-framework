@@ -14,6 +14,7 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 		'updateCampaign',
 		'deleteCampaign',
 		'schema',
+		'DetailEditForm'
 	];
 
 	private static $menu_priority = 11;
@@ -110,7 +111,8 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 				'itemDeleteUrl': {
 					'url': 'admin\/campaigns\/item\/:id',
 					'method': 'DELETE'
-				}
+				},
+				'editFormSchemaUrl': 'admin\/campaigns\/schema\/DetailEditForm'
 			}
 		}, {
 			"name": "SecurityID",
@@ -222,6 +224,25 @@ JSON;
 		$response->setBody(Convert::raw2json(['campaign' => 'delete']));
 
 		return $response;
+	}
+
+	/**
+	 * @todo Use GridFieldDetailForm once it can handle structured data and form schemas
+	 *
+	 * @return Form
+	 */
+	public function getDetailEditForm() {
+		return Form::create(
+			$this,
+			'DetailEditForm',
+			FieldList::create(
+				TextField::create('Name'),
+				TextAreaField::create('Description')
+			),
+			FieldList::create(
+				FormAction::create('save', 'Save')
+			)
+		);
 	}
 
 }

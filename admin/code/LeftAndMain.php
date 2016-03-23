@@ -186,7 +186,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 	 * WARNING: Experimental API
 	 */
 	public function getCombinedClientConfig() {
-		$combinedClientConfig = [];
+		$combinedClientConfig = ['sections' => []];
 		$cmsClassNames = CMSMenu::get_cms_classes();
 
 		// Ordered by url_priority because the routing rules
@@ -203,7 +203,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		});
 
 		foreach ($cmsClassNames as $className) {
-			$combinedClientConfig[$className] =  Injector::inst()->get($className)->getClientConfig();
+			$combinedClientConfig['sections'][$className] =  Injector::inst()->get($className)->getClientConfig();
 		}
 
 		return Convert::raw2json($combinedClientConfig);

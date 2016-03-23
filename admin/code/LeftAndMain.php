@@ -274,13 +274,8 @@ class LeftAndMain extends Controller implements PermissionProvider {
 				$validHeaderValues = ['schema', 'state'];
 				return in_array(trim($value), $validHeaderValues);
 			});
-		}
-
-		if (!count($schemaParts)) {
-			throw new SS_HTTPResponse_Exception(
-				'Invalid request. Check you\'ve set a "X-Formschema-Request" header with "schema" or "state" values.',
-				400
-			);
+		} else {
+			$schemaParts = ['schema'];
 		}
 
 		$return = ['id' => $form->getName()];
@@ -501,7 +496,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		}
 
 		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/boot.js');
-		
+
 		Requirements::css(FRAMEWORK_ADMIN_DIR . '/css/bootstrap/bootstrap.css');
 		Requirements::css(FRAMEWORK_ADMIN_DIR . '/thirdparty/jquery-notice/jquery.notice.css');
 		Requirements::css(THIRDPARTY_DIR . '/jquery-ui-themes/smoothness/jquery-ui.css');

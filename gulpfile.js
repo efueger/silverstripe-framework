@@ -182,7 +182,7 @@ gulp.task('build', ['umd', 'bundle'], function () {
     }
 });
 
-gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-boot', 'bundle-react', 'bundle-campaign-admin']);
+gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-boot', 'bundle-campaign-admin']);
 
 gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
     var bundleFileName = 'bundle-leftandmain.js';
@@ -215,6 +215,7 @@ gulp.task('bundle-lib', function bundleLib() {
         }))
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/action',                   { expose: 'action-button' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/config',                              { expose: 'config' })
+        .require('deep-freeze',                                                       { expose: 'deep-freeze' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/form',                     { expose: 'form' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/form-action',              { expose: 'form-action' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/form-builder',             { expose: 'form-builder' })
@@ -224,38 +225,22 @@ gulp.task('bundle-lib', function bundleLib() {
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/grid-field-header-cell',   { expose: 'grid-field-header-cell' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/grid-field-row',           { expose: 'grid-field-row' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/grid-field-table',         { expose: 'grid-field-table' })
+        .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/hidden-field',             { expose: 'hidden-field' })
         .require(PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/i18n.js',                         { expose: 'i18n' })
         .require(PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/jQuery.js',                       { expose: 'jQuery' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/north-header',             { expose: 'north-header' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/north-header-breadcrumbs', { expose: 'north-header-breadcrumbs' })
+        .require('react',                                                             { expose: 'react' })
+        .require('react-addons-css-transition-group',                                 { expose: 'react-addons-css-transition-group' })
+        .require('react-addons-test-utils',                                           { expose: 'react-addons-test-utils' })
+        .require('react-dom',                                                         { expose: 'react-dom' })
+        .require('react-redux',                                                       { expose: 'react-redux' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/reducer-register.js',                 { expose: 'reducer-register' })
+        .require('redux',                                                             { expose: 'redux' })
+        .require('redux-thunk',                                                       { expose: 'redux-thunk' })
         .require(PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/router.js',                       { expose: 'router' })
+        .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/SilverStripeComponent',               { expose: 'silverstripe-component' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/text-field',               { expose: 'text-field' })
-        .bundle()
-        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
-        .pipe(source(bundleFileName))
-        .pipe(buffer())
-        .pipe(gulpif(!isDev, uglify()))
-        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
-});
-
-gulp.task('bundle-react', function bundleReact() {
-    var bundleFileName = 'bundle-react.js';
-
-    return browserify(Object.assign({}, browserifyOptions))
-        .transform(babelify.configure({
-            presets: ['es2015'],
-            ignore: /(node_modules)/
-        }))
-        .require('deep-freeze',                                         { expose: 'deep-freeze' })
-        .require('react',                                               { expose: 'react' })
-        .require('react-addons-css-transition-group',                   { expose: 'react-addons-css-transition-group' })
-        .require('react-addons-test-utils',                             { expose: 'react-addons-test-utils' })
-        .require('react-dom',                                           { expose: 'react-dom' })
-        .require('react-redux',                                         { expose: 'react-redux' })
-        .require('redux',                                               { expose: 'redux' })
-        .require('redux-thunk',                                         { expose: 'redux-thunk' })
-        .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/SilverStripeComponent', { expose: 'silverstripe-component' })
         .bundle()
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))

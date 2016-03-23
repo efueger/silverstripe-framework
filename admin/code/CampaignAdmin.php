@@ -37,7 +37,9 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 
 	public function getClientConfig() {
 		return array_merge(parent::getClientConfig(), [
-			'schema' => $this->schema->getSchema($this->getEditForm())
+			'forms' => [
+				'editForm' => $this->schema->getSchema($this->getEditForm())
+			]
 		]);
 	}
 

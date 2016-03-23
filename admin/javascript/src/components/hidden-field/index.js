@@ -45,4 +45,4 @@ HiddenFieldComponent.propTypes = {
     value: React.PropTypes.string
 };
 
-HiddenFieldComponent;
+export default HiddenFieldComponent;

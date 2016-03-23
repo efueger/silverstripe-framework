@@ -7,26 +7,6 @@ import reducerRegister from 'reducer-register';
 import * as configActions from '../state/config/actions';
 import ConfigReducer from '../state/config/reducer';
 
-var globalConfig = {
-    lang: {},
-    sections: {
-        CampaignAdmin: {
-            component: 'CustomContent',
-            route: 'admin/campaigns',
-            data: {
-                forms: {
-                    editForm: {
-                        schemaUrl: 'admin/campaigns/schema/EditForm'
-                    },
-                    searchForm: {
-                        schemaUrl: 'admin/campaigns/schema/SearchForm'
-                    }
-                }
-            }
-        }
-    }
-};
-
 function appBoot() {
     reducerRegister.add('config', ConfigReducer);
 
@@ -38,7 +18,7 @@ function appBoot() {
     window.store = createStoreWithMiddleware(rootReducer, initialState);
 
     // Set the initial config state.
-    configActions.setConfig(globalConfig)(window.store.dispatch);
+    configActions.setConfig(window.ss.config)(window.store.dispatch);
 }
 
 // TODO: This should be using `window.onload` but isn't because Entwine hooks are being used to set up the <Provider>.

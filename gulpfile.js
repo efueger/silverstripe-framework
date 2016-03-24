@@ -1,28 +1,26 @@
-var gulp = require('gulp'),
-    babel = require('gulp-babel'),
-    diff = require('gulp-diff'),
-    gulpif = require('gulp-if'),
-    notify = require('gulp-notify'),
-    postcss = require('gulp-postcss'),
-    sass = require('gulp-sass'),
-    sourcemaps = require('gulp-sourcemaps'),
-    uglify = require('gulp-uglify'),
-    gulpUtil = require('gulp-util'),
-    uglify = require('gulp-uglify'),
+var packageJson =  require('./package.json'),
     autoprefixer = require('autoprefixer'),
-    browserify = require('browserify'),
-    babelify = require('babelify'),
-    source = require('vinyl-source-stream'),
-    buffer = require('vinyl-buffer'),
-    path = require('path'),
-    glob = require('glob'),
-    eventStream = require('event-stream'),
-    semver = require('semver'),
-    packageJson = require('./package.json'),
-    sprity = require('sprity'),
-    gulpif = require('gulp-if'),
-    sourcemaps = require('gulp-sourcemaps');
-    
+    babelify =     require('babelify'),
+    browserify =   require('browserify'),
+    eventStream =  require('event-stream'),
+    glob =         require('glob'),
+    gulp =         require('gulp'),
+    babel =        require('gulp-babel'),
+    diff =         require('gulp-diff'),
+    gulpif =       require('gulp-if'),
+    notify =       require('gulp-notify'),
+    postcss =      require('gulp-postcss'),
+    sass =         require('gulp-sass'),
+    sourcemaps =   require('gulp-sourcemaps'),
+    uglify =       require('gulp-uglify'),
+    gulpUtil =     require('gulp-util'),
+    path =         require('path'),
+    source =       require('vinyl-source-stream'),
+    buffer =       require('vinyl-buffer'),
+    semver =       require('semver'),
+    sprity =       require('sprity'),
+    watchify =     require('watchify');
+
 var isDev = typeof process.env.npm_config_development !== 'undefined';
 
 process.env.NODE_ENV = isDev ? 'development' : 'production';
@@ -46,6 +44,12 @@ var PATHS = {
 var rootCompileFolders = [PATHS.FRAMEWORK, PATHS.ADMIN, PATHS.FRAMEWORK_DEV_INSTALL]
 
 var browserifyOptions = { debug: true };
+
+var babelifyOptions = {
+    presets: ['es2015', 'react'],
+    ignore: /(node_modules|thirdparty)/,
+    comments: false
+};
 
 // Used for autoprefixing css properties (same as Bootstrap Aplha.2 defaults)
 var supportedBrowsers = [
@@ -170,46 +174,23 @@ if (!semver.satisfies(process.versions.node, packageJson.engines.node)) {
     process.exit(1);
 }
 
-gulp.task('build', ['umd', 'bundle'], function () {
-    if (isDev) {
-        gulp.watch([
-            PATHS.ADMIN_JAVASCRIPT_SRC + '/**/*.js',
-            PATHS.FRAMEWORK_JAVASCRIPT_SRC + '/**/*.js',
-        ], ['build']);
-    }
-});
+if (isDev) {
+    browserifyOptions.cache = {};
+    browserifyOptions.packageCache = {};
+    browserifyOptions.plugin = [watchify];
+}
+
+gulp.task('build', ['umd', 'bundle']);
 
 gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-boot', 'bundle-campaign-admin']);
-
-gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
-    var bundleFileName = 'bundle-leftandmain.js';
-
-    return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/bundles/leftandmain.js' }))
-        .transform(babelify.configure({
-            presets: ['es2015'],
-            ignore: /(thirdparty)/,
-            comments: false
-        }))
-        .external('jQuery')
-        .external('i18n')
-        .external('router')
-        .bundle()
-        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
-        .pipe(source(bundleFileName))
-        .pipe(buffer())
-        .pipe(gulpif(!isDev, uglify()))
-        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
-});
 
 gulp.task('bundle-lib', function bundleLib() {
     var bundleFileName = 'bundle-lib.js';
 
     return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/bundles/lib.js' }))
-        .transform(babelify.configure({
-            presets: ['es2015'],
-            ignore: /(thirdparty)/,
-            comments: false
-        }))
+        .on('update', bundleLib)
+        .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
+        .transform('babelify', babelifyOptions)
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/action',                   { expose: 'action-button' })
         .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/config',                              { expose: 'config' })
         .require('deep-freeze',                                                       { expose: 'deep-freeze' })
@@ -246,14 +227,32 @@ gulp.task('bundle-lib', function bundleLib() {
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });
 
+
+gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
+    var bundleFileName = 'bundle-leftandmain.js';
+
+    return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/bundles/leftandmain.js' }))
+        .on('update', bundleLeftAndMain)
+        .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
+        .transform('babelify', babelifyOptions)
+        .external('jQuery')
+        .external('i18n')
+        .external('router')
+        .bundle()
+        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
+        .pipe(source(bundleFileName))
+        .pipe(buffer())
+        .pipe(gulpif(!isDev, uglify()))
+        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
+});
+
 gulp.task('bundle-boot', function bundleBoot() {
     var bundleFileName = 'boot.js';
 
     return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/boot/index.js' }))
-        .transform(babelify.configure({
-            presets: ['es2015'],
-            ignore: /(node_modules)/
-        }))
+        .on('update', bundleBoot)
+        .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
+        .transform('babelify', babelifyOptions)
         .external('reducer-register')
         .external('jQuery')
         .bundle()
@@ -268,10 +267,9 @@ gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
     var bundleFileName = 'campaign-admin.js';
 
     return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/boot/campaign-admin.js' }))
-        .transform(babelify.configure({
-            presets: ['es2015', 'react'],
-            ignore: /(node_modules)/
-        }))
+        .on('update', bundleCampaignAdmin)
+        .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
+        .transform('babelify', babelifyOptions)
         .external('action-button')
         .external('config')
         .external('deep-freeze')
@@ -289,11 +287,11 @@ gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
         .external('redux-thunk')
         .external('silverstripe-component')
         .bundle()
+        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify())
-        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
+        .pipe(gulpif(!isDev, uglify()))
         .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });

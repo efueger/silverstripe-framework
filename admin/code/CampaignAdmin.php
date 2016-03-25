@@ -31,12 +31,6 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 
 	private static $url_segment = 'campaigns';
 
-	public function init() {
-		parent::init();
-
-		Requirements::javascript(FRAMEWORK_ADMIN_DIR . '/javascript/dist/campaign-admin.js');
-	}
-
 	public function getClientConfig() {
 		return array_merge(parent::getClientConfig(), [
 			'forms' => [

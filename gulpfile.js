@@ -182,7 +182,7 @@ if (isDev) {
 
 gulp.task('build', ['umd', 'bundle']);
 
-gulp.task('bundle', ['bundle-lib', 'bundle-leftandmain', 'bundle-boot', 'bundle-campaign-admin']);
+gulp.task('bundle', ['bundle-lib', 'bundle-legacy', 'bundle-framework']);
 
 gulp.task('bundle-lib', function bundleLib() {
     var bundleFileName = 'bundle-lib.js';
@@ -223,15 +223,17 @@ gulp.task('bundle-lib', function bundleLib() {
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))
         .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(gulpif(!isDev, uglify()))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });
 
 
-gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
-    var bundleFileName = 'bundle-leftandmain.js';
+gulp.task('bundle-legacy', function bundleLeftAndMain() {
+    var bundleFileName = 'bundle-legacy.js';
 
-    return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/bundles/leftandmain.js' }))
+    return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/bundles/legacy.js' }))
         .on('update', bundleLeftAndMain)
         .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
         .transform('babelify', babelifyOptions)
@@ -242,32 +244,17 @@ gulp.task('bundle-leftandmain', function bundleLeftAndMain() {
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
         .pipe(source(bundleFileName))
         .pipe(buffer())
+        .pipe(sourcemaps.init({ loadMaps: true }))
         .pipe(gulpif(!isDev, uglify()))
+        .pipe(sourcemaps.write('./'))
         .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
 });
 
-gulp.task('bundle-boot', function bundleBoot() {
-    var bundleFileName = 'boot.js';
+gulp.task('bundle-framework', function bundleBoot() {
+    var bundleFileName = 'bundle-framework.js';
 
     return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/boot/index.js' }))
         .on('update', bundleBoot)
-        .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
-        .transform('babelify', babelifyOptions)
-        .external('reducer-register')
-        .external('jQuery')
-        .bundle()
-        .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
-        .pipe(source(bundleFileName))
-        .pipe(buffer())
-        .pipe(gulpif(!isDev, uglify()))
-        .pipe(gulp.dest(PATHS.ADMIN_JAVASCRIPT_DIST));
-});
-
-gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
-    var bundleFileName = 'campaign-admin.js';
-
-    return browserify(Object.assign({}, browserifyOptions, { entries: PATHS.ADMIN_JAVASCRIPT_SRC + '/boot/campaign-admin.js' }))
-        .on('update', bundleCampaignAdmin)
         .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
         .transform('babelify', babelifyOptions)
         .external('action-button')
@@ -276,15 +263,16 @@ gulp.task('bundle-campaign-admin', function bundleCampaignAdmin() {
         .external('grid-field')
         .external('i18n')
         .external('jQuery')
+        .external('jQuery')
         .external('north-header')
         .external('page.js')
-        .external('react')
         .external('react-addons-test-utils')
         .external('react-dom')
         .external('react-redux')
+        .external('react')
         .external('reducer-register')
-        .external('redux')
         .external('redux-thunk')
+        .external('redux')
         .external('silverstripe-component')
         .bundle()
         .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
@@ -349,7 +337,7 @@ gulp.task('css', ['compile:css'], function () {
         rootCompileFolders.forEach(function (folder) {
             gulp.watch(folder + '/scss/**/*.scss', ['compile:css']);
         });
-        
+
         // Watch the .scss files in react components
         gulp.watch('./admin/javascript/src/**/*.scss', ['compile:css']);
     }

@@ -153,7 +153,11 @@ class SilverStripeBackend {
 
       const encodedData = encode(refinedSpec.payloadFormat, data);
 
-      return this[refinedSpec.method](endpointSpec.url, encodedData, headers)
+      const args = refinedSpec.method === 'get'
+        ? [endpointSpec.url, headers]
+        : [endpointSpec.url, encodedData, headers];
+
+      return this[refinedSpec.method](...args)
         .then(parseResponse);
     };
   }
@@ -168,12 +172,11 @@ class SilverStripeBackend {
    * @param Array headers
    * @return object - Promise
    */
-  get(url, data = {}, headers = {}) {
+  get(url, headers = {}) {
     return this.fetch(url, {
       method: 'get',
       credentials: 'same-origin',
       headers,
-      body: data,
     })
       .then(checkStatus);
   }

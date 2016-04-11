@@ -203,6 +203,7 @@ gulp.task('bundle-lib', function bundleLib() {
     .require('react-redux', { expose: 'react-redux' })
     .require('redux', { expose: 'redux' })
     .require('redux-thunk', { expose: 'redux-thunk' })
+    .require(PATHS.MODULES + '/bootstrap/dist/js/umd/collapse.js', {expose: 'bootstrap-collapse'})
     .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/form/index', { expose: 'components/form/index' })
     .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/form-action/index', { expose: 'components/form-action/index' })
     .require(PATHS.ADMIN_JAVASCRIPT_SRC + '/components/form-builder/index', { expose: 'components/form-builder/index' })
@@ -264,8 +265,8 @@ gulp.task('bundle-framework', function bundleBoot() {
     .on('log', function (msg) { gulpUtil.log('Finished', 'bundled ' + bundleFileName + ' ' + msg) })
     .transform('babelify', babelifyOptions)
     .external('components/action-button/index')
-	  .external('components/north-header/index')
-	  .external('components/form-builder/index')
+    .external('components/north-header/index')
+    .external('components/form-builder/index')
     .external('deep-freeze')
     .external('components/grid-field/index')
     .external('i18n')
@@ -279,6 +280,7 @@ gulp.task('bundle-framework', function bundleBoot() {
     .external('redux-thunk')
     .external('redux')
     .external('silverstripe-component')
+    .external('bootstrap-collapse')
     .bundle()
 	.on('update', bundleBoot)
     .on('error', notify.onError({ message: bundleFileName + ': <%= error.message %>' }))
@@ -354,12 +356,10 @@ gulp.task('css', ['compile:css'], function () {
  * Watches for changes if --development flag is given
  */
 gulp.task('compile:css', function () {
-  var outputStyle = isDev ? 'expanded' : 'compressed';
-
   var tasks = rootCompileFolders.map(function(folder) {
     return gulp.src(folder + '/scss/**/*.scss')
       .pipe(sourcemaps.init())
-      .pipe(sass({ outputStyle: outputStyle })
+      .pipe(sass({ outputStyle: 'compressed' })
         .on('error', notify.onError({
           message: 'Error: <%= error.message %>'
         }))

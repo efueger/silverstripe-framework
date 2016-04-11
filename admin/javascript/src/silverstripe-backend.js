@@ -161,11 +161,20 @@ class SilverStripeBackend {
   /**
    * Makes a network request using the GET HTTP verb.
    *
+   * @experimental
+   *
    * @param string url - Endpoint URL.
+   * @param object data - Data to send with the request.
+   * @param Array headers
    * @return object - Promise
    */
-  get(url) {
-    return this.fetch(url, { method: 'get', credentials: 'same-origin' })
+  get(url, data = {}, headers = {}) {
+    return this.fetch(url, {
+      method: 'get',
+      credentials: 'same-origin',
+      headers,
+      body: data,
+    })
       .then(checkStatus);
   }
 
@@ -174,14 +183,14 @@ class SilverStripeBackend {
    *
    * @param string url - Endpoint URL.
    * @param object data - Data to send with the request.
+   * @param Array headers
    * @return object - Promise
    */
-  post(url, data) {
+  post(url, data = {}, headers = {}) {
+    const defaultHeaders = { 'Content-Type': 'application/x-www-form-urlencoded' };
     return this.fetch(url, {
       method: 'post',
-      headers: new Headers({
-        'Content-Type': 'application/x-www-form-urlencoded',
-      }),
+      headers: Object.assign({}, defaultHeaders, headers),
       credentials: 'same-origin',
       body: data,
     })
@@ -193,10 +202,11 @@ class SilverStripeBackend {
    *
    * @param string url - Endpoint URL.
    * @param object data - Data to send with the request.
+   * @param Array headers
    * @return object - Promise
    */
-  put(url, data) {
-    return this.fetch(url, { method: 'put', credentials: 'same-origin', body: data })
+  put(url, data = {}, headers = {}) {
+    return this.fetch(url, { method: 'put', credentials: 'same-origin', body: data, headers })
       .then(checkStatus);
   }
 
@@ -205,10 +215,11 @@ class SilverStripeBackend {
    *
    * @param string url - Endpoint URL.
    * @param object data - Data to send with the request.
+   * @param Array headers
    * @return object - Promise
    */
-  delete(url, data) {
-    return this.fetch(url, { method: 'delete', credentials: 'same-origin', body: data })
+  delete(url, data = {}, headers = {}) {
+    return this.fetch(url, { method: 'delete', credentials: 'same-origin', body: data, headers })
       .then(checkStatus);
   }
 

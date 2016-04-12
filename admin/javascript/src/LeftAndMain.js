@@ -52,7 +52,6 @@ window.ss.debounce = function (func, wait, immediate) {
 function getUrlPath(url) {
 	var anchor = document.createElement('a');
 	anchor.href = url;
-
 	return anchor.pathname
 }
 
@@ -232,14 +231,12 @@ $.entwine('ss', function($) {
 			var self = this,
 				basePath = getUrlPath($('base')[0].href);
 
-			// Avoid adding a double slash if the base path is '/'
+			// Remove trailing / from base
 			if (basePath[basePath.length - 1] === '/') {
-				basePath += 'admin';
-			} else {
-				basePath = '/admin';
+        basePath = basePath.substring(0, basePath.length - 1);
 			}
-
 			router.base(basePath);
+      console.log(basePath);
 
 			// Register all top level routes.
 			Config.getTopLevelRoutes().forEach((route) => {

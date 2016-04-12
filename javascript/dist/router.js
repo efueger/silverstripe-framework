@@ -25,22 +25,38 @@
     };
   }
 
-  function show(pageShow) {
-    return function (path, state, dispatch, push) {
+  function normalise(path) {
+    if (path.match(/^(http|https):\/\//)) {
+      var anchor = document.createElement('a');
+      anchor.href = path;
 
-      console.log("before: " + path);
-
-      var el = document.createElement('a');
-      var pathWithSearch = void 0;
-      el.href = path;
-      pathWithSearch = el.pathname;
-      if (el.search) {
-        pathWithSearch += el.search;
+      if (window.location.host !== anchor.host) {
+        return path;
       }
 
-      console.log("after: " + pathWithSearch);
+      var base = _page2.default.base();
+      if (!base || anchor.pathname.startsWith(base)) {
+        path = anchor.pathname.substring(base.length);
+      } else {
+        return path;
+      }
+    }
 
-      return pageShow(pathWithSearch, state, dispatch, push);
+    if (path.startsWith('/')) {
+      return path;
+    }
+    return '/' + path;
+  }
+
+  function show(page) {
+    var pageShow = page.show;
+
+    return function (path, state, dispatch, push) {
+      console.log("base: " + page.base());
+      console.log("pre: " + path);
+      path = page.normalise(path);
+      console.log("normalised: " + path);
+      return pageShow(path, state, dispatch, push);
     };
   }
 
@@ -49,9 +65,8 @@
     return r.match(_page2.default.current, {});
   }
 
-  var base = document.baseURI + 'admin/';
-  _page2.default.base(base);
-  _page2.default.show = show(_page2.default.show);
+  _page2.default.normalise = normalise.bind(_page2.default);
+  _page2.default.show = show(_page2.default);
   _page2.default.routeAppliesToCurrentLocation = routeAppliesToCurrentLocation;
 
   exports.default = _page2.default;

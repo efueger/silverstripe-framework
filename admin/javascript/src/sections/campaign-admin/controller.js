@@ -148,6 +148,7 @@ CampaignAdminContainer.propTypes = {
 };
 
 function mapStateToProps(state, ownProps) {
+  console.log(state);
   return {
     config: state.config.sections[ownProps.sectionConfigKey],
     campaignId: state.campaign.campaignId,

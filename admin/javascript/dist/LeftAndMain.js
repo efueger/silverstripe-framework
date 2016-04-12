@@ -64,7 +64,6 @@
 	function getUrlPath(url) {
 		var anchor = document.createElement('a');
 		anchor.href = url;
-
 		return anchor.pathname;
 	}
 
@@ -186,12 +185,10 @@
 				    basePath = getUrlPath($('base')[0].href);
 
 				if (basePath[basePath.length - 1] === '/') {
-					basePath += 'admin';
-				} else {
-					basePath = '/admin';
+					basePath = basePath.substring(0, basePath.length - 1);
 				}
-
 				_router2.default.base(basePath);
+				console.log(basePath);
 
 				_config2.default.getTopLevelRoutes().forEach(function (route) {
 					(0, _router2.default)('/' + route + '/*', function (ctx, next) {

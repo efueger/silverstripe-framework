@@ -27,6 +27,9 @@
 
   function show(pageShow) {
     return function (path, state, dispatch, push) {
+
+      console.log("before: " + path);
+
       var el = document.createElement('a');
       var pathWithSearch = void 0;
       el.href = path;
@@ -34,6 +37,8 @@
       if (el.search) {
         pathWithSearch += el.search;
       }
+
+      console.log("after: " + pathWithSearch);
 
       return pageShow(pathWithSearch, state, dispatch, push);
     };
@@ -44,6 +49,8 @@
     return r.match(_page2.default.current, {});
   }
 
+  var base = document.baseURI + 'admin/';
+  _page2.default.base(base);
   _page2.default.show = show(_page2.default.show);
   _page2.default.routeAppliesToCurrentLocation = routeAppliesToCurrentLocation;
 

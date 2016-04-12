@@ -9,6 +9,13 @@ import page from 'page.js';
  */
 function show(pageShow) {
   return (path, state, dispatch, push) => {
+
+    console.log("before: " + path);
+
+    //let parsed = new URL(path);
+
+    //console.log(parsed);
+
     // Normalise `path` so that pattern matching is more robust.
     // For example if your route is '/pages' it should match when `path` is
     // 'http://foo.com/admin/pages', '/pages', and 'pages'.
@@ -19,6 +26,8 @@ function show(pageShow) {
     if (el.search) {
       pathWithSearch += el.search;
     }
+
+    console.log("after: " + pathWithSearch);
 
     return pageShow(pathWithSearch, state, dispatch, push);
   };
@@ -36,6 +45,9 @@ function routeAppliesToCurrentLocation(route) {
   return r.match(page.current, {});
 }
 
+
+let base = `${document.baseURI}admin/`;
+page.base(base);
 page.show = show(page.show);
 page.routeAppliesToCurrentLocation = routeAppliesToCurrentLocation;
 

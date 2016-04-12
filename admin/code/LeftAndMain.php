@@ -206,7 +206,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 	 */
 	public function getClientConfig() {
 		return [
-			'route' => $this->Link()
+			'route' => Config::inst()->get($this->class, 'url_segment')
 		];
 	}
 

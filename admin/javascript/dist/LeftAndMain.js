@@ -191,7 +191,7 @@
 				console.log(basePath);
 
 				_config2.default.getTopLevelRoutes().forEach(function (route) {
-					(0, _router2.default)('/' + route + '/*', function (ctx, next) {
+					(0, _router2.default)('/admin/' + route + '/*', function (ctx, next) {
 						if (document.readyState !== 'complete' || typeof ctx.state.__forceReferer === 'undefined') {
 							return next();
 						}

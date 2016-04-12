@@ -71,6 +71,7 @@ function show(page) {
  * @return boolean
  */
 function routeAppliesToCurrentLocation(route) {
+  console.log(route);
   const r = new page.Route(route);
   return r.match(page.current, {});
 }

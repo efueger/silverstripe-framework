@@ -240,7 +240,7 @@ $.entwine('ss', function($) {
 
 			// Register all top level routes.
 			Config.getTopLevelRoutes().forEach((route) => {
-				router(`/${route}/*`, (ctx, next) => {
+				router(`/admin/${route}/*`, (ctx, next) => {
 					// If the page isn't ready or the request hasn't come from 'loadPanel'
 					// then don't PJAX load the panel. Note: __forceReferer is set by 'loadPanel' only.
 					if (document.readyState !== 'complete' || typeof ctx.state.__forceReferer === 'undefined') {

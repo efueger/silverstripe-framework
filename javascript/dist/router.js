@@ -61,6 +61,7 @@
   }
 
   function routeAppliesToCurrentLocation(route) {
+    console.log(route);
     var r = new _page2.default.Route(route);
     return r.match(_page2.default.current, {});
   }

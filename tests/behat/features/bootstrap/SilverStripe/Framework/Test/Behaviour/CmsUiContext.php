@@ -53,6 +53,13 @@ class CmsUiContext extends BehatContext {
 	 * @AfterStep ~@modal
 	 */
 	public function handleCmsLoadingAfterStep(StepEvent $event) {
+		// First wait for the overlay to appear
+		$this->getSession()->wait(
+			200,
+            "document.getElementsByClassName('cms-content-loading-overlay').length > 0"
+        );
+
+		// Then wait for it to disappear
 		$timeoutMs = $this->getMainContext()->getAjaxTimeout();
 		$this->getSession()->wait($timeoutMs,
             "document.getElementsByClassName('cms-content-loading-overlay').length == 0"

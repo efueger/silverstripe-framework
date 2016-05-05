@@ -13,10 +13,16 @@ env:
     - TRAVIS_NODE_VERSION="4.2.0"
     - CORE_RELEASE=master
     - CORE_RELEASE_VERSION=4.0
-    - "ARTIFACTS_AWS_REGION=us-east-1"
-    - "ARTIFACTS_S3_BUCKET=silverstripe-travis-artifacts"
-    - secure: "DjwZKhY/c0wXppGmd8oEMiTV0ayfOXiCmi9Lg1aXoSXNnj+sjLmhYwhUWjehjR6IX0MRtzJG6v7V5Y+4nSGe+i+XIrBQnhPQ95Jrkm1gKofX2mznWTl9npQElNS1DXi58NLPbiB3qxHWGFBRAWmRQrsAouyZabkPnChnSa9ldOg="
-    - secure: "UmbXCNLK0f2Dk+7qX8bOVcgIt4QhRvccoWvMUxaPtIU+95HCbG10eeCxvfOeBax+tHcRXmeCG4vM4tcuT/WoANkAma/VX74DylFjbWhks2tsKOcr2kjTrOwe6Q9CXOBjVAlcx0lnV/a+w83KARjXGnCrIbE7p7r4EDw31rkVufg="
+    - ARTIFACTS_REGION=us-east-1
+    - ARTIFACTS_BUCKET=silverstripe-travis-artifacts
+    # Note: The following pair are encrypted against open-sausages/silverstripe-framework
+    - secure: "NxFais8Q4fBMcHzLxj+Rdzv1crl5ChsLYiwVUFTKTd5lKpC8ZSbi9ti+Lim9g8fzgRL1DzQVGqQF1ZdCGwgg2xZTHQHyPO53ZGbeC9IB5fE3SkcM6JzHD3LxdzHgJSkerrX8AEadcQnoA0qtXQJ9fJXYWRWywj5B5ycnYM7aaI6sCbbNx24sF/x2/F62NONXZ/Iic4F2lbQJcHZtXYBaMbr6BS2g1TmehCdWBfRDkBKKlh7e5hZJDYDnP/cNmjQgR7Af50IQPyRFcaR525yH8CVT9PdpQZZ+5Owf7eYUTICreswrVn2aGauuSePcJkZw8m6xG5g/iRHMn7JJbTvYdpx07F+GFZGMsBk9QwNGlp5Z+zd1hvN6ZsLAMIwGPNlrXiKSdJJVItn1Tv9iUuFTpJ9QjPWqoC6m069uyIuDG5grpi70TKeBnqIsZNkNzb/q8bV6bBHD3+xs/QfqZTmaayA62uA4hsZA5RaEvFv2ZfmHkf/JX5DRriv0ffjwO43fLINfNQj5hzGqQqcUaG67YnCJu4o4VZe9M0hrBbuMdKapuHqWQkW/8J69BxAgXbcb8slA9t5inrPlpup6PMAOlZYRjRYFkXxwrwuEyRo4y/yANp+0TQjfQ2kCC7CAv0l3ufuYh0IRxkl1kNepglTP9WuP1qJ7hNlgxdjjtFanfK8="
+    - secure: "RsBhPjqlAaLMOCNtYJTpU4JI122g69vCKjPf/2xJpN8RNa14ZWGDXRP5bcAR1pOLwSyunvO3qaFQSlYuBFX7SM5LACQF3iQBUZjW864HyTT8tvWNpRprfXwFnBav37wshDyaWEiDo21n0TienioyJ6vAkVXMarYeZwhqf5mnYzsI7DmBlbbHm+wgz78WXNYiwk7e8Ss005ZFyEw0g3uzcV1+ELmEtice9KEUf9ZEzpXZsZuflnCLI/Vheb+vO7pG5/yU9gGYyKTGmWOIdi2tpkOMmLuAJHGYTL+QVIyqO52UmeObwiFZPfAXWH9Pr7C/OOM30QAoXZ6L/g98/6Qci4M1urL8X3BeVk/pojbX1n1j53FgzvEo1N/nTmzmeutHAMjcj7CVsZg9tiI2gw2ifwwvtJyF6Qkpb7zqspJBgepj3v+swJhp5Z4V2ITQu21MYVSyhWBiMZ6/LXO8LaTL2h5SLzvJOUSPuF9wutzTsYJB1iVRbt560sO5P1ggFZvawUQ5SuSm9lv8woDlAC979fDRKXZMkyIOtq3qwaw8X/DD5S/jwn/dUmsrpp7kCQurTpGSosZ596ETx1c8QnSovD0osf5HRnawJVNcEfBm83J9fb7Xc27ez66Pu4FlFu2Y81Lt8ymDgsYZT1UvwdVvbTlXxlfFXuQ8gXt4XueSb8E="
+
+
+# silverstripe/framework
+#    - secure: "DjwZKhY/c0wXppGmd8oEMiTV0ayfOXiCmi9Lg1aXoSXNnj+sjLmhYwhUWjehjR6IX0MRtzJG6v7V5Y+4nSGe+i+XIrBQnhPQ95Jrkm1gKofX2mznWTl9npQElNS1DXi58NLPbiB3qxHWGFBRAWmRQrsAouyZabkPnChnSa9ldOg="
+#    - secure: "UmbXCNLK0f2Dk+7qX8bOVcgIt4QhRvccoWvMUxaPtIU+95HCbG10eeCxvfOeBax+tHcRXmeCG4vM4tcuT/WoANkAma/VX74DylFjbWhks2tsKOcr2kjTrOwe6Q9CXOBjVAlcx0lnV/a+w83KARjXGnCrIbE7p7r4EDw31rkVufg="
 
 matrix:
   include:
@@ -41,30 +47,30 @@ matrix:
       env: DB=MYSQL PDO=1
 
 before_script:
- - printf "\n" | pecl install imagick
- - composer self-update || true
- - phpenv rehash
- - phpenv config-rm xdebug.ini
- - git clone -b develop git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
- - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss; fi"
- - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require silverstripe/behat-extension; fi"
- - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"1\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require silverstripe/cms:$CORE_RELEASE_VERSION.x-dev; fi"
- - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"1\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require silverstripe/behat-extension,silverstripe/cms:$CORE_RELEASE_VERSION.x-dev; fi"
- - "if [ \"JS_SANITY_CHECK\" = \"1\" ]; then nvm install $TRAVIS_NODE_VERSION && npm install; fi"
- - cd ~/builds/ss
- - php ~/travis-support/travis_setup_selenium.php --if-env BEHAT_TEST
- - php ~/travis-support/travis_setup_php54_webserver.php --if-env BEHAT_TEST
+  - printf "\n" | pecl install imagick
+  - composer self-update || true
+  - phpenv rehash
+  - phpenv config-rm xdebug.ini
+  - git clone -b develop git://github.com/silverstripe-labs/silverstripe-travis-support.git ~/travis-support
+  - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss; fi"
+  - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require silverstripe/behat-extension; fi"
+  - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"1\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require silverstripe/cms:$CORE_RELEASE_VERSION.x-dev; fi"
+  - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"1\" ]; then php ~/travis-support/travis_setup.php --source `pwd` --target ~/builds/ss --require silverstripe/behat-extension,silverstripe/cms:$CORE_RELEASE_VERSION.x-dev; fi"
+  - "if [ \"JS_SANITY_CHECK\" = \"1\" ]; then nvm install $TRAVIS_NODE_VERSION && npm install; fi"
+  - cd ~/builds/ss
+  - php ~/travis-support/travis_setup_selenium.php --if-env BEHAT_TEST
+  - php ~/travis-support/travis_setup_php54_webserver.php --if-env BEHAT_TEST
 
 script:
- - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"\" ]; then vendor/bin/phpunit framework/tests; fi"
- - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"\" ]; then vendor/bin/phpunit framework/admin/tests; fi"
- - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"\" ]; then vendor/bin/behat @framework; fi"
- - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"1\" ]; then vendor/bin/phpunit cms/tests; fi"
- - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"1\" ]; then vendor/bin/behat @cms; fi"
- - "if [ \"JS_SANITY_CHECK\" = \"1\" ]; then npm run sanity; fi"
+  - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"\" ]; then vendor/bin/phpunit framework/tests; fi"
+  - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"\" ]; then vendor/bin/phpunit framework/admin/tests; fi"
+  - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"\" ]; then vendor/bin/behat @framework; fi"
+  - "if [ \"$BEHAT_TEST\" = \"\" ] && [ \"$CMS_TEST\" = \"1\" ]; then vendor/bin/phpunit cms/tests; fi"
+  - "if [ \"$BEHAT_TEST\" = \"1\" ] && [ \"$CMS_TEST\" = \"1\" ]; then vendor/bin/behat @cms; fi"
+  - "if [ \"JS_SANITY_CHECK\" = \"1\" ]; then npm run sanity; fi"
 
 after_failure:
- - php ~/travis-support/travis_upload_artifacts.php --if-env BEHAT_TEST,ARTIFACTS_AWS_SECRET_ACCESS_KEY --target-path $TRAVIS_REPO_SLUG/$TRAVIS_BUILD_ID/$TRAVIS_JOB_ID --artifacts-base-url https://s3.amazonaws.com/$ARTIFACTS_S3_BUCKET/
+  - php ~/travis-support/travis_upload_artifacts.php --if-env BEHAT_TEST,ARTIFACTS_BUCKET,ARTIFACTS_KEY,ARTIFACTS_SECRET --target-path $TRAVIS_REPO_SLUG/$TRAVIS_BUILD_ID/$TRAVIS_JOB_ID --artifacts-base-url https://s3.amazonaws.com/$ARTIFACTS_BUCKET/
 
 branches:
   except:

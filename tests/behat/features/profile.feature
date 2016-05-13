@@ -19,11 +19,21 @@ Feature: Manage my own settings
 		Then I should see "Jack"
 		And I should see "Johnson"
 
-	Scenario: I can change my password
+	Scenario: I can't reset the password without the original
 		Given I follow "Change Password"
-		And I fill in "Password" with "newsecret"
+		And I fill in "Current Password" with "idontknow"
+		And I fill in "New Password" with "newsecret"
 		And I fill in "Confirm Password" with "newsecret"
 		And I press the "Save" button
+		Then I should see a "The current password you have entered is not correct." message
+
+	Scenario: I can change my password
+		Given I follow "Change Password"
+		And I fill in "Current Password" with "password"
+		And I fill in "New Password" with "newsecret"
+		And I fill in "Confirm Password" with "newsecret"
+		And I press the "Save" button
+		Then I should see a "Saved." notice
 		And I am not logged in
 		When I log in with "joe@test.com" and "newsecret"
 		And I go to "admin/myprofile"

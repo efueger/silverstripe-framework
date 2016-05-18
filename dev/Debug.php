@@ -323,24 +323,18 @@ class Debug {
 	 * @return string HTML error message for non-ajax requests, plaintext for ajax-request.
 	 */
 	public static function friendlyError($statusCode=500, $friendlyErrorMessage=null, $friendlyErrorDetail=null) {
+		// Ensure the error message complies with the HTTP 1.1 spec
 		if(!$friendlyErrorMessage) {
 			$friendlyErrorMessage = Config::inst()->get('Debug', 'friendly_error_header');
 		}
+		$friendlyErrorMessage = strip_tags(str_replace(array("\n", "\r"), '', $friendlyErrorMessage));
 
 		if(!$friendlyErrorDetail) {
 			$friendlyErrorDetail = Config::inst()->get('Debug', 'friendly_error_detail');
 		}
 
 		if(!headers_sent()) {
-			$currController = Controller::has_curr() ? Controller::curr() : null;
-			// Ensure the error message complies with the HTTP 1.1 spec
-			$msg = strip_tags(str_replace(array("\n", "\r"), '', $friendlyErrorMessage));
-			if($currController) {
-				$response = $currController->getResponse();
-				$response->setStatusCode($statusCode, $msg);
-			} else {
-				header($_SERVER['SERVER_PROTOCOL'] . " $statusCode $msg");
-			}
+			header($_SERVER['SERVER_PROTOCOL'] . " $statusCode $friendlyErrorMessage");
 		}
 
 		if(Director::is_ajax()) {

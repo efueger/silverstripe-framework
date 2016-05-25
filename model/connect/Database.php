@@ -234,9 +234,21 @@ abstract class SS_Database {
 	 *
 	 * @param string $value The identifier to escape
 	 * @param string $separator optional identifier splitter
+	 * @return string
 	 */
 	public function escapeIdentifier($value, $separator = '.') {
 		return $this->connector->escapeIdentifier($value, $separator);
+	}
+
+	/**
+	 * Escapes a table and column selector.
+	 *
+	 * @param string $table Table name (unquoted)
+	 * @param string $column Column name (unquoted)
+	 * @return string
+	 */
+	public function escapeQualifiedColumn($table, $column) {
+		return $this->connector->escapeQualifiedColumn($table, $column);
 	}
 
 	/**

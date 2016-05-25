@@ -161,9 +161,10 @@ abstract class SearchFilter extends Object {
 	 */
 	public function getDbName() {
 		// Special handler for "NULL" relations
-		if($this->name == "NULL") {
+		if($this->name === "NULL") {
 			return $this->name;
 		}
+
 		// Ensure that we're dealing with a DataObject.
 		if (!is_subclass_of($this->model, 'DataObject')) {
 			throw new InvalidArgumentException(
@@ -171,19 +172,15 @@ abstract class SearchFilter extends Object {
 			);
 		}
 
-		$candidateClass = ClassInfo::table_for_object_field(
-			$this->model,
-			$this->name
-		);
-
-		if($candidateClass == 'DataObject') {
-			// fallback to the provided name in the event of a joined column
-			// name (as the candidate class doesn't check joined records)
-			$parts = explode('.', $this->fullName);
-			return '"' . implode('"."', $parts) . '"';
+		// Find table this field belongs to
+		$table = DataObject::getSchema()->tableForField($this->model, $this->name);
+		if($table) {
+			return DB::get_conn()->escapeQualifiedColumn($table, $this->name);
 		}
 
-		return sprintf('"%s"."%s"', $candidateClass, $this->name);
+		// fallback to the provided name in the event of a joined column
+		// name (as the candidate class doesn't check joined records)
+		return DB::get_conn()->escapeIdentifier($this->fullName);
 	}
 
 	/**

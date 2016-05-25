@@ -155,7 +155,7 @@ class AssetControlExtension extends \DataExtension
 		}
 
 		// Unauthenticated member to use for checking visibility
-		$baseClass = \ClassInfo::baseDataClass($this->owner);
+		$baseClass = \DataObject::getSchema()->baseDataClass($this->owner);
 		$filter = array("\"{$baseClass}\".\"ID\"" => $this->owner->ID);
 		$stages = $this->owner->getVersionedStages(); // {@see Versioned::getVersionedStages}
 		foreach ($stages as $stage) {

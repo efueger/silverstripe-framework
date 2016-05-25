@@ -181,10 +181,13 @@ abstract class DBConnector {
 	 *
 	 * @param string $value The identifier to escape
 	 * @param string $separator optional identifier splitter
+	 * @return string
 	 */
 	public function escapeIdentifier($value, $separator = '.') {
 		// ANSI standard id escape is to surround with double quotes
-		if(empty($separator)) return '"'.trim($value).'"';
+		if(empty($separator)) {
+			return '"'.trim($value).'"';
+		}
 
 		// Split, escape, and glue back multiple identifiers
 		$segments = array();
@@ -192,6 +195,17 @@ abstract class DBConnector {
 			$segments[] = $this->escapeIdentifier($item, null);
 		}
 		return implode($separator, $segments);
+	}
+
+	/**
+	 * Escapes a table and column selector.
+	 *
+	 * @param string $table Table name (unquoted)
+	 * @param string $column Column name (unquoted)
+	 * @return string
+	 */
+	public function escapeQualifiedColumn($table, $column) {
+		return "\"{$table}\".\"{$column}\"";
 	}
 
 	/**

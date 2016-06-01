@@ -89,7 +89,7 @@ class FulltextFilter extends SearchFilter {
 		$cols = preg_split('/"?\s*,\s*"?/', trim($columns, '(") '));
 		$table = DataObject::getSchema()->tableForField($this->model, current($cols));
 		$cols = array_map(function($col) use ($table) {
-			return Convert::symbol2sql([$table, $col]);
+			return sprintf('"%s"."%s"', $table, $col);
 		}, $cols);
 		return implode(',', $cols);
 	}

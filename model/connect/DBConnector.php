@@ -175,25 +175,6 @@ abstract class DBConnector {
 	abstract public function quoteString($value);
 
 	/**
-	 * Escapes an identifier (table / database name). Typically the value
-	 * is simply double quoted. Don't pass in already escaped identifiers in,
-	 * as this will double escape the value!
-	 *
-	 * @param string|array $value The identifier to escape or list of split components
-	 * @param string $separator Splitter for each component
-	 * @return string
-	 */
-	public function escapeIdentifier($value, $separator = '.') {
-		// Split string into components
-		if(!is_array($value)) {
-			$value = explode($separator, $value);
-		}
-
-		// Implode quoted column
-		return '"' . implode('"'.$separator.'"', $value) . '"';
-	}
-
-	/**
 	 * Executes the following query with the specified error level.
 	 * Implementations of this function should respect previewWrite and benchmarkQuery
 	 *

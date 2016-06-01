@@ -33,7 +33,7 @@ class VersionedTest extends SapphireTest {
 			'VersionedTest_WithIndexes_versions' =>
 				array('value' => false, 'message' => 'Unique indexes are no longer unique in _versions table'),
 			'VersionedTest_WithIndexes_Live' =>
-				array('value' => false, 'message' => 'Unique indexes are no longer unique in _Live table'),
+				array('value' => true, 'message' => 'Unique indexes are unique in _Live table'),
 		);
 
 		// Test each table's performance
@@ -56,7 +56,7 @@ class VersionedTest extends SapphireTest {
 				if (in_array($indexSpec['value'], $expectedColumns)) {
 					$isUnique = $indexSpec['type'] === 'unique';
 					$this->assertEquals($isUnique, $expectation['value'], $expectation['message']);
-}
+				}
 			}
 		}
 	}

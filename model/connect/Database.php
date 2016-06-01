@@ -233,11 +233,17 @@ abstract class SS_Database {
 	 * as this will double escape the value!
 	 *
 	 * @param string|array $value The identifier to escape or list of split components
-	 * @param string $separator optional identifier splitter
+	 * @param string $separator Splitter for each component
 	 * @return string
 	 */
 	public function escapeIdentifier($value, $separator = '.') {
-		return $this->connector->escapeIdentifier($value, $separator);
+		// Split string into components
+		if(!is_array($value)) {
+			$value = explode($separator, $value);
+		}
+
+		// Implode quoted column
+		return '"' . implode('"'.$separator.'"', $value) . '"';
 	}
 
 	/**

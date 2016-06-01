@@ -1311,7 +1311,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		if($hasChanges || $forceWrite || $isNewRecord) {
 			// New records have their insert into the base data table done first, so that they can pass the
 			// generated primary key on to the rest of the manipulation
-			$baseTable = DataObject::getSchema()->baseDataTable($this);
+			$baseTable = $this->baseTable();
 			$this->writeBaseRecord($baseTable, $now);
 
 			// Write the DB manipulation for all changed fields
@@ -1930,12 +1930,13 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * Return all of the database fields in this object
 	 *
 	 * @param string $fieldName Limit the output to a specific field name
-	 * @param bool $includeTable If returning a single column, prefix the column with the table name
+	 * @param bool $includeClass If returning a single column, prefix the column with the class name
 	 * in Table.Column(spec) format
-	 * @return array|string|null The database fields, or if searching a single field, just this one field if found
-	 * Field will be a string in ClassName(args) format, or Table.ClassName(args) format if $includeTable is true
+	 * @return array|string|null The database fields, or if searching a single field,
+	 * just this one field if found. Field will be a string in FieldClass(args)
+	 * format, or RecordClass.FieldClass(args) format if $includeClass is true
 	 */
-	public function db($fieldName = null, $includeTable = false) {
+	public function db($fieldName = null, $includeClass = false) {
 		$classes = ClassInfo::ancestry($this, true);
 
 		// If we're looking for a specific field, we want to hit subclasses first as they may override field types
@@ -1953,17 +1954,10 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			// Check for search field
 			if($fieldName && isset($db[$fieldName])) {
 				// Return found field
-				if(!$includeTable) {
+				if(!$includeClass) {
 					return $db[$fieldName];
 				}
-
-				// Set table for the given field
-				if(in_array($fieldName, $this->config()->fixed_fields)) {
-					$table = $this->baseTable();
-				} else {
-					$table = $class;
-				}
-				return $table . "." . $db[$fieldName];
+				return $class . "." . $db[$fieldName];
 			}
 		}
 
@@ -3223,10 +3217,20 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 
 	/**
 	 * Get the name of the base table for this object
+	 *
+	 * @return string
 	 */
 	public function baseTable() {
-		$tableClasses = ClassInfo::dataClassesFor($this->class);
-		return array_shift($tableClasses);
+		return static::getSchema()->baseDataTable($this);
+	}
+
+	/**
+	 * Get the base class for this object
+	 *
+	 * @return string
+	 */
+	public function baseClass() {
+		return static::getSchema()->baseDataClass($this);
 	}
 
 	/**

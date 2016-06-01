@@ -113,14 +113,6 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	private static $prepopulate_versionnumber_cache = true;
 
 	/**
-	 * Keep track of the archive tables that have been created.
-	 *
-	 * @config
-	 * @var array
-	 */
-	private static $archive_tables = array();
-
-	/**
 	 * Additional database indexes for the new
 	 * "_versions" table. Used in {@link augmentDatabase()}.
 	 *
@@ -163,13 +155,13 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 *  array('Extension1' => 'suffix1', 'Extension2' => array('suffix2', 'suffix3')));
 	 *
 	 *
-	 * Make sure your extension has a static $enabled-property that determines if it is
-	 * processed by Versioned.
+	 * Your extension must implement VersionableExtension interface in order to
+	 * apply custom tables for versioned.
 	 *
 	 * @config
 	 * @var array
 	 */
-	private static $versionableExtensions = array('Translatable' => 'lang');
+	private static $versionableExtensions = [];
 
 	/**
 	 * Permissions necessary to view records outside of the live stage (e.g. archive / draft stage).
@@ -275,7 +267,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 */
 	protected function getLastEditedForVersion($version) {
 		// Cache key
-		$baseTable = ClassInfo::baseDataClass($this->owner);
+		$baseTable = $this->baseTable();
 		$id = $this->owner->ID;
 		$key = "{$baseTable}#{$id}/{$version}";
 
@@ -285,11 +277,12 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		}
 
 		// Build query
+		$conn = DB::get_conn();
 		$table = "\"{$baseTable}_versions\"";
 		$query = SQLSelect::create('"LastEdited"', $table)
 			->addWhere([
-				"{$table}.\"RecordID\"" => $id,
-				"{$table}.\"Version\"" => $version
+				$conn->escapeIdentifier([$table, 'RecordID']) => $id,
+				$conn->escapeIdentifier([$table, 'Version']) => $version,
 			]);
 		$date = $query->execute()->value();
 		if($date) {
@@ -298,7 +291,11 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		return $date;
 	}
 
-
+	/**
+	 * Updates query parameters of relations attached to versioned dataobjects
+	 *
+	 * @param array $params
+	 */
 	public function updateInheritableQueryParams(&$params) {
 		// Skip if versioned isn't set
 		if(!isset($params['Versioned.mode'])) {
@@ -306,7 +303,6 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		}
 
 		// Adjust query based on original selection criterea
-		$owner = $this->owner;
 		switch($params['Versioned.mode']) {
 			case 'all_versions': {
 				// Versioned.mode === all_versions doesn't inherit very well, so default to stage
@@ -350,8 +346,8 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			return;
 		}
 
-		$baseTable = ClassInfo::baseDataClass($dataQuery->dataClass());
-
+		$conn = DB::get_conn();
+		$baseTable = $this->baseTable();
 		$versionedMode = $dataQuery->getQueryParam('Versioned.mode');
 		switch($versionedMode) {
 		// Reading a specific stage (Stage or Live)
@@ -392,9 +388,14 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 				}
 
 				$tempName = 'ExclusionarySource_'.$excluding;
-				$excludingTable = $baseTable . ($excluding && $excluding != static::DRAFT ? "_$excluding" : '');
+				$excludingTable = $this->baseTable($excluding);
 
-				$query->addWhere('"'.$baseTable.'"."ID" NOT IN (SELECT "ID" FROM "'.$tempName.'")');
+				$query->addWhere(sprintf(
+					'%s NOT IN (SELECT %s FROM %s)',
+					$conn->escapeIdentifier([$baseTable, 'ID']),
+					$conn->escapeIdentifier([$tempName, 'ID']),
+					$conn->escapeIdentifier($tempName)
+				));
 				$query->renameTable($tempName, $excludingTable);
 			}
 			break;
@@ -404,36 +405,45 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		case 'all_versions':
 		case 'latest_versions':
 		case 'version':
+			// Quote table and column names
+			$baseVersionsTable = "{$baseTable}_versions";
+			$baseVersionsEscaped = $conn->escapeIdentifier($baseVersionsTable);
+			$baseVersions_RecordID = $conn->escapeIdentifier([$baseVersionsTable, 'RecordID']);
+			$baseVersions_ID = $conn->escapeIdentifier([$baseVersionsTable, 'ID']);
+			$baseVersions_Version = $conn->escapeIdentifier([$baseVersionsTable, 'Version']);
+
+			// Join each _versions table
 			foreach($query->getFrom() as $alias => $join) {
 				if(!$this->isTableVersioned($alias)) {
 					continue;
 				}
 
+				$aliasVersionsTable = "{$alias}_versions";
 				if($alias != $baseTable) {
+					$aliasVersions_RecordID = $conn->escapeIdentifier([$aliasVersionsTable, 'RecordID']);
+					$aliasVersions_Version = $conn->escapeIdentifier([$aliasVersionsTable, 'Version']);
+
 					// Make sure join includes version as well
 					$query->setJoinFilter(
 						$alias,
-						"\"{$alias}_versions\".\"RecordID\" = \"{$baseTable}_versions\".\"RecordID\""
-						. " AND \"{$alias}_versions\".\"Version\" = \"{$baseTable}_versions\".\"Version\""
+						"{$aliasVersions_RecordID} = {$baseVersions_RecordID}  AND {$aliasVersions_Version} = {$baseVersions_Version}"
 					);
 				}
-				$query->renameTable($alias, $alias . '_versions');
+				$query->renameTable($alias, $aliasVersionsTable);
 			}
 
 			// Add all <basetable>_versions columns
 			foreach(Config::inst()->get('Versioned', 'db_for_versions_table') as $name => $type) {
-				$query->selectField(sprintf('"%s_versions"."%s"', $baseTable, $name), $name);
+				$baseVersions_Name = $conn->escapeIdentifier([$baseVersionsTable, $name]);
+				$query->selectField($baseVersions_Name, $name);
 			}
 
 			// Alias the record ID as the row ID, and ensure ID filters are aliased correctly
-			$query->selectField("\"{$baseTable}_versions\".\"RecordID\"", "ID");
-			$query->replaceText("\"{$baseTable}_versions\".\"ID\"", "\"{$baseTable}_versions\".\"RecordID\"");
+			$query->selectField($baseVersions_RecordID, "ID");
+			$query->replaceText($baseVersions_ID, $baseVersions_RecordID);
 
 			// However, if doing count, undo rewrite of "ID" column
-			$query->replaceText(
-				"count(DISTINCT \"{$baseTable}_versions\".\"RecordID\")",
-				"count(DISTINCT \"{$baseTable}_versions\".\"ID\")"
-			);
+			$query->replaceText("count(DISTINCT {$baseVersions_RecordID})", "count(DISTINCT {$baseVersions_ID})");
 
 			// Add additional versioning filters
 			switch($versionedMode) {
@@ -443,17 +453,20 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 						throw new InvalidArgumentException("Invalid archive date");
 					}
 					// Link to the version archived on that date
+					$baseVersions_LastEdited = $conn->escapeIdentifier([$baseVersionsTable, 'LastEdited']);
+					$baseVersionsLatest = $conn->escapeIdentifier("{$baseVersionsTable}_latest");
+					$baseVersionsLatest_RecordID = $conn->escapeIdentifier(["{$baseVersionsTable}_latest", 'RecordID']);
 					$query->addWhere([
-						"\"{$baseTable}_versions\".\"Version\" IN
+						"{$baseVersions_Version} IN
 						(SELECT LatestVersion FROM
 							(SELECT
-								\"{$baseTable}_versions\".\"RecordID\",
-								MAX(\"{$baseTable}_versions\".\"Version\") AS LatestVersion
-								FROM \"{$baseTable}_versions\"
-								WHERE \"{$baseTable}_versions\".\"LastEdited\" <= ?
-								GROUP BY \"{$baseTable}_versions\".\"RecordID\"
-							) AS \"{$baseTable}_versions_latest\"
-							WHERE \"{$baseTable}_versions_latest\".\"RecordID\" = \"{$baseTable}_versions\".\"RecordID\"
+								{$baseVersions_RecordID},
+								MAX({$baseVersions_Version}) AS LatestVersion
+								FROM {$baseVersionsEscaped}
+								WHERE {$baseVersions_LastEdited} <= ?
+								GROUP BY {$baseVersions_RecordID}
+							) AS {$baseVersionsLatest}
+							WHERE {$baseVersionsLatest_RecordID} = {$baseVersions_RecordID}
 						)" => $date
 					]);
 					break;
@@ -461,16 +474,18 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 				case 'latest_versions': {
 					// Return latest version instances, regardless of whether they are on a particular stage
 					// This provides "show all, including deleted" functonality
+					$baseVersionsLatest = $conn->escapeIdentifier("{$baseVersionsTable}_latest");
+					$baseVersionsLatest_RecordID = $conn->escapeIdentifier(["{$baseVersionsTable}_latest", 'RecordID']);
 					$query->addWhere(
-						"\"{$baseTable}_versions\".\"Version\" IN
+						"{$baseVersions_Version} IN
 						(SELECT LatestVersion FROM
 							(SELECT
-								\"{$baseTable}_versions\".\"RecordID\",
-								MAX(\"{$baseTable}_versions\".\"Version\") AS LatestVersion
-								FROM \"{$baseTable}_versions\"
-								GROUP BY \"{$baseTable}_versions\".\"RecordID\"
-							) AS \"{$baseTable}_versions_latest\"
-							WHERE \"{$baseTable}_versions_latest\".\"RecordID\" = \"{$baseTable}_versions\".\"RecordID\"
+								{$baseVersions_RecordID},
+								MAX({$baseVersions_Version}) AS LatestVersion
+								FROM {$baseVersionsEscaped}
+								GROUP BY {$baseVersions_RecordID}
+							) AS {$baseVersionsLatest}
+							WHERE {$baseVersionsLatest_RecordID} = {$baseVersions_RecordID}
 						)"
 					);
 					break;
@@ -481,14 +496,13 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 					if(!$version) {
 						throw new InvalidArgumentException("Invalid version");
 					}
-					$query->addWhere([
-						"\"{$baseTable}_versions\".\"Version\"" => $version
-					]);
+					$query->addWhere([$baseVersions_Version => $version]);
 					break;
 				}
+				case 'all_versions':
 				default: {
 					// If all versions are requested, ensure that records are sorted by this field
-					$query->addOrderBy(sprintf('"%s_versions"."%s"', $baseTable, 'Version'));
+					$query->addOrderBy($baseVersions_Version);
 					break;
 				}
 			}
@@ -507,11 +521,12 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @return bool True if this table should be versioned
 	 */
 	protected function isTableVersioned($table) {
-		if(!class_exists($table)) {
+		$tableClass = DataObject::getSchema()->tableClass($table);
+		if(empty($tableClass)) {
 			return false;
 		}
-		$baseClass = ClassInfo::baseDataClass($this->owner);
-		return is_a($table, $baseClass, true);
+		$baseClass = DataObject::getSchema()->baseDataClass($this->owner);
+		return is_a($tableClass, $baseClass, true);
 	}
 
 	/**
@@ -527,44 +542,27 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		// metadata set on the query object. This prevents regular queries from
 		// accidentally querying the *_versions tables.
 		$versionedMode = $dataObject->getSourceQueryParam('Versioned.mode');
-		$dataClass = ClassInfo::baseDataClass($dataQuery->dataClass());
 		$modesToAllowVersioning = array('all_versions', 'latest_versions', 'archive', 'version');
 		if(
 			!empty($dataObject->Version) &&
-			(!empty($versionedMode) && in_array($versionedMode,$modesToAllowVersioning))
+			(!empty($versionedMode) && in_array($versionedMode, $modesToAllowVersioning))
 		) {
 			// This will ensure that augmentSQL will select only the same version as the owner,
 			// regardless of how this object was initially selected
-			$dataQuery->where([
-				"\"$dataClass\".\"Version\"" => $dataObject->Version
-			]);
+			$baseTable = $this->baseTable();
+			$baseTable_Version = DB::get_conn()->escapeIdentifier([$baseTable, 'Version']);
+			$dataQuery->where([$baseTable_Version => $dataObject->Version]);
 			$dataQuery->setQueryParam('Versioned.mode', 'all_versions');
 		}
 	}
 
-
-	/**
-	 * Called by {@link SapphireTest} when the database is reset.
-	 *
-	 * @todo Reduce the coupling between this and SapphireTest, somehow.
-	 */
-	public static function on_db_reset() {
-		// Drop all temporary tables
-		$db = DB::get_conn();
-		foreach(static::$archive_tables as $tableName) {
-			if(method_exists($db, 'dropTable')) $db->dropTable($tableName);
-			else $db->query("DROP TABLE \"$tableName\"");
-		}
-
-		// Remove references to them
-		static::$archive_tables = array();
-	}
-
 	public function augmentDatabase() {
 		$owner = $this->owner;
-		$classTable = $owner->class;
+		$class = get_class($owner);
+		$baseTable = $this->baseTable();
+		$classTable = $owner->getSchema()->tableName($owner);
 
-		$isRootClass = ($owner->class == ClassInfo::baseDataClass($owner->class));
+		$isRootClass = $class === $owner->baseClass();
 
 		// Build a list of suffixes whose tables need versioning
 		$allSuffixes = array();
@@ -572,7 +570,6 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		if(count($versionableExtensions)){
 			foreach ($versionableExtensions as $versionableExtension => $suffixes) {
 				if ($owner->hasExtension($versionableExtension)) {
-					$allSuffixes = array_merge($allSuffixes, (array)$suffixes);
 					foreach ((array)$suffixes as $suffix) {
 						$allSuffixes[$suffix] = $versionableExtension;
 					}
@@ -581,36 +578,41 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		}
 
 		// Add the default table with an empty suffix to the list (table name = class name)
-		array_push($allSuffixes,'');
+		$allSuffixes[''] = null;
 
-		foreach ($allSuffixes as $key => $suffix) {
-			// check that this is a valid suffix
-			if (!is_int($key)) continue;
-
-			if ($suffix) $table = "{$classTable}_$suffix";
-			else $table = $classTable;
+		foreach ($allSuffixes as $suffix => $extension) {
+			// Check tables for this build
+			if ($suffix) {
+				$suffixBaseTable = "{$baseTable}_{$suffix}";
+				$suffixTable = "{$classTable}_{$suffix}";
+			}  else {
+				$suffixBaseTable = $baseTable;
+				$suffixTable = $classTable;
+			}
 
 			$fields = DataObject::database_fields($owner->class);
 			unset($fields['ID']);
 			if($fields) {
 				$options = Config::inst()->get($owner->class, 'create_table_options', Config::FIRST_SET);
 				$indexes = $owner->databaseIndexes();
-				if ($suffix && ($ext = $owner->getExtensionInstance($allSuffixes[$suffix]))) {
-					if (!$ext->isVersionedTable($table)) continue;
-					$ext->setOwner($owner);
-					$fields = $ext->fieldsInExtraTables($suffix);
-					$ext->clearOwner();
-					$indexes = $fields['indexes'];
-					$fields = $fields['db'];
+				$extensionClass = $allSuffixes[$suffix];
+				if ($suffix && ($extension = $owner->getExtensionInstance($extensionClass))) {
+					if (!$extension instanceof VersionableExtension) {
+						throw new LogicException(
+							"Extension {$extensionClass} must implement VersionableExtension"
+						);
+					}
+					// Allow versionable extension to customise table fields and indexes
+					$extension->setOwner($owner);
+					if ($extension->isVersionedTable($suffixTable)) {
+						$extension->updateVersionableFields($suffix, $fields, $indexes);
+					}
+					$extension->clearOwner();
 				}
 
-				// Create tables for other stages
+				// Build live table
 				if($this->hasStages()) {
-					// Extra tables for _Live, etc.
-					// Change unique indexes to 'index'.  Versioned tables may run into unique indexing difficulties
-					// otherwise.
-					$liveTable = $this->stageTable($table, static::LIVE);
-					$indexes = $this->uniqueToIndex($indexes);
+					$liveTable = $this->stageTable($suffixTable, static::LIVE);
 					DB::require_table($liveTable, $fields, $indexes, false, $options);
 				}
 
@@ -647,69 +649,67 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 					);
 				}
 
-				if(DB::get_schema()->hasTable("{$table}_versions")) {
-					// Fix data that lacks the uniqueness constraint (since this was added later and
-					// bugs meant that the constraint was validated)
-					$duplications = DB::query("SELECT MIN(\"ID\") AS \"ID\", \"RecordID\", \"Version\"
-						FROM \"{$table}_versions\" GROUP BY \"RecordID\", \"Version\"
-						HAVING COUNT(*) > 1");
+				// Cleanup any orphans
+				$this->cleanupVersionedOrphans("{$suffixBaseTable}_versions", "{$suffixTable}_versions");
 
-					foreach($duplications as $dup) {
-						DB::alteration_message("Removing {$table}_versions duplicate data for "
-							."{$dup['RecordID']}/{$dup['Version']}" ,"deleted");
-						DB::prepared_query(
-							"DELETE FROM \"{$table}_versions\" WHERE \"RecordID\" = ?
-							AND \"Version\" = ? AND \"ID\" != ?",
-							array($dup['RecordID'], $dup['Version'], $dup['ID'])
-						);
-					}
-
-					// Remove junk which has no data in parent classes. Only needs to run the following
-					// when versioned data is spread over multiple tables
-					if(!$isRootClass && ($versionedTables = ClassInfo::dataClassesFor($table))) {
-
-						foreach($versionedTables as $child) {
-							if($table === $child) break; // only need subclasses
-
-							// Select all orphaned version records
-							$orphanedQuery = SQLSelect::create()
-								->selectField("\"{$table}_versions\".\"ID\"")
-								->setFrom("\"{$table}_versions\"");
-
-							// If we have a parent table limit orphaned records
-							// to only those that exist in this
-							if(DB::get_schema()->hasTable("{$child}_versions")) {
-								$orphanedQuery
-									->addLeftJoin(
-										"{$child}_versions",
-										"\"{$child}_versions\".\"RecordID\" = \"{$table}_versions\".\"RecordID\"
-										AND \"{$child}_versions\".\"Version\" = \"{$table}_versions\".\"Version\""
-									)
-									->addWhere("\"{$child}_versions\".\"ID\" IS NULL");
-							}
-
-							$count = $orphanedQuery->count();
-							if($count > 0) {
-								DB::alteration_message("Removing {$count} orphaned versioned records", "deleted");
-								$ids = $orphanedQuery->execute()->column();
-								foreach($ids as $id) {
-									DB::prepared_query(
-										"DELETE FROM \"{$table}_versions\" WHERE \"ID\" = ?",
-										array($id)
-									);
-								}
-							}
-						}
-					}
-				}
-
-				DB::require_table("{$table}_versions", $versionFields, $versionIndexes, true, $options);
+				// Build versions table
+				DB::require_table("{$suffixTable}_versions", $versionFields, $versionIndexes, true, $options);
 			} else {
-				DB::dont_require_table("{$table}_versions");
+				DB::dont_require_table("{$suffixTable}_versions");
 				if($this->hasStages()) {
-					$liveTable = $this->stageTable($table, static::LIVE);
+					$liveTable = $this->stageTable($suffixTable, static::LIVE);
 					DB::dont_require_table($liveTable);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Cleanup orphaned records in the _versions table
+	 *
+	 * @param string $baseTable base table to use as authoritative source of records
+	 * @param string $childTable Sub-table to clean orphans from
+	 */
+	protected function cleanupVersionedOrphans($baseTable, $childTable) {
+		// Skip if child table doesn't exist
+		if(!DB::get_schema()->hasTable($childTable)) {
+			return;
+		}
+		// Skip if tables are the same
+		if($childTable === $baseTable) {
+			return;
+		}
+
+		// Select all orphaned version records
+		$conn = DB::get_conn();
+		$childQuoted = $conn->escapeIdentifier($childTable);
+		$child_ID = $conn->escapeIdentifier([$childTable, 'ID']);
+		$orphanedQuery = SQLSelect::create()
+			->selectField($child_ID)
+			->setFrom($childQuoted);
+
+		// If we have a parent table limit orphaned records
+		// to only those that exist in this
+		if(DB::get_schema()->hasTable($baseTable)) {
+			$base_ID = $conn->escapeIdentifier([$baseTable, 'ID']);
+			$child_RecordID = $conn->escapeIdentifier([$childTable, 'RecordID']);
+			$child_Version = $conn->escapeIdentifier([$childTable, 'Version']);
+			$base_RecordID = $conn->escapeIdentifier([$baseTable, 'RecordID']);
+			$base_Version = $conn->escapeIdentifier([$baseTable, 'Version']);
+			$orphanedQuery
+				->addLeftJoin(
+					$baseTable,
+					"{$base_RecordID} = {$child_RecordID} AND {$base_Version} = {$child_Version}"
+				)
+				->addWhere("{$base_ID} IS NULL");
+		}
+
+		$count = $orphanedQuery->count();
+		if($count > 0) {
+			DB::alteration_message("Removing {$count} orphaned versioned records", "deleted");
+			$ids = $orphanedQuery->execute()->column();
+			foreach($ids as $id) {
+				DB::prepared_query("DELETE FROM {$childTable} WHERE {$child_ID} = ?", array($id));
 			}
 		}
 	}
@@ -747,23 +747,31 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * Generates a ($table)_version DB manipulation and injects it into the current $manipulation
 	 *
 	 * @param array $manipulation Source manipulation data
-	 * @param string $table Name of table
+	 * @param string $class Class
+	 * @param string $table Table Table for this class
 	 * @param int $recordID ID of record to version
 	 */
-	protected function augmentWriteVersioned(&$manipulation, $table, $recordID) {
-		$baseDataClass = ClassInfo::baseDataClass($table);
+	protected function augmentWriteVersioned(&$manipulation, $class, $table, $recordID) {
+		$baseDataClass = DataObject::getSchema()->baseDataClass($class);
+		$baseDataTable = DataObject::getSchema()->tableName($baseDataClass);
 
 		// Set up a new entry in (table)_versions
 		$newManipulation = array(
 			"command" => "insert",
-			"fields" => isset($manipulation[$table]['fields']) ? $manipulation[$table]['fields'] : null
+			"fields" => isset($manipulation[$table]['fields']) ? $manipulation[$table]['fields'] : null,
+			"class" => $class,
 		);
 
 		// Add any extra, unchanged fields to the version record.
-		$data = DB::prepared_query("SELECT * FROM \"$table\" WHERE \"ID\" = ?", array($recordID))->record();
+		$tableEscaped = DB::get_conn()->escapeIdentifier($table);
+		$table_ID = DB::get_conn()->escapeIdentifier([$table, 'ID']);
+		$data = DB::prepared_query(
+			"SELECT * FROM {$tableEscaped} WHERE {$table_ID} = ?",
+			array($recordID)
+		)->record();
 
 		if ($data) {
-			$fields = DataObject::database_fields($table);
+			$fields = DataObject::database_fields($class);
 
 			if (is_array($fields)) {
 				$data = array_intersect_key($data, $fields);
@@ -783,14 +791,18 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		// Generate next version ID to use
 		$nextVersion = 0;
 		if($recordID) {
-			$nextVersion = DB::prepared_query("SELECT MAX(\"Version\") + 1
-				FROM \"{$baseDataClass}_versions\" WHERE \"RecordID\" = ?",
+			$baseVersionsEscaped = DB::get_conn()->escapeIdentifier("{$baseDataTable}_versions");
+			$baseVersions_Version = DB::get_conn()->escapeIdentifier("{$baseDataTable}_versions", 'Version');
+			$baseVersions_RecordID = DB::get_conn()->escapeIdentifier("{$baseDataTable}_versions", 'RecordID');
+			$nextVersion = DB::prepared_query(
+				"SELECT MAX({$baseVersions_Version}) + 1
+				FROM {$baseVersionsEscaped} WHERE {$baseVersions_RecordID} = ?",
 				array($recordID)
 			)->value();
 		}
 		$nextVersion = $nextVersion ?: 1;
 
-		if($table === $baseDataClass) {
+		if($class === $baseDataClass) {
 			// Write AuthorID for baseclass
 			$userID = (Member::currentUser()) ? Member::currentUser()->ID : 0;
 			$newManipulation['fields']['AuthorID'] = $userID;
@@ -814,8 +826,10 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	protected function augmentWriteStaged(&$manipulation, $table, $recordID) {
 		// If the record has already been inserted in the (table), get rid of it.
 		if($manipulation[$table]['command'] == 'insert') {
+			$tableEscaped = DB::get_conn()->escapeIdentifier($table);
+			$table_ID = DB::get_conn()->escapeIdentifier($table, 'ID');
 			DB::prepared_query(
-				"DELETE FROM \"{$table}\" WHERE \"ID\" = ?",
+				"DELETE FROM {$tableEscaped} WHERE {$table_ID} = ?",
 				array($recordID)
 			);
 		}
@@ -830,13 +844,13 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		// get Version number from base data table on write
 		$version = null;
 		$owner = $this->owner;
-		$baseDataClass = ClassInfo::baseDataClass($owner->class);
-		if(isset($manipulation[$baseDataClass]['fields'])) {
+		$baseDataTable = DataObject::getSchema()->baseDataTable($owner);
+		if(isset($manipulation[$baseDataTable]['fields'])) {
 			if ($this->migratingVersion) {
-				$manipulation[$baseDataClass]['fields']['Version'] = $this->migratingVersion;
+				$manipulation[$baseDataTable]['fields']['Version'] = $this->migratingVersion;
 			}
-			if (isset($manipulation[$baseDataClass]['fields']['Version'])) {
-				$version = $manipulation[$baseDataClass]['fields']['Version'];
+			if (isset($manipulation[$baseDataTable]['fields']['Version'])) {
+				$version = $manipulation[$baseDataTable]['fields']['Version'];
 			}
 		}
 
@@ -845,7 +859,8 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		foreach($tables as $table) {
 
 			// Make sure that the augmented write is being applied to a table that can be versioned
-			if( !$this->canBeVersioned($table) ) {
+			$class = isset($manipulation[$table]['class']) ? $manipulation[$table]['class'] : null;
+			if(!$class || !$this->canBeVersioned($class) ) {
 				unset($manipulation[$table]);
 				continue;
 			}
@@ -864,7 +879,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			} elseif(empty($version)) {
 				// If we haven't got a version #, then we're creating a new version.
 				// Otherwise, we're just copying a version to another table
-				$this->augmentWriteVersioned($manipulation, $table, $id);
+				$this->augmentWriteVersioned($manipulation, $class, $table, $id);
 			}
 
 			// Remove "Version" column from subclasses of baseDataClass
@@ -879,7 +894,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 
 			// If we're editing Live, then use (table)_Live instead of (table)
 			if($this->hasStages() && static::get_stage() === static::LIVE) {
-				$this->augmentWriteStaged($manipulation, $table, $id);
+				$this->augmentWriteStaged($manipulation, $class, $id);
 			}
 		}
 
@@ -1008,9 +1023,9 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	protected function lookupReverseOwners() {
 		// Find all classes with 'owns' config
 		$lookup = array();
-		foreach(ClassInfo::subclassesFor(DataObject::class) as $class) {
+		foreach(ClassInfo::subclassesFor('DataObject') as $class) {
 			// Ensure this class is versioned
-			if(!Object::has_extension($class, Versioned::class)) {
+			if(!Object::has_extension($class, 'Versioned')) {
 				continue;
 			}
 
@@ -1372,16 +1387,16 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	}
 
 	/**
-	 * Determine if a table is supporting the Versioned extensions (e.g.
+	 * Determine if a class is supporting the Versioned extensions (e.g.
 	 * $table_versions does exists).
 	 *
-	 * @param string $table Table name
+	 * @param string $class Class name
 	 * @return boolean
 	 */
-	public function canBeVersioned($table) {
-		return ClassInfo::exists($table)
-			&& is_subclass_of($table, 'DataObject')
-			&& DataObject::has_own_table($table);
+	public function canBeVersioned($class) {
+		return ClassInfo::exists($class)
+			&& is_subclass_of($class, 'DataObject')
+			&& DataObject::has_own_table($class);
 	}
 
 	/**
@@ -1392,14 +1407,9 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @return boolean Returns false if the field isn't in the table, true otherwise
 	 */
 	public function hasVersionField($table) {
-		// Strip "_Live" from end of table
-		$live = static::LIVE;
-		if($this->hasStages() && preg_match("/^(?<table>.*)_{$live}$/", $table, $matches)) {
-			$table = $matches['table'];
-		}
-
 		// Base table has version field
-		return $table === ClassInfo::baseDataClass($table);
+		$class = DataObject::getSchema()->tableClass($table);
+		return $class === DataObject::getSchema()->baseDataClass($class);
 	}
 
 	/**
@@ -1416,10 +1426,10 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 				if ($owner->hasExtension($versionableExtension)) {
 					$ext = $owner->getExtensionInstance($versionableExtension);
 					$ext->setOwner($owner);
-				$table = $ext->extendWithSuffix($table);
-				$ext->clearOwner();
+					$table = $ext->extendWithSuffix($table);
+					$ext->clearOwner();
+				}
 			}
-		}
 		}
 
 		return $table;
@@ -1432,14 +1442,21 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 */
 	public function latestPublished() {
 		// Get the root data object class - this will have the version field
-		$owner = $this->owner;
-		$table1 = ClassInfo::baseDataClass($owner);
-		$table2 = $this->stageTable($table1, static::LIVE);
+		$ownerID = $this->owner->ID;
+		$draftTable = $this->baseTable();
+		$liveTable = $this->stageTable($draftTable, static::LIVE);
+		$draftTableEscaped = DB::get_conn()->escapeIdentifier($draftTable);
+		$draftTable_Version = DB::get_conn()->escapeIdentifier([$draftTable, 'Version']);
+		$draftTable_ID = DB::get_conn()->escapeIdentifier([$draftTable, 'ID']);
+		$liveTableEscaped = DB::get_conn()->escapeIdentifier($liveTable);
+		$liveTable_Version = DB::get_conn()->escapeIdentifier([$liveTable, 'Version']);
+		$liveTable_ID = DB::get_conn()->escapeIdentifier([$liveTable, 'ID']);
 
-		return DB::prepared_query("SELECT \"$table1\".\"Version\" = \"$table2\".\"Version\" FROM \"$table1\"
-			 INNER JOIN \"$table2\" ON \"$table1\".\"ID\" = \"$table2\".\"ID\"
-			 WHERE \"$table1\".\"ID\" = ?",
-			array($owner->ID)
+		return DB::prepared_query("SELECT {$draftTable_Version} = {$liveTable_Version}
+			FROM {$draftTableEscaped}
+			INNER JOIN {$liveTableEscaped} ON {$draftTable_ID} = {$liveTable_ID}
+		 	WHERE {$draftTable_ID} = ?",
+			array($ownerID)
 		)->value();
 	}
 
@@ -1516,44 +1533,48 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			return;
 		}
 
+		$conn = DB::get_conn();
 		$ownedHasMany = array_intersect($owns, array_keys($hasMany));
 		foreach($ownedHasMany as $relationship) {
 			// Find metadata on relationship
 			$joinClass = $owner->hasManyComponent($relationship);
 			$joinField = $owner->getRemoteJoinField($relationship, 'has_many', $polymorphic);
 			$idField = $polymorphic ? "{$joinField}ID" : $joinField;
-			$joinTable = ClassInfo::table_for_object_field($joinClass, $idField);
+			$joinTable = DataObject::getSchema()->tableForField($joinClass, $idField);
 
 			// Generate update query which will unlink disowned objects
 			$targetTable = $this->stageTable($joinTable, $targetStage);
-			$disowned = new SQLUpdate("\"{$targetTable}\"");
-			$disowned->assign("\"{$idField}\"", 0);
+			$disowned = new SQLUpdate();
+			$disowned->setTable($conn->escapeIdentifier($targetTable));
+			$disowned->assign($conn->escapeIdentifier($idField), 0);
 			$disowned->addWhere(array(
-				"\"{$targetTable}\".\"{$idField}\"" => $owner->ID
+				$conn->escapeIdentifier([$targetTable, $idField]) => $owner->ID
 			));
 
 			// Build exclusion list (items to owned objects we need to keep)
 			$sourceTable = $this->stageTable($joinTable, $sourceStage);
-			$owned = new SQLSelect("\"{$sourceTable}\".\"ID\"", "\"{$sourceTable}\"");
+			$owned = new SQLSelect();
+			$owned->setSelect($conn->escapeIdentifier([$sourceTable, 'ID']));
+			$owned->setFrom($conn->escapeIdentifier($sourceTable));
 			$owned->addWhere(array(
-				"\"{$sourceTable}\".\"{$idField}\"" => $owner->ID
+				$conn->escapeIdentifier([$sourceTable, $idField]) => $owner->ID
 			));
 
 			// Apply class condition if querying on polymorphic has_one
 			if($polymorphic) {
-				$disowned->assign("\"{$joinField}Class\"", null);
+				$disowned->assign($conn->escapeIdentifier("{$joinField}Class"), null);
 				$disowned->addWhere(array(
-					"\"{$targetTable}\".\"{$joinField}Class\"" => get_class($owner)
+					$conn->escapeIdentifier([$targetTable, "{$joinField}Class"]) => get_class($owner)
 				));
 				$owned->addWhere(array(
-					"\"{$sourceTable}\".\"{$joinField}Class\"" => get_class($owner)
+					$conn->escapeIdentifier([$sourceTable, "{$joinField}Class"]) => get_class($owner)
 				));
 			}
 
 			// Merge queries and perform unlink
 			$ownedSQL = $owned->sql($ownedParams);
 			$disowned->addWhere(array(
-				"\"{$targetTable}\".\"ID\" NOT IN ({$ownedSQL})" => $ownedParams
+				$conn->escapeIdentifier([$targetTable, 'ID']) . " NOT IN ({$ownedSQL})" => $ownedParams
 			));
 
 			$owner->extend('updateDisownershipQuery', $disowned, $sourceStage, $targetStage, $relationship);
@@ -1688,7 +1709,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		$owner = $this->owner;
 		$owner->invokeWithExtensions('onBeforeVersionedPublish', $fromStage, $toStage, $createNewVersion);
 
-		$baseClass = ClassInfo::baseDataClass($owner->class);
+		$baseClass = $owner->baseClass();
 
 		/** @var Versioned|DataObject $from */
 		if(is_numeric($fromStage)) {
@@ -1875,28 +1896,30 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	/**
 	 * Return the base table - the class that directly extends DataObject.
 	 *
+	 * Protected so it doesn't conflict with DataObject::baseTable()
+	 *
 	 * @param string $stage
 	 * @return string
 	 */
-	public function baseTable($stage = null) {
-		$baseClass = ClassInfo::baseDataClass($this->owner);
-		return $this->stageTable($baseClass, $stage);
+	protected function baseTable($stage = null) {
+		$baseTable = $this->owner->baseTable();
+		return $this->stageTable($baseTable, $stage);
 	}
 
 	/**
-	 * Given a class and stage determine the table name.
+	 * Given a table and stage determine the table name.
 	 *
 	 * Note: Stages this asset does not exist in will default to the draft table.
 	 *
-	 * @param string $class
+	 * @param string $table Main table
 	 * @param string $stage
-	 * @return string Table name
+	 * @return string Staged table name
 	 */
-	public function stageTable($class, $stage) {
+	public function stageTable($table, $stage) {
 		if($this->hasStages() && $stage === static::LIVE) {
-			return "{$class}_{$stage}";
+			return "{$table}_{$stage}";
 		}
-		return $class;
+		return $table;
 	}
 
 	//-----------------------------------------------------------------------------------------------//
@@ -2173,7 +2196,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		Versioned::set_reading_mode($oldMode);
 
 		// Fix the version number cache (in case you go delete from stage and then check ExistsOnLive)
-		$baseClass = ClassInfo::baseDataClass($owner->class);
+		$baseClass = $owner->baseClass();
 		self::$cache_versionnumber[$baseClass][$stage][$owner->ID] = null;
 	}
 
@@ -2214,7 +2237,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 
 	public function onAfterRollback($version) {
 		// Find record at this version
-		$baseClass = ClassInfo::baseDataClass($this->owner);
+		$baseClass = DataObject::getSchema()->baseDataClass($this->owner);
 		/** @var Versioned|DataObject $recordVersion */
 		$recordVersion = static::get_version($baseClass, $this->owner->ID, $version);
 
@@ -2234,7 +2257,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @return DataObject
 	 */
 	public static function get_latest_version($class, $id) {
-		$baseClass = ClassInfo::baseDataClass($class);
+		$baseClass = DataObject::getSchema()->baseDataClass($class);
 		$list = DataList::create($baseClass)
 			->setDataQueryParam("Versioned.mode", "latest_versions");
 
@@ -2277,10 +2300,11 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			return true;
 		}
 
-		$baseClass = ClassInfo::baseDataClass($owner->class);
-		$table = $this->stageTable($baseClass, static::LIVE);
+		$table = $this->baseTable(static::LIVE);
+		$tableEscaped = DB::get_conn()->escapeIdentifier($table);
+		$table_ID = DB::get_conn()->escapeIdentifier([$table, 'ID']);
 		$result = DB::prepared_query(
-			"SELECT COUNT(*) FROM \"{$table}\" WHERE \"{$table}\".\"ID\" = ?",
+			"SELECT COUNT(*) FROM {$tableEscaped} WHERE {$table_ID} = ?",
 			array($owner->ID)
 		);
 		return (bool)$result->value();
@@ -2297,9 +2321,11 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			return false;
 		}
 
-		$table = ClassInfo::baseDataClass($owner->class);
+		$table = $this->baseTable();
+		$tableEscaped = DB::get_conn()->escapeIdentifier($table);
+		$table_ID = DB::get_conn()->escapeIdentifier([$table, 'ID']);
 		$result = DB::prepared_query(
-			"SELECT COUNT(*) FROM \"{$table}\" WHERE \"{$table}\".\"ID\" = ?",
+			"SELECT COUNT(*) FROM {$tableEscaped} WHERE {$table_ID} = ?",
 			array($owner->ID)
 		);
 		return (bool)$result->value();
@@ -2341,7 +2367,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @return DataObject
 	 */
 	public static function get_version($class, $id, $version) {
-		$baseClass = ClassInfo::baseDataClass($class);
+		$baseClass = DataObject::getSchema()->baseDataClass($class);
 		$list = DataList::create($baseClass)
 			->setDataQueryParam([
 				"Versioned.mode" => 'version',

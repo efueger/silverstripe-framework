@@ -175,12 +175,12 @@ abstract class SearchFilter extends Object {
 		// Find table this field belongs to
 		$table = DataObject::getSchema()->tableForField($this->model, $this->name);
 		if($table) {
-			return DB::get_conn()->escapeQualifiedColumn($table, $this->name);
+			return Convert::symbol2sql([$table, $this->name]);
 		}
 
 		// fallback to the provided name in the event of a joined column
 		// name (as the candidate class doesn't check joined records)
-		return DB::get_conn()->escapeIdentifier($this->fullName);
+		return Convert::symbol2sql($this->fullName);
 	}
 
 	/**

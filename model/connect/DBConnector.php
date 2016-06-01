@@ -179,33 +179,18 @@ abstract class DBConnector {
 	 * is simply double quoted. Don't pass in already escaped identifiers in,
 	 * as this will double escape the value!
 	 *
-	 * @param string $value The identifier to escape
-	 * @param string $separator optional identifier splitter
+	 * @param string|array $value The identifier to escape or list of split components
+	 * @param string $separator Splitter for each component
 	 * @return string
 	 */
 	public function escapeIdentifier($value, $separator = '.') {
-		// ANSI standard id escape is to surround with double quotes
-		if(empty($separator)) {
-			return '"'.trim($value).'"';
+		// Split string into components
+		if(!is_array($value)) {
+			$value = explode($separator, $value);
 		}
 
-		// Split, escape, and glue back multiple identifiers
-		$segments = array();
-		foreach(explode($separator, $value) as $item) {
-			$segments[] = $this->escapeIdentifier($item, null);
-		}
-		return implode($separator, $segments);
-	}
-
-	/**
-	 * Escapes a table and column selector.
-	 *
-	 * @param string $table Table name (unquoted)
-	 * @param string $column Column name (unquoted)
-	 * @return string
-	 */
-	public function escapeQualifiedColumn($table, $column) {
-		return "\"{$table}\".\"{$column}\"";
+		// Implode quoted column
+		return '"' . implode('"'.$separator.'"', $value) . '"';
 	}
 
 	/**

@@ -76,7 +76,7 @@ class DataObjectSchema {
 	public function quotedColumn($class, $column) {
 		$table = $this->tableForField($class, $column);
 		if($table) {
-			return DB::get_conn()->escapeQualifiedColumn($table, $column);
+			return Convert::symbol2sql([$table, $column]);
 		}
 		return null;
 	}
@@ -91,7 +91,7 @@ class DataObjectSchema {
 	public function quotedID($class) {
 		$table = $this->tableName($class);
 		if($table) {
-			return DB::get_conn()->escapeQualifiedColumn($table, 'ID');
+			return Convert::symbol2sql([$table, 'ID']);
 		}
 		return null;
 	}

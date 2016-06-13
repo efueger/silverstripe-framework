@@ -745,6 +745,10 @@ fieldset.switch-states{
   padding: 0;
 }
 
+.ss-uploadfield .form__field-holder .ss-uploadfield-item {
+  padding: 0;
+}
+
 // Fix for multiple divider lines on the page/settings tab
 .parentTypeSelector .field.optionset {
   border-bottom: 0;

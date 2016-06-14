@@ -114,16 +114,7 @@ class DatetimeField extends FormField {
 	 */
 	public function Field($properties = array()) {
 		Requirements::css(FRAMEWORK_DIR . '/client/dist/styles/DatetimeField.css');
-<<<<<<< 0bdfda003e71ca320aa78867999f2ab2e0b4b5cb
 		return parent::Field($properties);
-=======
-
-		$tzField = ($this->getConfig('usertimezone')) ? $this->timezoneField->FieldHolder() : '';
-		return DBField::create_field('HTMLText', $this->dateField->FieldHolder() .
-			$this->timeField->FieldHolder() .
-			$tzField
-		);
->>>>>>> General forms conversion to bootstrap remainder of base forms
 	}
 
 	/**

@@ -1,6 +1,12 @@
 <?php
 
+namespace SilverStripe\Model;
+
+
 use SilverStripe\Model\Relation;
+use DataList;
+use Exception;
+
 
 /**
  * A DataList that represents a relation.

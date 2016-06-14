@@ -1,4 +1,18 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use DataExtension;
+use ValidationResult;
+use Config;
+use ArrayList;
+use Exception;
+use Versioned;
+use Controller;
+use LeftAndMain;
+use ClassInfo;
+use DataObject;
+
 /**
  * DataObjects that use the Hierarchy extension can be be organised as a hierarchy, with children and parents. The most
  * obvious example of this is SiteTree.

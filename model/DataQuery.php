@@ -1,5 +1,18 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use SQLConditionGroup;
+use InvalidArgumentException;
+use DataObject;
+use SQLSelect;
+use Injector;
+use ClassInfo;
+use Convert;
+use DB;
+use Object;
+
+
 /**
  * An object representing a query of data from the DataObject's supporting database.
  * Acts as a wrapper over {@link SQLSelect} and performs all of the query generation.

@@ -1,4 +1,19 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use Controller;
+use SapphireTest;
+use Director;
+use Security;
+use Permission;
+use SS_ClassLoader;
+use ClassInfo;
+use DB;
+use TestOnly;
+use Deprecation;
+use DataObject;
+
 // Include the DB class
 require_once("model/DB.php");
 

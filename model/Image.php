@@ -1,5 +1,14 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use File;
+use ShortcodeHandler;
+use ReadonlyField;
+use Convert;
+use ShortcodeParser;
+
+
 /**
  * Represents an Image
  *

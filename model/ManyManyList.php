@@ -1,6 +1,18 @@
 <?php
 
+namespace SilverStripe\Model;
+
+
 use SilverStripe\Model\FieldType\DBComposite;
+use RelationList;
+use DataObject;
+use Object;
+use DB;
+use InvalidArgumentException;
+use Exception;
+use SQLSelect;
+use SQLDelete;
+
 
 /**
  * Subclass of {@link DataList} representing a many_many relation.

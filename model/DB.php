@@ -1,4 +1,17 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use SS_Database;
+use Deprecation;
+use SQLExpression;
+use Director;
+use InvalidArgumentException;
+use Config;
+use LogicException;
+use Cookie;
+use Injector;
+
 /**
  * Global database interface, complete with static methods.
  * Use this class for interacting with the database.

@@ -1,5 +1,13 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use ViewableData;
+use DOMXPath;
+use Convert;
+use DOMDocument;
+
+
 /**
  * This class handles the converting of HTML fragments between a string and a DOMDocument based
  * representation.

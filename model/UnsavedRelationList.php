@@ -1,6 +1,15 @@
 <?php
 
+namespace SilverStripe\Model;
+
+
 use SilverStripe\Model\Relation;
+use ArrayList;
+use RelationList;
+use InvalidArgumentException;
+use ArrayIterator;
+use DataObject;
+
 
 /**
  * An {@link ArrayList} that represents an unsaved relation.

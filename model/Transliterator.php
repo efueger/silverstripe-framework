@@ -1,5 +1,10 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use Object;
+
+
 /**
  * Support class for converting unicode strings into a suitable 7-bit ASCII equivalent.
  *

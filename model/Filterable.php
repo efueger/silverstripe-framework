@@ -1,5 +1,10 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use SS_List;
+
+
 /**
  * Additional interface for {@link SS_List} classes that are filterable.
  *

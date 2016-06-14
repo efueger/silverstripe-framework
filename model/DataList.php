@@ -1,4 +1,24 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use ViewableData;
+use SS_List;
+use SS_Filterable;
+use SS_Sortable;
+use SS_Limitable;
+use DataQuery;
+use DataModel;
+use Exception;
+use InvalidArgumentException;
+use Injector;
+use LogicException;
+use ArrayList;
+use DataObject;
+use Debug;
+use SS_Map;
+use ArrayIterator;
+
 /**
  * Implements a "lazy loading" DataObjectSet.
  * Uses {@link DataQuery} to do the actual query generation.

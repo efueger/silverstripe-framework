@@ -1,5 +1,14 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
+use SS_List;
+use Iterator;
+
+
 /**
  * Creates a map from an SS_List by defining a key column and a value column.
  *

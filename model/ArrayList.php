@@ -1,4 +1,19 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use ViewableData;
+use SS_List;
+use SS_Filterable;
+use SS_Sortable;
+use SS_Limitable;
+use ArrayData;
+use ArrayIterator;
+use Debug;
+use SS_Map;
+use InvalidArgumentException;
+use LogicException;
+
 /**
  * A list object that wraps around an array of objects or arrays.
  *

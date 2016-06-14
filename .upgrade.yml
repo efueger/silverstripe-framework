@@ -1,4 +1,39 @@
 fileExtensions:
   - php
-namespaceCorrections: []
-mappings: []
+namespaceCorrections: {  }
+mappings:
+  ArrayList: SilverStripe\Model\ArrayList
+  DatabaseAdmin: SilverStripe\Model\DatabaseAdmin
+  DataDifferencer: SilverStripe\Model\DataDifferencer
+  DataExtension: SilverStripe\Model\DataExtension
+  DataList: SilverStripe\Model\DataList
+  DataModel: SilverStripe\Model\DataModel
+  DataObject: SilverStripe\Model\DataObject
+  DataObjectInterface: SilverStripe\Model\DataObjectInterface
+  DataObjectSchema: SilverStripe\Model\DataObjectSchema
+  DataQuery: SilverStripe\Model\DataQuery
+  DataQuery_SubGroup: SilverStripe\Model\DataQuery_SubGroup
+  DB: SilverStripe\Model\DB
+  SS_Filterable: SilverStripe\Model\SS_Filterable
+  GroupedList: SilverStripe\Model\GroupedList
+  HasManyList: SilverStripe\Model\HasManyList
+  HiddenClass: SilverStripe\Model\HiddenClass
+  Hierarchy: SilverStripe\Model\Hierarchy
+  SS_HTMLValue: SilverStripe\Model\SS_HTMLValue
+  SS_HTML4Value: SilverStripe\Model\SS_HTML4Value
+  Image: SilverStripe\Model\Image
+  Image_Backend: SilverStripe\Model\Image_Backend
+  SS_Limitable: SilverStripe\Model\SS_Limitable
+  SS_List: SilverStripe\Model\SS_List
+  SS_ListDecorator: SilverStripe\Model\SS_ListDecorator
+  ManyManyList: SilverStripe\Model\ManyManyList
+  SS_Map: SilverStripe\Model\SS_Map
+  SS_Map_Iterator: SilverStripe\Model\SS_Map_Iterator
+  PolymorphicHasManyList: SilverStripe\Model\PolymorphicHasManyList
+  RelationList: SilverStripe\Model\RelationList
+  SS_Sortable: SilverStripe\Model\SS_Sortable
+  SS_Transliterator: SilverStripe\Model\SS_Transliterator
+  UnsavedRelationList: SilverStripe\Model\UnsavedRelationList
+  URLSegmentFilter: SilverStripe\Model\URLSegmentFilter
+  ValidationException: SilverStripe\Model\ValidationException
+  ValidationResult: SilverStripe\Model\ValidationResult

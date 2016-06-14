@@ -1,4 +1,15 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use ViewableData;
+use SS_List;
+use SS_Sortable;
+use SS_Filterable;
+use SS_Limitable;
+use LogicException;
+use ArrayList;
+
 /**
  * A base class for decorators that wrap around a list to provide additional
  * functionality. It passes through list methods to the underlying list

@@ -1,5 +1,10 @@
 <?php
 
+namespace SilverStripe\Model;
+
+use DataList;
+
+
 /**
  * Representation of a DataModel - a collection of DataLists for each different
  * data type.

@@ -1,8 +1,18 @@
 <?php
 
+namespace SilverStripe\Model;
+
+
 use SilverStripe\Framework\Core\Configurable;
 use SilverStripe\Framework\Core\Injectable;
 use SilverStripe\Model\FieldType\DBComposite;
+use InvalidArgumentException;
+use ClassInfo;
+use LogicException;
+use Config;
+use DataObject;
+use Object;
+
 
 /**
  * Provides dataobject and database schema mapping functionality

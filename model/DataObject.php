@@ -1,9 +1,50 @@
 <?php
 
+namespace SilverStripe\Model;
+
+
 use SilverStripe\Model\FieldType\DBField;
 use SilverStripe\Model\FieldType\DBDatetime;
 use SilverStripe\Model\FieldType\DBComposite;
 use SilverStripe\Model\FieldType\DBClassName;
+use ViewableData;
+use DataObjectInterface;
+use i18nEntityProvider;
+use Injector;
+use HTTP;
+use DataModel;
+use RelationList;
+use ClassInfo;
+use i18n;
+use ValidationResult;
+use Deprecation;
+use Config;
+use ValidationException;
+use SQLInsert;
+use DB;
+use Debug;
+use LogicException;
+use DataList;
+use SQLDelete;
+use InvalidArgumentException;
+use UnsavedRelationList;
+use PolymorphicHasManyList;
+use HasManyList;
+use BadMethodCallException;
+use ManyManyList;
+use Exception;
+use SearchContext;
+use FieldList;
+use FormField;
+use FormScaffolder;
+use DataQuery;
+use Member;
+use Permission;
+use SQLSelect;
+use Object;
+use SS_List;
+use SearchFilter;
+
 
 /**
  * A single database record & abstract class for the data-access-model.

@@ -1,4 +1,10 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use Object;
+use SS_Transliterator;
+
 /**
  * @package framework
  * @subpackage model

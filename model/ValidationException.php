@@ -1,4 +1,10 @@
 <?php
+
+namespace SilverStripe\Model;
+
+use Exception;
+use ValidationResult;
+
 /**
  * Exception thrown by {@link DataObject}::write if validation fails. By throwing an
  * exception rather than a user error, the exception can be caught in unit tests and as such

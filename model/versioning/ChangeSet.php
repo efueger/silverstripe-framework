@@ -14,6 +14,10 @@
  * @package framework
  * @subpackage model
  */
+
+use SilverStripe\Model\ValidationException;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
 class ChangeSet extends DataObject {
 
 	private static $singular_name = 'Campaign';

@@ -3,6 +3,8 @@
 /**
  * Tests ownership API of versioned DataObjects
  */
+
+use SilverStripe\Model\DataObject;
 class VersionedOwnershipTest extends SapphireTest {
 
 	protected $extraDataObjects = array(
@@ -750,11 +752,11 @@ class VersionedOwnershipTest_Banner extends DataObject implements TestOnly {
 	);
 
 	private static $has_one = array(
-		'Image' => 'VersionedOwnershipTest_Image',
+		'SilverStripe\Model\Image' => 'VersionedOwnershipTest_Image',
 	);
 
 	private static $owns = array(
-		'Image',
+		'SilverStripe\Model\Image',
 	);
 }
 

@@ -4,6 +4,9 @@
  * @subpackage testing
  */
 
+
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
 class MySQLDatabaseTest extends SapphireTest {
 
 	protected static $fixture_file = 'MySQLDatabaseTest.yml';

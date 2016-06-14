@@ -7,6 +7,9 @@
  * @subpackage tests
  *
  */
+
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DataExtension;
 class FormScaffolderTest extends SapphireTest {
 
 	protected static $fixture_file = 'FormScaffolderTest.yml';
@@ -120,7 +123,7 @@ class FormScaffolderTest_Article extends DataObject implements TestOnly {
 	);
 	private static $has_one = array(
 		'Author' => 'FormScaffolderTest_Author',
-		'Subject' => 'DataObject'
+		'Subject' => 'SilverStripe\Model\DataObject'
 	);
 	private static $many_many = array(
 		'Tags' => 'FormScaffolderTest_Tag',
@@ -132,7 +135,7 @@ class FormScaffolderTest_Article extends DataObject implements TestOnly {
 
 class FormScaffolderTest_Author extends Member implements TestOnly {
 	private static $has_one = array(
-		'ProfileImage' => 'Image'
+		'ProfileImage' => 'SilverStripe\Model\Image'
 	);
 	private static $has_many = array(
 		'Articles' => 'FormScaffolderTest_Article.Author',

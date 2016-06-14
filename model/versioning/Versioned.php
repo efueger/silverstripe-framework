@@ -13,6 +13,15 @@
  * @package framework
  * @subpackage model
  */
+
+use SilverStripe\Model\DataQuery;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\ArrayList;
+use SilverStripe\Model\DataDifferencer;
+use SilverStripe\Model\DataList;
+use SilverStripe\Model\DataExtension;
+use SilverStripe\Model\SS_List;
 class Versioned extends DataExtension implements TemplateGlobalProvider {
 
 	/**
@@ -1000,7 +1009,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	protected function lookupReverseOwners() {
 		// Find all classes with 'owns' config
 		$lookup = array();
-		foreach(ClassInfo::subclassesFor('DataObject') as $class) {
+		foreach(ClassInfo::subclassesFor('SilverStripe\Model\DataObject') as $class) {
 			// Ensure this class is versioned
 			if(!Object::has_extension($class, 'Versioned')) {
 				continue;
@@ -1021,7 +1030,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 				if(!$ownedClass) {
 					continue;
 				}
-				if($ownedClass === 'DataObject') {
+				if($ownedClass === 'SilverStripe\Model\DataObject') {
 					throw new LogicException(sprintf(
 						"Relation %s on class %s cannot be owned as it is polymorphic",
 						$owned, $class
@@ -1372,7 +1381,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 */
 	public function canBeVersioned($class) {
 		return ClassInfo::exists($class)
-			&& is_subclass_of($class, 'DataObject')
+			&& is_subclass_of($class, 'SilverStripe\Model\DataObject')
 			&& DataObject::has_own_table($class);
 	}
 
@@ -2149,7 +2158,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @return DataList A modified DataList designated to the specified stage
 	 */
 	public static function get_by_stage(
-		$class, $stage, $filter = '', $sort = '', $join = '', $limit = null, $containerClass = 'DataList'
+		$class, $stage, $filter = '', $sort = '', $join = '', $limit = null, $containerClass = 'SilverStripe\Model\DataList'
 	) {
 		$result = DataObject::get($class, $filter, $sort, $join, $limit, $containerClass);
 		return $result->setDataQueryParam(array(

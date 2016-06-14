@@ -23,6 +23,9 @@
 * @package framework
 * @subpackage search
 */
+
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DataList;
 class SearchContext extends Object {
 
 	/**

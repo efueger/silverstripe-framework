@@ -1,5 +1,10 @@
 <?php
 use SilverStripe\Framework\Core\Extensible;
+use SilverStripe\Model\DataModel;
+use SilverStripe\Model\HasManyList;
+use SilverStripe\Model\ManyManyList;
+use SilverStripe\Model\ValidationException;
+
 
 /**
  * Provides view and edit forms at GridField-specific URLs.

@@ -4,11 +4,14 @@ namespace SilverStripe\Model;
 
 use Extension;
 use Exception;
-use ValidationResult;
+
 use SQLSelect;
-use DataQuery;
+
 use FieldList;
 use Config;
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\DataQuery;
+
 
 /**
  * An extension that adds additional functionality to a {@link DataObject}.

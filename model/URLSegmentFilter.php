@@ -3,7 +3,9 @@
 namespace SilverStripe\Model;
 
 use Object;
-use SS_Transliterator;
+
+use SilverStripe\Model\SS_Transliterator;
+
 
 /**
  * @package framework

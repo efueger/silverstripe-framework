@@ -3,6 +3,8 @@
 /**
  * Tests schema inspection of DataObjects
  */
+
+use SilverStripe\Model\DataObject;
 class DataObjectSchemaTest extends SapphireTest
 {
 	protected static $fixture_file = 'DataObjectSchemaTest.yml';
@@ -304,7 +306,7 @@ class DataObjectSchemaTest extends SapphireTest
 		$this->assertEquals('DataObjectSchemaTest_BaseClass', $schema->baseDataClass('DataObjectSchemaTest_GRANDChildClass'));
 
 		$this->setExpectedException('InvalidArgumentException');
-		$schema->baseDataClass('DataObject');
+		$schema->baseDataClass('SilverStripe\Model\DataObject');
 	}
 }
 

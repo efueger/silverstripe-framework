@@ -8,6 +8,9 @@
  * @package framework
  * @subpackage search
  */
+
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DataQuery;
 abstract class SearchFilter extends Object {
 
 	/**
@@ -166,7 +169,7 @@ abstract class SearchFilter extends Object {
 		}
 
 		// Ensure that we're dealing with a DataObject.
-		if (!is_subclass_of($this->model, 'DataObject')) {
+		if (!is_subclass_of($this->model, 'SilverStripe\Model\DataObject')) {
 			throw new InvalidArgumentException(
 				"Model supplied to " . get_class($this) . " should be an instance of DataObject."
 			);

@@ -3,7 +3,9 @@
 namespace SilverStripe\Model;
 
 use Exception;
-use ValidationResult;
+
+use SilverStripe\Model\ValidationResult;
+
 
 /**
  * Exception thrown by {@link DataObject}::write if validation fails. By throwing an

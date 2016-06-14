@@ -2,9 +2,12 @@
 
 namespace SilverStripe\Model;
 
-use SS_ListDecorator;
-use ArrayList;
+
+
 use ArrayData;
+use SilverStripe\Model\ArrayList;
+use SilverStripe\Model\SS_ListDecorator;
+
 
 /**
  * A list decorator that allows a list to be grouped into sub-lists by common

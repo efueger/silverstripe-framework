@@ -4,6 +4,8 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\DataObject;
 class AssetFieldTest extends FunctionalTest {
 
 	protected static $fixture_file = 'AssetFieldTest.yml';
@@ -125,7 +127,7 @@ class AssetFieldTest extends FunctionalTest {
 		$this->assertFalse(array_key_exists('error', $response[0]));
 
 		// Test that allowed files cannot be uploaded to restricted field
-		$response = $this->mockFileUpload('Image', 'valid.txt');
+		$response = $this->mockFileUpload('SilverStripe\Model\Image', 'valid.txt');
 		$response = json_decode($response->getBody(), true);
 		$this->assertTrue(array_key_exists('error', $response[0]));
 		$this->assertContains('Extension is not allowed', $response[0]['error']);
@@ -234,7 +236,7 @@ class AssetFieldTest extends FunctionalTest {
 		), $field->Value());
 
 		// Empty field
-		$field = AssetField::create('Image');
+		$field = AssetField::create('SilverStripe\Model\Image');
 		$this->assertEmpty($field->Value());
 		$field->setValue(null, $record);
 		$this->assertEmpty($field->Value());
@@ -348,7 +350,7 @@ class AssetFieldTest_Object extends DataObject implements TestOnly {
 	private static $db = array(
 		"Title" => "Text",
 		"File" => "DBFile",
-		"Image" => "DBFile('image/supported')"
+		'SilverStripe\Model\Image' => "DBFile('image/supported')"
 	);
 }
 
@@ -371,7 +373,7 @@ class AssetFieldTest_Form extends Form implements TestOnly {
 		$fields = new FieldList(
 			AssetField::create('File')
 				->setFolderName('MyFiles'),
-			AssetField::create('Image')
+			AssetField::create('SilverStripe\Model\Image')
 				->setAllowedFileCategories('image/supported')
 				->setFolderName('MyImages'),
 			AssetField::create('NoRelationField')

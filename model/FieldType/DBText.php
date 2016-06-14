@@ -2,13 +2,15 @@
 
 namespace SilverStripe\Model\FieldType;
 
-use DB;
+
 use HTTP;
 use Convert;
 use NullableField;
 use TextareaField;
 use TextField;
 use Config;
+use SilverStripe\Model\DB;
+
 
 /**
  * Represents a variable-length string of up to 2 megabytes, designed to store raw text

@@ -3,6 +3,8 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\SS_HTML4Value;
 class SS_HTML4ValueTest extends SapphireTest {
 	public function testInvalidHTMLSaving() {
 		$value = new SS_HTML4Value();

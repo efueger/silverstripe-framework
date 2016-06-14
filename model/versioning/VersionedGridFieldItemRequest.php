@@ -5,6 +5,8 @@
  *
  * @property GridFieldDetailForm_ItemRequest $owner
  */
+
+use SilverStripe\Model\ValidationException;
 class VersionedGridFieldItemRequest extends GridFieldDetailForm_ItemRequest {
 
     protected function getFormActions() {

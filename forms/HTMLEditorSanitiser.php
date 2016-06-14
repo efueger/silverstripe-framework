@@ -10,6 +10,8 @@
  * @package forms
  * @subpackage fields-formattedinput
  */
+
+use SilverStripe\Model\SS_HTMLValue;
 class HTMLEditorSanitiser {
 
 	/** @var [stdClass] - $element => $rule hash for whitelist element rules where the element name isn't a pattern */

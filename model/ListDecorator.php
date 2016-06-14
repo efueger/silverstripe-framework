@@ -3,12 +3,18 @@
 namespace SilverStripe\Model;
 
 use ViewableData;
-use SS_List;
-use SS_Sortable;
-use SS_Filterable;
-use SS_Limitable;
+
+
+
+
 use LogicException;
-use ArrayList;
+
+use SilverStripe\Model\SS_List;
+use SilverStripe\Model\ArrayList;
+use SilverStripe\Model\SS_Sortable;
+use SilverStripe\Model\SS_Filterable;
+use SilverStripe\Model\SS_Limitable;
+
 
 /**
  * A base class for decorators that wrap around a list to provide additional

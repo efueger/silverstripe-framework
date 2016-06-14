@@ -1,12 +1,15 @@
 <?php
 
+
+use SilverStripe\Model\ValidationException;
+use SilverStripe\Model\DataObject;
 class HierarchyTest extends SapphireTest {
 
 	protected static $fixture_file = 'HierarchyTest.yml';
 
 	protected $requiredExtensions = array(
-		'HierarchyTest_Object' => array('Hierarchy', 'Versioned'),
-		'HierarchyHideTest_Object' => array('Hierarchy', 'Versioned'),
+		'HierarchyTest_Object' => array('SilverStripe\Model\Hierarchy', 'Versioned'),
+		'HierarchyHideTest_Object' => array('SilverStripe\Model\Hierarchy', 'Versioned'),
 	);
 
 	protected $extraDataObjects = array(
@@ -566,7 +569,7 @@ class HierarchyTest_Object extends DataObject implements TestOnly {
 	);
 
 	private static $extensions = array(
-		'Hierarchy',
+		'SilverStripe\Model\Hierarchy',
 		'Versioned',
 	);
 
@@ -581,7 +584,7 @@ class HierarchyHideTest_Object extends DataObject implements TestOnly {
 	);
 
 	private static $extensions = array(
-		'Hierarchy',
+		'SilverStripe\Model\Hierarchy',
 		"Versioned('Stage', 'Live')",
 	);
 

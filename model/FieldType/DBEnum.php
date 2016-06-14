@@ -2,10 +2,12 @@
 
 namespace SilverStripe\Model\FieldType;
 
-use DB;
+
 use ArrayLib;
 use DropdownField;
 use Config;
+use SilverStripe\Model\DB;
+
 
 /**
  * Class Enum represents an enumeration of a set of strings.

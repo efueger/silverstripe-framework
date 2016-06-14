@@ -2,6 +2,8 @@
 
 use SilverStripe\Filesystem\Storage\AssetContainer;
 use SilverStripe\Filesystem\Storage\AssetStore;
+use SilverStripe\Model\Image_Backend;
+
 /**
  * A wrapper class for GD-based images, with lots of manipulation functions.
  * @package framework

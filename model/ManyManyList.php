@@ -4,14 +4,18 @@ namespace SilverStripe\Model;
 
 
 use SilverStripe\Model\FieldType\DBComposite;
-use RelationList;
-use DataObject;
+
+
 use Object;
-use DB;
+
 use InvalidArgumentException;
 use Exception;
 use SQLSelect;
 use SQLDelete;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\RelationList;
+
 
 
 /**

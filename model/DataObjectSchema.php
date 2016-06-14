@@ -10,8 +10,10 @@ use InvalidArgumentException;
 use ClassInfo;
 use LogicException;
 use Config;
-use DataObject;
+
 use Object;
+use SilverStripe\Model\DataObject;
+
 
 
 /**
@@ -120,7 +122,7 @@ class DataObjectSchema {
 		$class = ClassInfo::class_name($class);
 		$current = $class;
 		while ($next = get_parent_class($current)) {
-			if ($next === 'DataObject') {
+			if ($next === 'SilverStripe\Model\DataObject') {
 				return $current;
 			}
 			$current = $next;
@@ -171,8 +173,8 @@ class DataObjectSchema {
 			return;
 		}
 		$this->tableNames = [];
-		foreach(ClassInfo::subclassesFor('DataObject') as $class) {
-			if($class === 'DataObject') {
+		foreach(ClassInfo::subclassesFor('SilverStripe\Model\DataObject') as $class) {
+			if($class === 'SilverStripe\Model\DataObject') {
 				continue;
 			}
 			$table = $this->buildTableName($class);
@@ -218,7 +220,7 @@ class DataObjectSchema {
 	 */
 	public function databaseFields($class) {
 		$class = ClassInfo::class_name($class);
-		if($class === 'DataObject') {
+		if($class === 'SilverStripe\Model\DataObject') {
 			return [];
 		}
 		$this->cacheDatabaseFields($class);
@@ -240,7 +242,7 @@ class DataObjectSchema {
 	 */
 	public function compositeFields($class, $aggregated = true) {
 		$class = ClassInfo::class_name($class);
-		if($class === 'DataObject') {
+		if($class === 'SilverStripe\Model\DataObject') {
 			return [];
 		}
 		$this->cacheDatabaseFields($class);
@@ -272,7 +274,7 @@ class DataObjectSchema {
 
 		// Ensure fixed fields appear at the start
 		$fixedFields = DataObject::config()->fixed_fields;
-		if(get_parent_class($class) === 'DataObject') {
+		if(get_parent_class($class) === 'SilverStripe\Model\DataObject') {
 			// Merge fixed with ClassName spec and custom db fields
 			$dbFields = $fixedFields;
 		} else {
@@ -293,7 +295,7 @@ class DataObjectSchema {
 		// Add in all has_ones
 		$hasOne = Config::inst()->get($class, 'has_one', Config::UNINHERITED) ?: array();
 		foreach($hasOne as $fieldName => $hasOneClass) {
-			if($hasOneClass === 'DataObject') {
+			if($hasOneClass === 'SilverStripe\Model\DataObject') {
 				$compositeFields[$fieldName] = 'PolymorphicForeignKey';
 			} else {
 				$dbFields["{$fieldName}ID"] = 'ForeignKey';
@@ -349,7 +351,7 @@ class DataObjectSchema {
 	public function classForField($candidateClass, $fieldName)  {
 		// normalise class name
 		$candidateClass = ClassInfo::class_name($candidateClass);
-		if($candidateClass === 'DataObject') {
+		if($candidateClass === 'SilverStripe\Model\DataObject') {
 			return null;
 		}
 

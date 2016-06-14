@@ -37,7 +37,7 @@ class HTMLEditorFieldToolbarTest extends SapphireTest {
 		$file1->write();
 
 		/** @var Image $image1 */
-		$image1 = $this->objFromFixture('Image', 'example_image');
+		$image1 = $this->objFromFixture('SilverStripe\Model\Image', 'example_image');
 		$image1->setFromLocalFile(
 			__DIR__ . '/images/HTMLEditorFieldTest-example.jpg',
 			'folder/subfolder/HTMLEditorFieldTest_example.jpg'

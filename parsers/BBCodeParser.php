@@ -1,4 +1,6 @@
 <?php
+
+use SilverStripe\Model\ArrayList;
 require_once('HTML/HTMLBBCodeParser.php');
 /*Seting up the PEAR bbcode parser*/
 $config = parse_ini_file('BBCodeParser.ini', true);
@@ -135,7 +137,7 @@ class BBCodeParser extends TextParser {
 					"Example" => '[ulist][*]'._t('BBCodeParser.UNORDEREDEXAMPLE1', 'unordered item 1').'[/ulist]'
 				)),
 				new ArrayData(array(
-					"Title" => _t('BBCodeParser.IMAGE', 'Image'),
+					"Title" => _t('BBCodeParser.IMAGE', 'SilverStripe\Model\Image'),
 					"Description" => _t('BBCodeParser.IMAGEDESCRIPTION', 'Show an image in your post'),
 					"Example" => "[img]http://www.website.com/image.jpg[/img]"
 				)),

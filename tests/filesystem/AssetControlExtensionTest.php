@@ -1,5 +1,7 @@
 <?php
 use SilverStripe\Filesystem\Storage\AssetStore;
+use SilverStripe\Model\DataObject;
+
 
 /**
  * Tests {@see AssetControlExtension}
@@ -246,7 +248,7 @@ class AssetControlExtensionTest_VersionedObject extends DataObject implements Te
 class AssetControlExtensionTest_Object extends DataObject implements TestOnly {
 	private static $db = array(
 		'Title' => 'Varchar(255)',
-		'Image' => "DBFile('image/supported')"
+		'SilverStripe\Model\Image' => "DBFile('image/supported')"
 	);
 
 

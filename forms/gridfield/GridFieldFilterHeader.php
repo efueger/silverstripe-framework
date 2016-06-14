@@ -8,6 +8,10 @@
  * @package forms
  * @subpackage fields-gridfield
  */
+
+use SilverStripe\Model\SS_Filterable;
+use SilverStripe\Model\SS_List;
+use SilverStripe\Model\ArrayList;
 class GridFieldFilterHeader implements GridField_HTMLProvider, GridField_DataManipulator, GridField_ActionProvider {
 
 	/**

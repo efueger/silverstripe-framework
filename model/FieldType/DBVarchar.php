@@ -2,10 +2,12 @@
 
 namespace SilverStripe\Model\FieldType;
 
-use DB;
+
 use NullableField;
 use TextField;
 use Config;
+use SilverStripe\Model\DB;
+
 
 /**
  * Class Varchar represents a variable-length string of up to 255 characters, designed to store raw text

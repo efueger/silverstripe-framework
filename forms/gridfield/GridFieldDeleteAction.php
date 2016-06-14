@@ -18,6 +18,8 @@
  * @package forms
  * @subpackage fields-gridfield
  */
+
+use SilverStripe\Model\ValidationException;
 class GridFieldDeleteAction implements GridField_ColumnProvider, GridField_ActionProvider {
 
 	/**

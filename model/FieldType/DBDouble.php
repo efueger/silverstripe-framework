@@ -2,8 +2,10 @@
 
 namespace SilverStripe\Model\FieldType;
 
-use DB;
+
 use MySQLDatabase;
+use SilverStripe\Model\DB;
+
 
 /**
  *

@@ -3,6 +3,8 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\DataObject;
 class BulkLoaderResultTest extends SapphireTest
 {
     protected $extraDataObjects = array('BulkLoaderTestPlayer');

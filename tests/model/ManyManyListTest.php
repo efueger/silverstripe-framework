@@ -1,6 +1,10 @@
 <?php
 
 use SilverStripe\Model\FieldType\DBMoney;
+use SilverStripe\Model\ManyManyList;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
+
 
 /**
  * @package framework

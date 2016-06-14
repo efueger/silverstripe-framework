@@ -1,6 +1,10 @@
 <?php
 use Embed\Adapters\AdapterInterface;
 use Embed\Embed;
+use SilverStripe\Model\DataObjectInterface;
+use SilverStripe\Model\Image;
+use SilverStripe\Model\DataObject;
+
 
 /**
  * A TinyMCE-powered WYSIWYG HTML editor field with image and link insertion and tracking capabilities. Editor fields

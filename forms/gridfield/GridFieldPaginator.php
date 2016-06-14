@@ -6,6 +6,10 @@
  * @package forms
  * @subpackage fields-gridfield
  */
+
+use SilverStripe\Model\SS_Limitable;
+use SilverStripe\Model\SS_List;
+use SilverStripe\Model\UnsavedRelationList;
 class GridFieldPaginator implements GridField_HTMLProvider, GridField_DataManipulator, GridField_ActionProvider {
 
 	/**

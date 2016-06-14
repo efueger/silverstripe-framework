@@ -12,7 +12,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$fields = array(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		);
 		$requiredFields = new RequiredFields($fields);
@@ -29,7 +29,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields = new RequiredFields(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		);
 		//check the fields match
@@ -37,7 +37,7 @@ class RequiredFieldsTest extends SapphireTest {
 			array(
 				'Title',
 				'Content',
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField'
 			),
 			$requiredFields->getRequired(),
@@ -50,7 +50,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields = new RequiredFields(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		);
 		$requiredFields->removeValidation();
@@ -66,7 +66,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields = new RequiredFields(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		);
 		//remove one
@@ -75,7 +75,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$this->assertEquals(
 			array(
 				'Title',
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField'
 			),
 			$requiredFields->getRequired(),
@@ -85,7 +85,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields->removeRequiredField('Title');
 		$this->assertEquals(
 			array(
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField'
 			),
 			$requiredFields->getRequired(),
@@ -95,7 +95,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields->removeRequiredField('DontExists');
 		$this->assertEquals(
 			array(
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField'
 			),
 			$requiredFields->getRequired(),
@@ -120,13 +120,13 @@ class RequiredFieldsTest extends SapphireTest {
 			"Failed to add a new field to the required list"
 		);
 		//add another for good measure
-		$requiredFields->addRequiredField('Image');
+		$requiredFields->addRequiredField('SilverStripe\Model\Image');
 		//check it was added
 		$this->assertEquals(
 			array(
 				'Title',
 				'Content',
-				'Image'
+				'SilverStripe\Model\Image'
 			),
 			$requiredFields->getRequired(),
 			"Failed to add a second new field to the required list"
@@ -137,7 +137,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$this->assertEquals(
 			array(
 				'Content',
-				'Image'
+				'SilverStripe\Model\Image'
 			),
 			$requiredFields->getRequired(),
 			"Failed to remove 'Title' field from required list"
@@ -148,7 +148,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$this->assertEquals(
 			array(
 				'Content',
-				'Image',
+				'SilverStripe\Model\Image',
 				'Title'
 			),
 			$requiredFields->getRequired(),
@@ -160,7 +160,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$this->assertEquals(
 			array(
 				'Content',
-				'Image',
+				'SilverStripe\Model\Image',
 				'Title'
 			),
 			$requiredFields->getRequired(),
@@ -173,7 +173,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields = new RequiredFields(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		);
 		//create another validator with other fields
@@ -188,7 +188,7 @@ class RequiredFieldsTest extends SapphireTest {
 			array(
 				'Title',
 				'Content',
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField',
 				'ExtraField1',
 				'ExtraField2'
@@ -200,7 +200,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$otherRequiredFields = new RequiredFields(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		);
 		//add the new validator
@@ -210,7 +210,7 @@ class RequiredFieldsTest extends SapphireTest {
 			array(
 				'Title',
 				'Content',
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField',
 				'ExtraField1',
 				'ExtraField2'
@@ -223,7 +223,7 @@ class RequiredFieldsTest extends SapphireTest {
 			'ExtraField3',
 			'Title',
 			'ExtraField4',
-			'Image',
+			'SilverStripe\Model\Image',
 			'Content'
 		);
 		//add the new validator
@@ -233,7 +233,7 @@ class RequiredFieldsTest extends SapphireTest {
 			array(
 				'Title',
 				'Content',
-				'Image',
+				'SilverStripe\Model\Image',
 				'AnotherField',
 				'ExtraField1',
 				'ExtraField2',
@@ -250,7 +250,7 @@ class RequiredFieldsTest extends SapphireTest {
 		$requiredFields = new RequiredFields($fieldNames = array(
 			'Title',
 			'Content',
-			'Image',
+			'SilverStripe\Model\Image',
 			'AnotherField'
 		));
 

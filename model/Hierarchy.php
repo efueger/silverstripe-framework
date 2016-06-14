@@ -2,16 +2,21 @@
 
 namespace SilverStripe\Model;
 
-use DataExtension;
-use ValidationResult;
+
+
 use Config;
-use ArrayList;
+
 use Exception;
 use Versioned;
 use Controller;
 use LeftAndMain;
 use ClassInfo;
-use DataObject;
+
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\ArrayList;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DataExtension;
+
 
 /**
  * DataObjects that use the Hierarchy extension can be be organised as a hierarchy, with children and parents. The most
@@ -147,7 +152,7 @@ class Hierarchy extends DataExtension {
 			$nodeCountThreshold = null, $nodeCountCallback = null) {
 
 		if(!is_numeric($nodeCountThreshold)) {
-			$nodeCountThreshold = Config::inst()->get('Hierarchy', 'node_threshold_total');
+			$nodeCountThreshold = Config::inst()->get('SilverStripe\Model\Hierarchy', 'node_threshold_total');
 		}
 
 		if($limitToMarked && $rootCall) {
@@ -548,7 +553,7 @@ class Hierarchy extends DataExtension {
 					continue;
 				}
 				$idList[] = $child->ID;
-				$ext = $child->getExtensionInstance('Hierarchy');
+				$ext = $child->getExtensionInstance('SilverStripe\Model\Hierarchy');
 				$ext->setOwner($child);
 				$ext->loadDescendantIDListInto($idList);
 				$ext->clearOwner();

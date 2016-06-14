@@ -3,6 +3,10 @@
 use SilverStripe\Filesystem\Storage\AssetContainer;
 use SilverStripe\Filesystem\Storage\AssetStore;
 use SilverStripe\Filesystem\Storage\DBFile;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\ValidationException;
+use SilverStripe\Model\DataObjectInterface;
+
 
 /**
  * Field for uploading into a DBFile instance.

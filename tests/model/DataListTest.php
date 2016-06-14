@@ -4,6 +4,10 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\DataList;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\SS_Filterable;
 class DataListTest extends SapphireTest {
 
 	// Borrow the model from DataObjectTest

@@ -3,6 +3,8 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\SS_Transliterator;
 class FileNameFilterTest extends SapphireTest {
 
 	public function testFilter() {

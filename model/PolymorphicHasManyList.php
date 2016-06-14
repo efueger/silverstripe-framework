@@ -2,11 +2,14 @@
 
 namespace SilverStripe\Model;
 
-use HasManyList;
+
 use Convert;
 use ClassInfo;
-use DataObject;
+
 use InvalidArgumentException;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\HasManyList;
+
 
 
 /**

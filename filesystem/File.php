@@ -4,6 +4,10 @@ use SilverStripe\Filesystem\Storage\DBFile;
 use SilverStripe\Filesystem\Thumbnail;
 use SilverStripe\Filesystem\ImageManipulation;
 use SilverStripe\Filesystem\Storage\AssetContainer;
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
+
 
 /**
  * This class handles the representation of a file on the filesystem within the framework.
@@ -102,7 +106,7 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer, Thumb
 	);
 
 	private static $extensions = array(
-		"Hierarchy",
+		'SilverStripe\Model\Hierarchy',
 		"Versioned"
 	);
 
@@ -172,10 +176,10 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer, Thumb
 	 */
 	private static $class_for_file_extension = array(
 		'*' => 'File',
-		'jpg' => 'Image',
-		'jpeg' => 'Image',
-		'png' => 'Image',
-		'gif' => 'Image',
+		'jpg' => 'SilverStripe\Model\Image',
+		'jpeg' => 'SilverStripe\Model\Image',
+		'png' => 'SilverStripe\Model\Image',
+		'gif' => 'SilverStripe\Model\Image',
 	);
 
 	/**

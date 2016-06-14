@@ -1,6 +1,9 @@
 <?php
 
 use Filesystem as SS_Filesystem;
+use SilverStripe\Model\DataDifferencer;
+use SilverStripe\Model\DataObject;
+
 
 /**
  * @package framework
@@ -58,8 +61,8 @@ class DataDifferencerTest extends SapphireTest {
 	public function testHasOnes() {
 		/** @var DataDifferencerTest_Object $obj1 */
 		$obj1 = $this->objFromFixture('DataDifferencerTest_Object', 'obj1');
-		$image1 = $this->objFromFixture('Image', 'image1');
-		$image2 = $this->objFromFixture('Image', 'image2');
+		$image1 = $this->objFromFixture('SilverStripe\Model\Image', 'image1');
+		$image2 = $this->objFromFixture('SilverStripe\Model\Image', 'image2');
 		$relobj1 = $this->objFromFixture('DataDifferencerTest_HasOneRelationObject', 'relobj1');
 		$relobj2 = $this->objFromFixture('DataDifferencerTest_HasOneRelationObject', 'relobj2');
 
@@ -77,8 +80,8 @@ class DataDifferencerTest extends SapphireTest {
 		$differ = new DataDifferencer($obj1v1, $obj1v2);
 		$obj1Diff = $differ->diffedData();
 
-		$this->assertContains($image1->Name, $obj1Diff->getField('Image'));
-		$this->assertContains($image2->Name, $obj1Diff->getField('Image'));
+		$this->assertContains($image1->Name, $obj1Diff->getField('SilverStripe\Model\Image'));
+		$this->assertContains($image2->Name, $obj1Diff->getField('SilverStripe\Model\Image'));
 		$this->assertContains(
 			'<ins>obj2</ins><del>obj1</del>',
 			str_replace(' ', '', $obj1Diff->getField('HasOneRelationID'))
@@ -102,7 +105,7 @@ class DataDifferencerTest_Object extends DataObject implements TestOnly {
 	);
 
 	private static $has_one = array(
-		'Image' => 'Image',
+		'SilverStripe\Model\Image' => 'SilverStripe\Model\Image',
 		'HasOneRelation' => 'DataDifferencerTest_HasOneRelationObject'
 	);
 

@@ -1,6 +1,9 @@
 <?php
 
 use SilverStripe\Model\FieldType\DBClassName;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
+
 
 class DataObjectSchemaGenerationTest extends SapphireTest {
 	protected $extraDataObjects = array(

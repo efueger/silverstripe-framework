@@ -2,6 +2,9 @@
 
 use Filesystem as SS_Filesystem;
 use SilverStripe\Filesystem\Storage\AssetStore;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\ValidationException;
+
 
 /**
  * Tests for the File class
@@ -362,7 +365,7 @@ class FileTest extends SapphireTest {
 
 	public function testNameAndTitleGeneration() {
 		// When name is assigned, title is automatically assigned
-		$file = $this->objFromFixture('Image', 'setfromname');
+		$file = $this->objFromFixture('SilverStripe\Model\Image', 'setfromname');
 		$this->assertEquals('FileTest', $file->Title);
 	}
 
@@ -376,13 +379,13 @@ class FileTest extends SapphireTest {
 	}
 
 	public function testFileType() {
-		$file = $this->objFromFixture('Image', 'gif');
+		$file = $this->objFromFixture('SilverStripe\Model\Image', 'gif');
 		$this->assertEquals("GIF image - good for diagrams", $file->FileType);
 
 		$file = $this->objFromFixture('File', 'pdf');
 		$this->assertEquals("Adobe Acrobat PDF file", $file->FileType);
 
-		$file = $this->objFromFixture('Image', 'gifupper');
+		$file = $this->objFromFixture('SilverStripe\Model\Image', 'gifupper');
 		$this->assertEquals("GIF image - good for diagrams", $file->FileType);
 
 		/* Only a few file types are given special descriptions; the rest are unknown */
@@ -498,7 +501,7 @@ class FileTest extends SapphireTest {
 	}
 
 	public function testCanEdit() {
-		$file = $this->objFromFixture('Image', 'gif');
+		$file = $this->objFromFixture('SilverStripe\Model\Image', 'gif');
 
 		// Test anonymous permissions
 		Session::set('loggedInAs', null);

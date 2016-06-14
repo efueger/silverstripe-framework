@@ -20,6 +20,9 @@
  * @package framework
  * @subpackage misc
  */
+
+use SilverStripe\Model\DB;
+use SilverStripe\Model\URLSegmentFilter;
 class Convert {
 
 	/**

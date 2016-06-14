@@ -1,5 +1,8 @@
 <?php
 
+
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
 class FulltextFilterTest extends SapphireTest {
 
 	protected $extraDataObjects = array(

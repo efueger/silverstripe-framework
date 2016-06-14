@@ -4,6 +4,8 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\DataObject;
 class ClassInfoTest extends SapphireTest {
 
 	protected $extraDataObjects = array(
@@ -91,7 +93,7 @@ class ClassInfoTest extends SapphireTest {
 		$expect = ArrayLib::valuekey(array(
 			'Object',
 			'ViewableData',
-			'DataObject',
+			'SilverStripe\Model\DataObject',
 			'ClassInfoTest_BaseClass',
 			'ClassInfoTest_ChildClass',
 		));

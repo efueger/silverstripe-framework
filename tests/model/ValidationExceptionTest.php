@@ -4,6 +4,9 @@
  * @package framework
  * @subpackage Testing
  */
+
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\ValidationException;
 class ValidationExceptionTest extends SapphireTest
 {
 	/**

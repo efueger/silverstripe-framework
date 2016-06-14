@@ -10,7 +10,7 @@ class GDImageTest extends ImageTest {
 			return;
 		}
 
-		Config::inst()->update('Injector', 'Image_Backend', 'GDBackend');
+		Config::inst()->update('Injector', 'SilverStripe\Model\Image_Backend', 'GDBackend');
 	}
 
 	public function tearDown() {

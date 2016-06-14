@@ -4,8 +4,10 @@ namespace SilverStripe\Model;
 
 
 use SilverStripe\Model\Relation;
-use DataList;
+
 use Exception;
+use SilverStripe\Model\DataList;
+
 
 
 /**

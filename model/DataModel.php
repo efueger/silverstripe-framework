@@ -2,7 +2,9 @@
 
 namespace SilverStripe\Model;
 
-use DataList;
+
+use SilverStripe\Model\DataList;
+
 
 
 /**

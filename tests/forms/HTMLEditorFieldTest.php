@@ -1,6 +1,8 @@
 <?php
 
 use Filesystem as SS_Filesystem;
+use SilverStripe\Model\DataObject;
+
 
 /**
  * @package framework
@@ -65,7 +67,7 @@ class HTMLEditorFieldTest extends FunctionalTest {
 		$obj = new HTMLEditorFieldTest_Object();
 		$editor = new HTMLEditorField('Content');
 
-		$fileID = $this->idFromFixture('Image', 'example_image');
+		$fileID = $this->idFromFixture('SilverStripe\Model\Image', 'example_image');
 		$editor->setValue(sprintf(
 			'[image src="assets/HTMLEditorFieldTest_example.jpg" width="10" height="20" id="%d"]',
 			$fileID

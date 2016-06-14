@@ -2,7 +2,9 @@
 
 namespace SilverStripe\Model;
 
-use SS_List;
+
+use SilverStripe\Model\SS_List;
+
 
 
 /**

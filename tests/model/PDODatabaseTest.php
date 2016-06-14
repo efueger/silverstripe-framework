@@ -4,6 +4,8 @@
  * @subpackage testing
  */
 
+
+use SilverStripe\Model\DB;
 class PDODatabaseTest extends SapphireTest {
 
 	protected static $fixture_file = 'MySQLDatabaseTest.yml';

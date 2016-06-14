@@ -5,8 +5,10 @@ namespace SilverStripe\Model;
 use ArrayAccess;
 use Countable;
 use IteratorAggregate;
-use SS_List;
+
 use Iterator;
+use SilverStripe\Model\SS_List;
+
 
 
 /**

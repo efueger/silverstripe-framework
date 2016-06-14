@@ -6,6 +6,8 @@
  * @package framework
  * @subpackage security
  */
+
+use SilverStripe\Model\ValidationResult;
 class MemberAuthenticator extends Authenticator {
 
 	/**

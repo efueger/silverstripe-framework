@@ -3,6 +3,8 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\URLSegmentFilter;
 class URLSegmentFilterTest extends SapphireTest {
 
 	protected $usesDatabase = false;

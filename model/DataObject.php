@@ -8,42 +8,56 @@ use SilverStripe\Model\FieldType\DBDatetime;
 use SilverStripe\Model\FieldType\DBComposite;
 use SilverStripe\Model\FieldType\DBClassName;
 use ViewableData;
-use DataObjectInterface;
+
 use i18nEntityProvider;
 use Injector;
 use HTTP;
-use DataModel;
-use RelationList;
+
+
 use ClassInfo;
 use i18n;
-use ValidationResult;
+
 use Deprecation;
 use Config;
-use ValidationException;
+
 use SQLInsert;
-use DB;
+
 use Debug;
 use LogicException;
-use DataList;
+
 use SQLDelete;
 use InvalidArgumentException;
-use UnsavedRelationList;
-use PolymorphicHasManyList;
-use HasManyList;
+
+
+
 use BadMethodCallException;
-use ManyManyList;
+
 use Exception;
 use SearchContext;
 use FieldList;
 use FormField;
 use FormScaffolder;
-use DataQuery;
+
 use Member;
 use Permission;
 use SQLSelect;
 use Object;
-use SS_List;
+
 use SearchFilter;
+use SilverStripe\Model\DataModel;
+use SilverStripe\Model\RelationList;
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\ValidationException;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataList;
+use SilverStripe\Model\UnsavedRelationList;
+use SilverStripe\Model\PolymorphicHasManyList;
+use SilverStripe\Model\HasManyList;
+use SilverStripe\Model\ManyManyList;
+use SilverStripe\Model\DataQuery;
+use SilverStripe\Model\SS_List;
+use SilverStripe\Model\DataObjectInterface;
+
 
 
 /**
@@ -284,7 +298,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @return DataObjectSchema
 	 */
 	public static function getSchema() {
-		return Injector::inst()->get('DataObjectSchema');
+		return Injector::inst()->get('SilverStripe\Model\DataObjectSchema');
 	}
 
 	/**
@@ -422,7 +436,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		// Identify fields that should be lazy loaded, but only on existing records
 		if(!empty($record['ID'])) {
 			$currentObj = get_class($this);
-			while($currentObj != 'DataObject') {
+			while($currentObj != 'SilverStripe\Model\DataObject') {
 				$fields = self::custom_database_fields($currentObj);
 				foreach($fields as $field => $type) {
 					if(!array_key_exists($field, $record)) $this->record[$field.'_Lazy'] = $currentObj;
@@ -569,7 +583,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 */
 	public function setClassName($className) {
 		$className = trim($className);
-		if(!$className || !is_subclass_of($className, 'DataObject')) return;
+		if(!$className || !is_subclass_of($className, 'SilverStripe\Model\DataObject')) return;
 
 		$this->class = $className;
 		$this->setField("ClassName", $className);
@@ -630,7 +644,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			}
 		}
 
-		if($this->class == 'DataObject') return;
+		if($this->class == 'SilverStripe\Model\DataObject') return;
 
 		// Set up accessors for joined items
 		if($manyMany = $this->manyMany()) {
@@ -1139,7 +1153,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 					$manyManyJoin->setByIdList($fieldValue);
 				}
 			}
-			if($class == 'DataObject') {
+			if($class == 'SilverStripe\Model\DataObject') {
 				break;
 			}
 		}
@@ -1162,7 +1176,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			);
 		}
 
-		if(Config::inst()->get('DataObject', 'validation_enabled')) {
+		if(Config::inst()->get('SilverStripe\Model\DataObject', 'validation_enabled')) {
 			$result = $this->validate();
 			if (!$result->valid()) {
 				return new ValidationException(
@@ -1496,7 +1510,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			$joinID    = $this->getField($joinField);
 
 			// Extract class name for polymorphic relations
-			if($class === 'DataObject') {
+			if($class === 'SilverStripe\Model\DataObject') {
 				$class = $this->getField($componentName . 'Class');
 				if(empty($class)) return null;
 			}
@@ -1681,7 +1695,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 				$remoteRelation
 			));
 		}
-		if($class === 'DataObject') {
+		if($class === 'SilverStripe\Model\DataObject') {
 			throw new InvalidArgumentException(sprintf(
 				"%s cannot generate opposite component of relation %s.%s as it is polymorphic. " .
 				"This method does not support polymorphic relationships",
@@ -1836,7 +1850,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		}
 
 		// Inspect resulting found relation
-		if($remoteRelations[$remoteField] === 'DataObject') {
+		if($remoteRelations[$remoteField] === 'SilverStripe\Model\DataObject') {
 			$polymorphic = true;
 			return $remoteField; // Composite polymorphic field does not include 'ID' suffix
 		} else {
@@ -2778,7 +2792,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @return bool
 	 */
 	public static function has_own_table($dataClass) {
-		if(!is_subclass_of($dataClass, 'DataObject')) {
+		if(!is_subclass_of($dataClass, 'SilverStripe\Model\DataObject')) {
 			return false;
 		}
 		$fields = static::database_fields($dataClass);
@@ -3110,15 +3124,15 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @return DataList The objects matching the filter, in the class specified by $containerClass
 	 */
 	public static function get($callerClass = null, $filter = "", $sort = "", $join = "", $limit = null,
-			$containerClass = 'DataList') {
+			$containerClass = 'SilverStripe\Model\DataList') {
 
 		if($callerClass == null) {
 			$callerClass = get_called_class();
-			if($callerClass == 'DataObject') {
+			if($callerClass == 'SilverStripe\Model\DataObject') {
 				throw new \InvalidArgumentException('Call <classname>::get() instead of DataObject::get()');
 			}
 
-			if($filter || $sort || $join || $limit || ($containerClass != 'DataList')) {
+			if($filter || $sort || $join || $limit || ($containerClass != 'SilverStripe\Model\DataList')) {
 				throw new \InvalidArgumentException('If calling <classname>::get() then you shouldn\'t pass any other'
 					. ' arguments');
 			}
@@ -3196,7 +3210,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 * @return DataObject $this
 	 */
 	public function flushCache($persistent = true) {
-		if($this->class == 'DataObject') {
+		if($this->class == 'SilverStripe\Model\DataObject') {
 			self::$_cache_get_one = array();
 			return $this;
 		}
@@ -3355,7 +3369,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 			}
 		}
 
-		if(get_parent_class($this) == "DataObject") {
+		if(get_parent_class($this) == 'SilverStripe\Model\DataObject') {
 			$indexes['ClassName'] = true;
 		}
 
@@ -3378,7 +3392,7 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 		// Validate relationship configuration
 		$this->validateModelDefinitions();
 		if($fields) {
-			$hasAutoIncPK = get_parent_class($this) === 'DataObject';
+			$hasAutoIncPK = get_parent_class($this) === 'SilverStripe\Model\DataObject';
 			DB::require_table(
 				$table, $fields, $indexes, $hasAutoIncPK, $this->stat('create_table_options'), $extensions
 			);

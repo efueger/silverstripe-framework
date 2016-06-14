@@ -4,13 +4,16 @@ namespace SilverStripe\Model;
 
 use SQLConditionGroup;
 use InvalidArgumentException;
-use DataObject;
+
 use SQLSelect;
 use Injector;
 use ClassInfo;
 use Convert;
-use DB;
+
 use Object;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DB;
+
 
 
 /**
@@ -764,7 +767,7 @@ class DataQuery {
 			throw new InvalidArgumentException("Could not find a has_one relationship {$localField} on {$localClass}");
 		}
 
-		if ($foreignClass === 'DataObject') {
+		if ($foreignClass === 'SilverStripe\Model\DataObject') {
 			throw new InvalidArgumentException(
 				"Could not join polymorphic has_one relationship {$localField} on {$localClass}"
 			);
@@ -809,7 +812,7 @@ class DataQuery {
 	 * @param string $foreignClass Class to join
 	 */
 	protected function joinHasManyRelation($localClass, $localField, $foreignClass) {
-		if(!$foreignClass || $foreignClass === 'DataObject') {
+		if(!$foreignClass || $foreignClass === 'SilverStripe\Model\DataObject') {
 			throw new InvalidArgumentException("Could not find a has_many relationship {$localField} on {$localClass}");
 		}
 		$schema = DataObject::getSchema();

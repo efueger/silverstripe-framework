@@ -1,6 +1,11 @@
 <?php
 
 use SilverStripe\Model\FieldType\DBField;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataExtension;
+use SilverStripe\Model\ValidationResult;
+
 
 /**
  * @package framework
@@ -314,7 +319,7 @@ class DataObjectTest extends SapphireTest {
 			'belongs_many_many is properly inspected');
 		$this->assertEquals(singleton('DataObjectTest_CEO')->getRelationClass('Company'), 'DataObjectTest_Company',
 			'belongs_to is properly inspected');
-		$this->assertEquals(singleton('DataObjectTest_Fan')->getRelationClass('Favourite'), 'DataObject',
+		$this->assertEquals(singleton('DataObjectTest_Fan')->getRelationClass('Favourite'), 'SilverStripe\Model\DataObject',
 			'polymorphic has_one is properly inspected');
 	}
 
@@ -1048,7 +1053,7 @@ class DataObjectTest extends SapphireTest {
 	public function testWritingInvalidDataObjectThrowsException() {
 		$validatedObject = new DataObjectTest_ValidatedObject();
 
-		$this->setExpectedException('ValidationException');
+		$this->setExpectedException('SilverStripe\Model\ValidationException');
 		$validatedObject->write();
 	}
 
@@ -1102,7 +1107,7 @@ class DataObjectTest extends SapphireTest {
 		$this->assertFalse(DataObject::has_own_table("DataObjectTest_FieldlessSubTable"));
 
 		/* Return false if you don't pass it a subclass of DataObject */
-		$this->assertFalse(DataObject::has_own_table("DataObject"));
+		$this->assertFalse(DataObject::has_own_table('SilverStripe\Model\DataObject'));
 		$this->assertFalse(DataObject::has_own_table("ViewableData"));
 		$this->assertFalse(DataObject::has_own_table("ThisIsntADataObject"));
 	}
@@ -1286,7 +1291,7 @@ class DataObjectTest extends SapphireTest {
 
 		// Check everything works when no relation is present
 		$teamWithoutSponsor = $this->objFromFixture('DataObjectTest_Team', 'team3');
-		$this->assertInstanceOf('ManyManyList', $teamWithoutSponsor->Sponsors());
+		$this->assertInstanceOf('SilverStripe\Model\ManyManyList', $teamWithoutSponsor->Sponsors());
 		$this->assertEquals(0, $teamWithoutSponsor->Sponsors()->count());
 
 		// Test that belongs_many_many can be infered from with getNonReciprocalComponent
@@ -1976,7 +1981,7 @@ class DataObjectTest_Company extends DataObject implements TestOnly {
 	private static $has_one = array (
 		'CEO'         => 'DataObjectTest_CEO',
 		'PreviousCEO' => 'DataObjectTest_CEO',
-		'Owner'       => 'DataObject' // polymorphic
+		'Owner'       => 'SilverStripe\Model\DataObject' // polymorphic
 	);
 
 	private static $has_many = array (
@@ -2040,8 +2045,8 @@ class DataObjectTest_Fan extends DataObject implements TestOnly {
 	);
 
 	private static $has_one = array(
-		'Favourite' => 'DataObject', // Polymorphic relation
-		'SecondFavourite' => 'DataObject'
+		'Favourite' => 'SilverStripe\Model\DataObject', // Polymorphic relation
+		'SecondFavourite' => 'SilverStripe\Model\DataObject'
 	);
 }
 

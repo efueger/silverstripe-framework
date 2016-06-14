@@ -6,6 +6,8 @@
  * @package framework
  * @subpackage filesystem
  */
+
+use SilverStripe\Model\DataObject;
 class RegenerateCachedImagesTask extends BuildTask {
 
 	protected $title = 'Regenerate Cached Images Task';
@@ -30,7 +32,7 @@ class RegenerateCachedImagesTask extends BuildTask {
 		$processedImages   = 0;
 		$regeneratedImages = 0;
 
-		if($images = DataObject::get('Image')) foreach($images as $image) {
+		if($images = DataObject::get('SilverStripe\Model\Image')) foreach($images as $image) {
 			if($generated = $image->regenerateFormattedImages()) {
 				$regeneratedImages += $generated;
 			}

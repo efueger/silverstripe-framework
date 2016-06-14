@@ -27,6 +27,8 @@
  *
  * See {@link URLSegmentFilter} for a more generic implementation.
  */
+
+use SilverStripe\Model\SS_Transliterator;
 class FileNameFilter extends Object {
 
 	/**

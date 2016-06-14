@@ -3,6 +3,9 @@
  * @package framework
  * @subpackage Testing
  */
+
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
 class DatabaseTest extends SapphireTest {
 
 	protected $extraDataObjects = array(

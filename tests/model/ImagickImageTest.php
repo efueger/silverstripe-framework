@@ -8,6 +8,6 @@ class ImagickImageTest extends ImageTest {
 			return;
 		}
 
-		Config::inst()->update('Injector', 'Image_Backend', 'ImagickBackend');
+		Config::inst()->update('Injector', 'SilverStripe\Model\Image_Backend', 'ImagickBackend');
 	}
 }

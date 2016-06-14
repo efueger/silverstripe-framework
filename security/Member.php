@@ -1,6 +1,14 @@
 <?php
 
 use SilverStripe\Model\FieldType\DBDatetime;
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\DB;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\ValidationException;
+use SilverStripe\Model\SS_List;
+use SilverStripe\Model\ArrayList;
+use SilverStripe\Model\ManyManyList;
+
 
 /**
  * The member class which represents the users of the system
@@ -1325,7 +1333,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 		$groupIDList = array();
 
-		if(is_a($groups, 'SS_List')) {
+		if(is_a($groups, 'SilverStripe\Model\SS_List')) {
 			foreach($groups as $group) {
 				$groupIDList[] = $group->ID;
 			}

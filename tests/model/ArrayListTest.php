@@ -3,6 +3,10 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\ArrayList;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\SS_Filterable;
 class ArrayListTest extends SapphireTest {
 
 	public function testPushOperator() {
@@ -217,7 +221,7 @@ class ArrayListTest extends SapphireTest {
 		$map = $list->map('ID', 'Name');
 		// Items added after calling map should not be included retroactively
 		$list->add(array('ID' => 7, 'Name' => 'Andrew'));
-		$this->assertInstanceOf('SS_Map', $map);
+		$this->assertInstanceOf('SilverStripe\Model\SS_Map', $map);
 		$this->assertEquals(array(
 			1 => 'Steve',
 			3 => 'Bob',

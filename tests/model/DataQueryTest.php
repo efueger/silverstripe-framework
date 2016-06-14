@@ -1,5 +1,9 @@
 <?php
 
+
+use SilverStripe\Model\DataQuery;
+use SilverStripe\Model\DataObject;
+use SilverStripe\Model\DB;
 class DataQueryTest extends SapphireTest {
 
 	protected static $fixture_file = 'DataQueryTest.yml';

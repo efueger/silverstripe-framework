@@ -11,8 +11,11 @@ use AssetField;
 use File;
 use Director;
 use Permission;
-use ValidationResult;
-use ValidationException;
+
+
+use SilverStripe\Model\ValidationResult;
+use SilverStripe\Model\ValidationException;
+
 
 /**
  * Represents a file reference stored in a database

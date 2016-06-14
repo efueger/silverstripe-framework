@@ -15,6 +15,8 @@
  * @package framework
  * @subpackage security
  */
+
+use SilverStripe\Model\ValidationResult;
 class PasswordValidator extends Object {
 
 	private static $character_strength_tests = array(

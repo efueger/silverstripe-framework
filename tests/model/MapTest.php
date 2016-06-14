@@ -4,6 +4,9 @@
  * @package framework
  * @subpackage tests
  */
+
+use SilverStripe\Model\SS_Map;
+use SilverStripe\Model\ArrayList;
 class SS_MapTest extends SapphireTest {
 
 	// Borrow the model from DataObjectTest

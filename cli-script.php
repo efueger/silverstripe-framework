@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataModel;
+
 /**
  * File similar to main.php designed for command-line scripts
  *

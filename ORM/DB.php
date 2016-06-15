@@ -1,10 +1,23 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use Deprecation;
+use Director;
+use InvalidArgumentException;
+use Config;
+use LogicException;
+use Cookie;
+use Injector;
+use SilverStripe\ORM\Queries\SQLExpression;
+use SilverStripe\ORM\Connect\SS_Database;
+
 /**
  * Global database interface, complete with static methods.
  * Use this class for interacting with the database.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DB {
 

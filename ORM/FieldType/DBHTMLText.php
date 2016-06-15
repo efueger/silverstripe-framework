@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 use Injector;
 use HTTP;
@@ -19,7 +19,7 @@ use Exception;
  * @see Varchar
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBHTMLText extends DBText {
 	private static $escape_type = 'xml';

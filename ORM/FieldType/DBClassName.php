@@ -1,17 +1,18 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
-use DataObject;
 use ClassInfo;
 use Config;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataObject;
+
 
 /**
  * Represents a classname selector, which respects obsolete clasess.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBClassName extends DBEnum {
 
@@ -101,7 +102,7 @@ class DBClassName extends DBEnum {
 			return $baseClass;
 		}
 		// Fallback to global default
-		return 'DataObject';
+		return 'SilverStripe\ORM\DataObject';
 	}
 
 	/**
@@ -122,7 +123,7 @@ class DBClassName extends DBEnum {
 	 */
 	public function getEnum() {
 		$classNames = ClassInfo::subclassesFor($this->getBaseClass());
-		unset($classNames['DataObject']);
+		unset($classNames['SilverStripe\ORM\DataObject']);
 		return $classNames;
 	}
 

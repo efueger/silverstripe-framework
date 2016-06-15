@@ -1,12 +1,20 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use Config;
+use Exception;
+use PaginatedList;
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\ArrayList;
+
 /**
  * MySQL connector class.
  *
  * Supported indexes for {@link requireTable()}:
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class MySQLDatabase extends SS_Database {
 
@@ -26,14 +34,14 @@ class MySQLDatabase extends SS_Database {
 
 		// Set charset
 		if( empty($parameters['charset'])
-			&& ($charset = Config::inst()->get('MySQLDatabase', 'connection_charset'))
+			&& ($charset = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'connection_charset'))
 		) {
 			$parameters['charset'] = $charset;
 		}
 
 		// Set collation
 		if( empty($parameters['collation'])
-			&& ($collation = Config::inst()->get('MySQLDatabase', 'connection_collation'))
+			&& ($collation = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'connection_collation'))
 		) {
 			$parameters['collation'] = $collation;
 		}
@@ -158,7 +166,7 @@ class MySQLDatabase extends SS_Database {
 			$baseClasses[$class] = '"' . $class . '"';
 		}
 
-		$charset = Config::inst()->get('MySQLDatabase', 'charset');
+		$charset = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'charset');
 
 		// Make column selection lists
 		$select = array(

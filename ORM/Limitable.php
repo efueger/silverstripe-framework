@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\ORM;
+
 /**
  * Additional interface for {@link SS_List} classes that are limitable - able to have a subset of the list extracted.
  *
@@ -8,7 +10,7 @@
  *
  * @see SS_List, SS_Sortable, SS_Filterable
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface SS_Limitable extends SS_List {
 

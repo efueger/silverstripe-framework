@@ -1,11 +1,17 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use ViewableData;
+use LogicException;
+
 /**
  * A base class for decorators that wrap around a list to provide additional
  * functionality. It passes through list methods to the underlying list
  * implementation.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class SS_ListDecorator extends ViewableData implements SS_List, SS_Sortable, SS_Filterable, SS_Limitable {
 

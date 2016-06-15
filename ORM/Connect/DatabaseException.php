@@ -1,10 +1,14 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use Exception;
+
 /**
  * Error class for database exceptions
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class SS_DatabaseException extends Exception {
 

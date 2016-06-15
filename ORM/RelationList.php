@@ -1,6 +1,8 @@
 <?php
 
-use SilverStripe\Model\Relation;
+namespace SilverStripe\ORM;
+
+use Exception;
 
 /**
  * A DataList that represents a relation.
@@ -8,7 +10,7 @@ use SilverStripe\Model\Relation;
  * Adds the notion of a foreign ID that can be optionally set.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class RelationList extends DataList implements Relation {
 

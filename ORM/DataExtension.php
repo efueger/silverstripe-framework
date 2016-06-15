@@ -1,11 +1,20 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use Extension;
+use Exception;
+use FieldList;
+use Config;
+use SilverStripe\ORM\Queries\SQLSelect;
+
 /**
  * An extension that adds additional functionality to a {@link DataObject}.
  *
  * @property DataObject $owner
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class DataExtension extends Extension {
 

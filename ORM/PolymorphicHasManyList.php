@@ -1,10 +1,16 @@
 <?php
 
+namespace SilverStripe\ORM;
+
+use Convert;
+use ClassInfo;
+use InvalidArgumentException;
+
 /**
  * Represents a has_many list linked against a polymorphic relationship
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class PolymorphicHasManyList extends HasManyList {
 

@@ -1,11 +1,17 @@
 <?php
 
+namespace SilverStripe\ORM\Queries;
+
+use Exception;
+use Convert;
+use SilverStripe\ORM\DB;
+
 /**
  * Abstract base class for an object representing an SQL query.
  * The various parts of the SQL query can be manipulated individually.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class SQLExpression {
 

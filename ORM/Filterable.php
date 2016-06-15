@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\ORM;
+
 /**
  * Additional interface for {@link SS_List} classes that are filterable.
  *
@@ -8,7 +10,7 @@
  *
  * @see SS_List, SS_Sortable, SS_Limitable
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface SS_Filterable extends SS_List {
 

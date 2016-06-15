@@ -1,6 +1,15 @@
 <?php
 
-use SilverStripe\Model\FieldType\DBField;
+namespace SilverStripe\ORM\Versioning;
+
+use ViewableData;
+use Diff;
+use Image;
+use Convert;
+use ArrayData;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\FieldType\DBField;
 
 /**
  * Utility class to render views of the differences between two data objects (or two versions of the
@@ -36,7 +45,7 @@ use SilverStripe\Model\FieldType\DBField;
  * </code>
  *
  * @package framework
- * @subpackage misc
+ * @subpackage orm
  */
 class DataDifferencer extends ViewableData {
 	protected $fromRecord;

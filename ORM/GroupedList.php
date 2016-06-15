@@ -1,10 +1,15 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use ArrayData;
+
 /**
  * A list decorator that allows a list to be grouped into sub-lists by common
  * values of a field.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class GroupedList extends SS_ListDecorator {
 

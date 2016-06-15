@@ -1,10 +1,12 @@
 <?php
 
+namespace SilverStripe\ORM\Queries;
+
 /**
  * Represents a list of updates / inserts made to a single row in a table
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class SQLAssignmentRow {
 

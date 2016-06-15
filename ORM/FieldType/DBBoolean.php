@@ -1,16 +1,17 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use CheckboxField;
 use DropdownField;
+use SilverStripe\ORM\DB;
+
 
 /**
  * Represents a boolean field.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBBoolean extends DBField {
 

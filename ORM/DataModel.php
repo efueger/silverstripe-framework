@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\ORM;
+
 /**
  * Representation of a DataModel - a collection of DataLists for each different
  * data type.
@@ -11,7 +13,7 @@
  * </code>
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DataModel {
 

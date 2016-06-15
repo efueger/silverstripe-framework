@@ -1,12 +1,10 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use i18n;
 use Zend_Currency;
 use MoneyField;
-use DataObject;
 
 /**
  * Partially based on Zend_Currency.
@@ -29,7 +27,7 @@ require_once 'Zend/Currency.php';
  * @todo Model validation for $allowedCurrencies
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBMoney extends DBComposite {
 

@@ -1,12 +1,12 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DataList;
 use UploadField;
 use DropdownField;
 use NumericField;
-use DataObject;
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\DataObject;
 
 /**
  * A special type Int field used for foreign keys in has_one relationships.
@@ -19,7 +19,7 @@ use DataObject;
  * @param DataObject $object The object that the foreign key is stored on (should have a relation with $name)
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBForeignKey extends DBInt {
 

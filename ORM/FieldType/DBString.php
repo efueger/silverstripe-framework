@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 use Convert;
 
@@ -8,7 +8,7 @@ use Convert;
  * An abstract base class for the string field types (i.e. Varchar and Text)
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class DBString extends DBField {
 

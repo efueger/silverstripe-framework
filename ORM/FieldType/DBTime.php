@@ -1,12 +1,11 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use Convert;
 use Zend_Date;
 use TimeField;
-
+use SilverStripe\ORM\DB;
 
 /**
  * Represents a column in the database with the type 'Time'.
@@ -21,14 +20,14 @@ use TimeField;
  * @todo Add localization support, see http://open.silverstripe.com/ticket/2931
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBTime extends DBField {
 
 	/**
 	 * @config
 	 * @see Date::nice_format
-	 * @see SS_DateTime::nice_format
+	 * @see DBDateTime::nice_format
 	 */
 	private static $nice_format = 'g:ia';
 
@@ -42,7 +41,7 @@ class DBTime extends DBField {
 	}
 
 	/**
-	 * Returns the time in the format specified by the config value nice_format, or 12 hour format by default 
+	 * Returns the time in the format specified by the config value nice_format, or 12 hour format by default
 	 * e.g. "3:15pm"
 	 *
 	 * @return string

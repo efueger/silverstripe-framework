@@ -1,9 +1,15 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use PDO;
+use Config;
+use PDOStatement;
+
 /**
  * PDO driver database connector
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class PDOConnector extends DBConnector {
 
@@ -89,7 +95,7 @@ class PDOConnector extends DBConnector {
 	 * @return boolean
 	 */
 	public static function is_emulate_prepare() {
-		return Config::inst()->get('PDOConnector', 'emulate_prepare');
+		return Config::inst()->get('SilverStripe\ORM\Connect\PDOConnector', 'emulate_prepare');
 	}
 
 	public function connect($parameters, $selectDB = false) {
@@ -135,8 +141,8 @@ class PDOConnector extends DBConnector {
 		}
 
 		// Connection charset and collation
-		$connCharset = Config::inst()->get('MySQLDatabase', 'connection_charset');
-		$connCollation = Config::inst()->get('MySQLDatabase', 'connection_collation');
+		$connCharset = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'connection_charset');
+		$connCollation = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'connection_collation');
 
 		// Set charset if given and not null. Can explicitly set to empty string to omit
 		if($parameters['driver'] !== 'sqlsrv') {

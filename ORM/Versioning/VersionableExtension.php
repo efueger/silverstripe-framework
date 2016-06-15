@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\ORM\Versioning;
+
 /**
  * Minimum level extra fields required by extensions that are versonable
  */

@@ -1,11 +1,22 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use Director;
+use Debug;
+use BadMethodCallException;
+use Exception;
+use Deprecation;
+use SilverStripe\ORM\Queries\SQLUpdate;
+use SilverStripe\ORM\Queries\SQLInsert;
+use SilverStripe\ORM\Queries\SQLExpression;
+
 /**
  * Abstract database connectivity class.
  * Sub-classes of this implement the actual database connection libraries
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class SS_Database {
 

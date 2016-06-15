@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 use i18n;
 
@@ -10,7 +10,7 @@ use i18n;
  * @todo Allowing showing locale values in different languages through Nice()
  *
  * @package framework
- * @subpackage i18n
+ * @subpackage orm
  */
 class DBLocale extends DBVarchar {
 

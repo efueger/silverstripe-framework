@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 use ShortcodeParser;
 use HTMLEditorField;
@@ -11,7 +11,7 @@ use TextField;
  *
  * This behaves similarly to Varchar, but the template processor won't escape any HTML content within it.
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBHTMLVarchar extends DBVarchar {
 

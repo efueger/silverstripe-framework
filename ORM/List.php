@@ -1,9 +1,16 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use ArrayAccess;
+use Countable;
+use IteratorAggregate;
+
 /**
  * An interface that a class can implement to be treated as a list container.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface SS_List extends ArrayAccess, Countable, IteratorAggregate {
 

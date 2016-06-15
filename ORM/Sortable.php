@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\ORM;
+
 /**
  * Additional interface for {@link SS_List} classes that are sortable.
  *
@@ -8,7 +10,7 @@
  *
  * @see SS_List, SS_Filterable, SS_Limitable
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface SS_Sortable extends SS_List {
 

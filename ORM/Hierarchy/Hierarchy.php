@@ -1,10 +1,24 @@
 <?php
+
+namespace SilverStripe\ORM\Hierarchy;
+
+use Config;
+use Exception;
+use Controller;
+use LeftAndMain;
+use ClassInfo;
+use SilverStripe\ORM\ValidationResult;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\Versioning\Versioned;
+
 /**
  * DataObjects that use the Hierarchy extension can be be organised as a hierarchy, with children and parents. The most
  * obvious example of this is SiteTree.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  *
  * @property int        ParentID
  * @property DataObject owner
@@ -133,7 +147,7 @@ class Hierarchy extends DataExtension {
 			$nodeCountThreshold = null, $nodeCountCallback = null) {
 
 		if(!is_numeric($nodeCountThreshold)) {
-			$nodeCountThreshold = Config::inst()->get('Hierarchy', 'node_threshold_total');
+			$nodeCountThreshold = Config::inst()->get('SilverStripe\ORM\Hierarchy\Hierarchy', 'node_threshold_total');
 		}
 
 		if($limitToMarked && $rootCall) {
@@ -534,7 +548,7 @@ class Hierarchy extends DataExtension {
 					continue;
 				}
 				$idList[] = $child->ID;
-				$ext = $child->getExtensionInstance('Hierarchy');
+				$ext = $child->getExtensionInstance('SilverStripe\ORM\Hierarchy\Hierarchy');
 				$ext->setOwner($child);
 				$ext->loadDescendantIDListInto($idList);
 				$ext->clearOwner();
@@ -598,7 +612,7 @@ class Hierarchy extends DataExtension {
 			$stageChildren = $this->owner->stageChildren(true);
 
 			// Add live site content that doesn't exist on the stage site, if required.
-			if($this->owner->hasExtension('Versioned')) {
+			if($this->owner->hasExtension('SilverStripe\ORM\Versioning\Versioned')) {
 				// Next, go through the live children.  Only some of these will be listed
 				$liveChildren = $this->owner->liveChildren(true, true);
 				if($liveChildren) {
@@ -626,7 +640,7 @@ class Hierarchy extends DataExtension {
 	 * @throws Exception
 	 */
 	public function AllHistoricalChildren() {
-		if(!$this->owner->hasExtension('Versioned')) {
+		if(!$this->owner->hasExtension('SilverStripe\ORM\Versioning\Versioned')) {
 			throw new Exception('Hierarchy->AllHistoricalChildren() only works with Versioned extension applied');
 		}
 
@@ -646,7 +660,7 @@ class Hierarchy extends DataExtension {
 	 * @throws Exception
 	 */
 	public function numHistoricalChildren() {
-		if(!$this->owner->hasExtension('Versioned')) {
+		if(!$this->owner->hasExtension('SilverStripe\ORM\Versioning\Versioned')) {
 			throw new Exception('Hierarchy->AllHistoricalChildren() only works with Versioned extension applied');
 		}
 
@@ -721,7 +735,7 @@ class Hierarchy extends DataExtension {
 	 * @throws Exception
 	 */
 	public function liveChildren($showAll = false, $onlyDeletedFromStage = false) {
-		if(!$this->owner->hasExtension('Versioned')) {
+		if(!$this->owner->hasExtension('SilverStripe\ORM\Versioning\Versioned')) {
 			throw new Exception('Hierarchy->liveChildren() only works with Versioned extension applied');
 		}
 

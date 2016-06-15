@@ -1,10 +1,20 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use InvalidArgumentException;
+use SilverStripe\ORM\Queries\SQLExpression;
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\ORM\Queries\SQLDelete;
+use SilverStripe\ORM\Queries\SQLInsert;
+use SilverStripe\ORM\Queries\SQLUpdate;
+use SilverStripe\ORM\Queries\SQLConditionalExpression;
+
 /**
  * Builds a SQL query string from a SQLExpression object
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBQueryBuilder {
 

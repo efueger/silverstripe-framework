@@ -1,6 +1,30 @@
 <?php
 
-// namespace SilverStripe\Framework\Model\Versioning
+namespace SilverStripe\ORM\Versioning;
+
+use TemplateGlobalProvider;
+use Session;
+use Deprecation;
+use InvalidArgumentException;
+use Config;
+use LogicException;
+use Member;
+use ClassInfo;
+use Object;
+use Permission;
+use Director;
+use Cookie;
+use FieldList;
+use ViewableData;
+use SilverStripe\ORM\DataQuery;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\ORM\SS_List;
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\ORM\Queries\SQLUpdate;
 
 /**
  * The Versioned extension allows your DataObjects to have several versions,
@@ -11,7 +35,7 @@
  * @property DataObject|Versioned $owner
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class Versioned extends DataExtension implements TemplateGlobalProvider {
 
@@ -38,7 +62,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	/**
 	 * Constructor arg to specify that versioning only is active on this record.
 	 */
-	const VERSIONED = 'Versioned';
+	const VERSIONED = 'SilverStripe\ORM\Versioning\Versioned';
 
 	/**
 	 * The Public stage.
@@ -415,7 +439,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			}
 
 			// Add all <basetable>_versions columns
-			foreach(Config::inst()->get('Versioned', 'db_for_versions_table') as $name => $type) {
+			foreach(Config::inst()->get('SilverStripe\ORM\Versioning\Versioned', 'db_for_versions_table') as $name => $type) {
 				$query->selectField(sprintf('"%s_versions"."%s"', $baseTable, $name), $name);
 			}
 
@@ -618,11 +642,11 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 				if($isRootClass) {
 					// Create table for all versions
 					$versionFields = array_merge(
-						Config::inst()->get('Versioned', 'db_for_versions_table'),
+						Config::inst()->get('SilverStripe\ORM\Versioning\Versioned', 'db_for_versions_table'),
 						(array)$fields
 					);
 					$versionIndexes = array_merge(
-						Config::inst()->get('Versioned', 'indexes_for_versions_table'),
+						Config::inst()->get('SilverStripe\ORM\Versioning\Versioned', 'indexes_for_versions_table'),
 						(array)$nonUniqueIndexes
 					);
 				} else {
@@ -1000,9 +1024,9 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	protected function lookupReverseOwners() {
 		// Find all classes with 'owns' config
 		$lookup = array();
-		foreach(ClassInfo::subclassesFor('DataObject') as $class) {
+		foreach(ClassInfo::subclassesFor('SilverStripe\ORM\DataObject') as $class) {
 			// Ensure this class is versioned
-			if(!Object::has_extension($class, 'Versioned')) {
+			if(!Object::has_extension($class, 'SilverStripe\ORM\Versioning\Versioned')) {
 				continue;
 			}
 
@@ -1021,7 +1045,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 				if(!$ownedClass) {
 					continue;
 				}
-				if($ownedClass === 'DataObject') {
+				if($ownedClass === 'SilverStripe\ORM\DataObject') {
 					throw new LogicException(sprintf(
 						"Relation %s on class %s cannot be owned as it is polymorphic",
 						$owned, $class
@@ -1115,7 +1139,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 			$itemKey = $item->class . '/' . $item->ID;
 
 			// Skip unsaved, unversioned, or already checked objects
-			if(!$item->isInDB() || !$item->has_extension('Versioned') || isset($list[$itemKey])) {
+			if(!$item->isInDB() || !$item->has_extension('SilverStripe\ORM\Versioning\Versioned') || isset($list[$itemKey])) {
 				continue;
 			}
 
@@ -1372,7 +1396,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 */
 	public function canBeVersioned($class) {
 		return ClassInfo::exists($class)
-			&& is_subclass_of($class, 'DataObject')
+			&& is_subclass_of($class, 'SilverStripe\ORM\DataObject')
 			&& DataObject::has_own_table($class);
 	}
 
@@ -1820,7 +1844,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 		}
 
 		// Add all <basetable>_versions columns
-		foreach(Config::inst()->get('Versioned', 'db_for_versions_table') as $name => $type) {
+		foreach(Config::inst()->get('SilverStripe\ORM\Versioning\Versioned', 'db_for_versions_table') as $name => $type) {
 			$query->selectField(sprintf('"%s_versions"."%s"', $baseTable, $name), $name);
 		}
 
@@ -2105,7 +2129,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @param array $idList
 	 */
 	public static function prepopulate_versionnumber_cache($class, $stage, $idList = null) {
-		if (!Config::inst()->get('Versioned', 'prepopulate_versionnumber_cache')) {
+		if (!Config::inst()->get('SilverStripe\ORM\Versioning\Versioned', 'prepopulate_versionnumber_cache')) {
 			return;
 		}
 		$filter = "";
@@ -2149,7 +2173,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * @return DataList A modified DataList designated to the specified stage
 	 */
 	public static function get_by_stage(
-		$class, $stage, $filter = '', $sort = '', $join = '', $limit = null, $containerClass = 'DataList'
+		$class, $stage, $filter = '', $sort = '', $join = '', $limit = null, $containerClass = 'SilverStripe\ORM\DataList'
 	) {
 		$result = DataObject::get($class, $filter, $sort, $join, $limit, $containerClass);
 		return $result->setDataQueryParam(array(
@@ -2437,7 +2461,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
  * Represents a single version of a record.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  *
  * @see Versioned
  */

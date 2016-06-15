@@ -1,16 +1,14 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
-use DataObject;
-use ClassInfo;
+use SilverStripe\ORM\DataObject;
 
 /**
  * A special ForeignKey class that handles relations with arbitrary class types
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBPolymorphicForeignKey extends DBComposite {
 
@@ -79,7 +77,7 @@ class DBPolymorphicForeignKey extends DBComposite {
 	public function getValue() {
 		$id = $this->getIDValue();
 		$class = $this->getClassValue();
-		if($id && $class && is_subclass_of($class, 'DataObject')) {
+		if($id && $class && is_subclass_of($class, 'SilverStripe\ORM\DataObject')) {
 			return DataObject::get_by_id($class, $id);
 		}
 	}

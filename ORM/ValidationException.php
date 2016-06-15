@@ -1,11 +1,16 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use Exception;
+
 /**
  * Exception thrown by {@link DataObject}::write if validation fails. By throwing an
  * exception rather than a user error, the exception can be caught in unit tests and as such
  * can be used as a successful test.
  *
  * @package framework
- * @subpackage validation
+ * @subpackage orm
  */
 class ValidationException extends Exception {
 

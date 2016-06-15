@@ -1,18 +1,12 @@
 <?php
 
-namespace SilverStripe\Model;
-
-use DBField;
-use SS_Filterable;
-use SS_Limitable;
-use SS_List;
-use SS_Sortable;
+namespace SilverStripe\ORM;
 
 /**
  * Abstract representation of a DB relation field, either saved or in memory
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface Relation extends SS_List, SS_Filterable, SS_Sortable, SS_Limitable {
 

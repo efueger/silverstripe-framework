@@ -1,4 +1,14 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use ViewableData;
+use ArrayData;
+use ArrayIterator;
+use Debug;
+use InvalidArgumentException;
+use LogicException;
+
 /**
  * A list object that wraps around an array of objects or arrays.
  *
@@ -14,7 +24,7 @@
  *   - exclude
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class ArrayList extends ViewableData implements SS_List, SS_Filterable, SS_Sortable, SS_Limitable {
 

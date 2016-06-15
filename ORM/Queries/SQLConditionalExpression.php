@@ -1,11 +1,15 @@
 <?php
 
+namespace SilverStripe\ORM\Queries;
+
+use Deprecation;
+
 /**
  * Represents a SQL query for an expression which interacts with existing rows
  * (SELECT / DELETE / UPDATE) with a WHERE clause
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class SQLConditionalExpression extends SQLExpression {
 

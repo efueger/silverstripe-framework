@@ -1,10 +1,12 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
 /**
  * A result-set from a MySQL database (using MySQLiConnector)
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class MySQLQuery extends SS_Query {
 

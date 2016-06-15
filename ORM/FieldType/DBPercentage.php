@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 /**
  * Represents a decimal field from 0-1 containing a percentage value.
@@ -14,7 +14,7 @@ namespace SilverStripe\Model\FieldType;
  * </code>
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBPercentage extends DBDecimal {
 

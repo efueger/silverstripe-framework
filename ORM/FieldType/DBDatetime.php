@@ -1,14 +1,14 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use Convert;
 use Member;
 use DatetimeField;
 use Zend_Date;
 use TemplateGlobalProvider;
 use DateTime;
+use SilverStripe\ORM\DB;
 
 /**
  * Represents a date-time field.
@@ -32,7 +32,7 @@ use DateTime;
  * @todo Add localization support, see http://open.silverstripe.com/ticket/2931
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBDatetime extends DBDate implements TemplateGlobalProvider {
 
@@ -42,7 +42,7 @@ class DBDatetime extends DBDate implements TemplateGlobalProvider {
 	 * @see Time::nice_format
 	 */
 	private static $nice_format = 'd/m/Y g:ia';
-	
+
 	public function setValue($value, $record = null, $markChanged = true) {
 		if($value === false || $value === null || (is_string($value) && !strlen($value))) {
 			// don't try to evaluate empty values with strtotime() below, as it returns "1970-01-01" when it should be
@@ -72,7 +72,7 @@ class DBDatetime extends DBDate implements TemplateGlobalProvider {
 	}
 
 	/**
-	 * Returns the date and time in the format specified by the config value nice_format, or 'd/m/Y g:ia' 
+	 * Returns the date and time in the format specified by the config value nice_format, or 'd/m/Y g:ia'
 	 * by default (e.g. '31/01/2014 2:23pm').
 	 * @return string Formatted date and time.
 	 */
@@ -137,7 +137,7 @@ class DBDatetime extends DBDate implements TemplateGlobalProvider {
 
 	public function requireField() {
 		$parts=Array('datatype'=>'datetime', 'arrayValue'=>$this->arrayValue);
-		$values=Array('type'=>'SS_Datetime', 'parts'=>$parts);
+		$values=Array('type'=>'SilverStripe\ORM\FieldType\SS_Datetime', 'parts'=>$parts);
 		DB::require_field($this->tableName, $this->name, $values);
 	}
 
@@ -186,7 +186,7 @@ class DBDatetime extends DBDate implements TemplateGlobalProvider {
 		if(self::$mock_now) {
 			return self::$mock_now;
 		} else {
-			return DBField::create_field('SS_Datetime', date('Y-m-d H:i:s'));
+			return DBField::create_field('SilverStripe\ORM\FieldType\SS_Datetime', date('Y-m-d H:i:s'));
 		}
 	}
 
@@ -202,7 +202,7 @@ class DBDatetime extends DBDate implements TemplateGlobalProvider {
 		if($datetime instanceof SS_Datetime) {
 			self::$mock_now = $datetime;
 		} elseif(is_string($datetime)) {
-			self::$mock_now = DBField::create_field('SS_Datetime', $datetime);
+			self::$mock_now = DBField::create_field('SilverStripe\ORM\FieldType\SS_Datetime', $datetime);
 		} else {
 			throw new Exception('DBDatetime::set_mock_now(): Wrong format: ' . $datetime);
 		}
@@ -218,7 +218,7 @@ class DBDatetime extends DBDate implements TemplateGlobalProvider {
 
 	public static function get_template_global_variables() {
 		return array(
-			'Now' => array('method' => 'now', 'casting' => 'SS_Datetime'),
+			'Now' => array('method' => 'now', 'casting' => 'SilverStripe\ORM\FieldType\SS_Datetime'),
 		);
 	}
 }

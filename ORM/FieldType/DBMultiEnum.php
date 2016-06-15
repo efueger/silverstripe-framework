@@ -1,19 +1,14 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use CheckboxSetField;
-
-/**
- * @package framework
- * @subpackage model
- */
+use SilverStripe\ORM\DB;
 
 /**
  * Represents an multi-select enumeration field.
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBMultiEnum extends DBEnum {
 	public function __construct($name, $enum = NULL, $default = NULL) {
@@ -36,8 +31,8 @@ class DBMultiEnum extends DBEnum {
 	}
 
 	public function requireField(){
-		$charset = Config::inst()->get('MySQLDatabase', 'charset');
-		$collation = Config::inst()->get('MySQLDatabase', 'collation');
+		$charset = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'charset');
+		$collation = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'collation');
 		$values=array(
 			'type'=>'set',
 			'parts'=>array(

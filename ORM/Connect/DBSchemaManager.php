@@ -1,10 +1,18 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use Exception;
+use Config;
+use Object;
+use Director;
+use SilverStripe\ORM\FieldType\DBPrimaryKey;
+
 /**
  * Represents and handles all schema management for a database
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class DBSchemaManager {
 
@@ -304,7 +312,7 @@ abstract class DBSchemaManager {
 			$this->transCreateTable($table, $options, $extensions);
 			$this->alterationMessage("Table $table: created", "created");
 		} else {
-			if (Config::inst()->get('DBSchemaManager', 'check_and_repair_on_build')) {
+			if (Config::inst()->get('SilverStripe\ORM\Connect\DBSchemaManager', 'check_and_repair_on_build')) {
 				$this->checkAndRepairTable($table, $options);
 			}
 
@@ -349,7 +357,7 @@ abstract class DBSchemaManager {
 
 				$fieldObj->setTable($table);
 
-				if($fieldObj instanceof PrimaryKey) {
+				if($fieldObj instanceof DBPrimaryKey) {
 					$fieldObj->setAutoIncrement($hasAutoIncPK);
 				}
 

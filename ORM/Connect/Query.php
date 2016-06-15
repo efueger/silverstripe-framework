@@ -1,5 +1,10 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use Iterator;
+use Convert;
+
 /**
  * Abstract query-result class.
  * Once again, this should be subclassed by an actual database implementation.  It will only
@@ -10,7 +15,7 @@
  * on providing the specific data-access methods that are required: {@link nextRecord()}, {@link numRecords()}
  * and {@link seek()}
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class SS_Query implements Iterator {
 

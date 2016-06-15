@@ -1,14 +1,14 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
-use MySQLDatabase;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\Connect\MySQLDatabase;
 
 /**
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBDouble extends DBFloat {
 

@@ -1,17 +1,17 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use NumericField;
-use ArrayList;
 use ArrayData;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\ArrayList;
 
 /**
  * Represents a signed 32 bit integer field.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBInt extends DBField {
 

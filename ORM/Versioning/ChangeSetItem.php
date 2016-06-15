@@ -1,9 +1,15 @@
 <?php
 
-// namespace SilverStripe\Framework\Model\Versioning
+namespace SilverStripe\ORM\Versioning;
 
+use Exception;
+use BadMethodCallException;
+use Member;
+use Permission;
+use CMSPreviewable;
+use Controller;
 use SilverStripe\Filesystem\Thumbnail;
-
+use SilverStripe\ORM\DataObject;
 
 /**
  * A single line in a changeset
@@ -33,6 +39,8 @@ class ChangeSetItem extends DataObject implements Thumbnail {
 	/** Represents an object which hasn't been changed directly, but owns a modified many_many relationship. */
 	//const CHANGE_MANYMANY = 'manymany';
 
+	private static $table_name = 'ChangeSetItem';
+
 	/**
 	 * Represents that an object has not yet been changed, but
 	 * should be included in this changeset as soon as any changes exist
@@ -46,12 +54,12 @@ class ChangeSetItem extends DataObject implements Thumbnail {
 	);
 
 	private static $has_one = array(
-		'ChangeSet' => 'ChangeSet',
-		'Object'      => 'DataObject',
+		'SilverStripe\ORM\Versioning\ChangeSet' => 'SilverStripe\ORM\Versioning\ChangeSet',
+		'Object'      => 'SilverStripe\ORM\DataObject',
 	);
 
 	private static $many_many = array(
-		'ReferencedBy' => 'ChangeSetItem'
+		'ReferencedBy' => 'SilverStripe\ORM\Versioning\ChangeSetItem'
 	);
 
 	private static $belongs_many_many = array(

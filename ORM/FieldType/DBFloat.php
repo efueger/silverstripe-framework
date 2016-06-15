@@ -1,15 +1,15 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use NumericField;
+use SilverStripe\ORM\DB;
 
 /**
  * Represents a floating point field.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBFloat extends DBField {
 

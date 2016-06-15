@@ -1,11 +1,13 @@
 <?php
 
+namespace SilverStripe\ORM\Queries;
+
 /**
  * Represents a SQL expression which may have field values assigned
  * (UPDATE/INSERT Expressions)
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface SQLWriteExpression {
 

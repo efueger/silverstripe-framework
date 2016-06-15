@@ -1,11 +1,10 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DataList;
-use DropdownField;
-use DB;
-use DataObject;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataObject;
+
 
 /**
  * A special type Int field used for primary keys.
@@ -13,7 +12,7 @@ use DataObject;
  * @todo Allow for custom limiting/filtering of scaffoldFormField dropdown
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBPrimaryKey extends DBInt {
 	/**

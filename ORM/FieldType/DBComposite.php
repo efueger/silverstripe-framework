@@ -1,10 +1,11 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use Object;
-use DataObject;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
+
 
 /**
  * Apply this interface to any {@link DBField} that doesn't have a 1-1 mapping with a database field.
@@ -23,7 +24,7 @@ use DataObject;
  * </code>
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class DBComposite extends DBField {
 

@@ -1,5 +1,15 @@
 <?php
 
+namespace SilverStripe\ORM;
+
+use InvalidArgumentException;
+use Injector;
+use ClassInfo;
+use Convert;
+use Object;
+use SilverStripe\ORM\Queries\SQLConditionGroup;
+use SilverStripe\ORM\Queries\SQLSelect;
+
 /**
  * An object representing a query of data from the DataObject's supporting database.
  * Acts as a wrapper over {@link SQLSelect} and performs all of the query generation.
@@ -8,7 +18,7 @@
  * Unlike DataList, modifiers on DataQuery modify the object rather than returning a clone.
  * DataList is immutable, DataQuery is mutable.
  *
- * @subpackage model
+ * @subpackage orm
  * @package framework
  */
 class DataQuery {
@@ -752,7 +762,7 @@ class DataQuery {
 			throw new InvalidArgumentException("Could not find a has_one relationship {$localField} on {$localClass}");
 		}
 
-		if ($foreignClass === 'DataObject') {
+		if ($foreignClass === 'SilverStripe\ORM\DataObject') {
 			throw new InvalidArgumentException(
 				"Could not join polymorphic has_one relationship {$localField} on {$localClass}"
 			);
@@ -797,7 +807,7 @@ class DataQuery {
 	 * @param string $foreignClass Class to join
 	 */
 	protected function joinHasManyRelation($localClass, $localField, $foreignClass) {
-		if(!$foreignClass || $foreignClass === 'DataObject') {
+		if(!$foreignClass || $foreignClass === 'SilverStripe\ORM\DataObject') {
 			throw new InvalidArgumentException("Could not find a has_many relationship {$localField} on {$localClass}");
 		}
 		$schema = DataObject::getSchema();

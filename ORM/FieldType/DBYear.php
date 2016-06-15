@@ -1,20 +1,20 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use DropdownField;
+use SilverStripe\ORM\DB;
 
 /**
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 
 /**
  * Represents a single year field.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBYear extends DBField {
 

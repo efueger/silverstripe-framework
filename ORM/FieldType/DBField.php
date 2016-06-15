@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 use ViewableData;
 use Convert;
@@ -40,7 +40,7 @@ use TextField;
  * @todo remove MySQL specific code from subclasses
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class DBField extends ViewableData {
 

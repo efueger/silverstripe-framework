@@ -1,15 +1,15 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
-use DB;
 use NumericField;
+use SilverStripe\ORM\DB;
 
 /**
  * Represents a Decimal field.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBDecimal extends DBField {
 

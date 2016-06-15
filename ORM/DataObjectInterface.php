@@ -1,11 +1,14 @@
 <?php
+
+namespace SilverStripe\ORM;
+
 /**
  * DataObjectInterface is an interface that other data systems in your application can implement in order to behave in
  * a manner similar to DataObject.
  *
  * In addition to the methods defined below, the data of the object should be directly accessible as fields.
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 interface DataObjectInterface {
 	/**

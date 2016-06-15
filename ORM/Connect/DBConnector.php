@@ -1,10 +1,15 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use SQLFormatter;
+use Config;
+
 /**
  * Represents an object responsible for wrapping DB connector api
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 abstract class DBConnector {
 

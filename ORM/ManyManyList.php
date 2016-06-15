@@ -1,12 +1,19 @@
 <?php
 
-use SilverStripe\Model\FieldType\DBComposite;
+namespace SilverStripe\ORM;
+
+use Object;
+use InvalidArgumentException;
+use Exception;
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\ORM\Queries\SQLDelete;
+use SilverStripe\ORM\FieldType\DBComposite;
 
 /**
  * Subclass of {@link DataList} representing a many_many relation.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class ManyManyList extends RelationList {
 

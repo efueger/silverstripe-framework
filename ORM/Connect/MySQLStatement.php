@@ -1,5 +1,7 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
 /**
  * Provides a record-view for mysqli statements
  *
@@ -7,7 +9,7 @@
  * buffer itself and sacrifice any potential performance benefit.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class MySQLStatement extends SS_Query {
 

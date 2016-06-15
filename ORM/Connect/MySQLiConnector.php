@@ -1,9 +1,15 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use Config;
+use MySQLi;
+use mysqli_stmt;
+
 /**
  * Connector for MySQL using the MySQLi method
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class MySQLiConnector extends DBConnector {
 
@@ -57,8 +63,8 @@ class MySQLiConnector extends DBConnector {
 		$selectedDB = ($selectDB && !empty($parameters['database'])) ? $parameters['database'] : null;
 
 		// Connection charset and collation
-		$connCharset = Config::inst()->get('MySQLDatabase', 'connection_charset');
-		$connCollation = Config::inst()->get('MySQLDatabase', 'connection_collation');
+		$connCharset = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'connection_charset');
+		$connCollation = Config::inst()->get('SilverStripe\ORM\Connect\MySQLDatabase', 'connection_collation');
 
 		if(!empty($parameters['port'])) {
 			$this->dbConn = new MySQLi(

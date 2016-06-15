@@ -1,6 +1,18 @@
 <?php
 
-// namespace SilverStripe\Framework\Model\Versioning
+namespace SilverStripe\ORM\Versioning;
+
+use Member;
+use Permission;
+use FieldList;
+use TextField;
+use ReadonlyField;
+use i18n;
+use BadMethodCallException;
+use LogicException;
+use SilverStripe\ORM\ValidationException;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataObject;
 
 /**
  * The ChangeSet model tracks several VersionedAndStaged objects for later publication as a single
@@ -12,7 +24,7 @@
  * @property string $State
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class ChangeSet extends DataObject {
 
@@ -29,13 +41,15 @@ class ChangeSet extends DataObject {
 	/** A changeset which is published and closed */
 	const STATE_PUBLISHED = 'published';
 
+	private static $table_name = 'ChangeSet';
+
 	private static $db = array(
 		'Name'  => 'Varchar',
 		'State' => "Enum('open,published,reverted','open')",
 	);
 
 	private static $has_many = array(
-		'Changes' => 'ChangeSetItem',
+		'Changes' => 'SilverStripe\ORM\Versioning\ChangeSetItem',
 	);
 
 	private static $defaults = array(

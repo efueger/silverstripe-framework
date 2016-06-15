@@ -1,6 +1,6 @@
 <?php
 
-namespace SilverStripe\Model\FieldType;
+namespace SilverStripe\ORM\FieldType;
 
 use Deprecation;
 
@@ -18,7 +18,7 @@ use Deprecation;
  * </code>
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DBCurrency extends DBDecimal {
 

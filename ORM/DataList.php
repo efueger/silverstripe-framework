@@ -1,4 +1,15 @@
 <?php
+
+namespace SilverStripe\ORM;
+
+use ViewableData;
+use Exception;
+use InvalidArgumentException;
+use Injector;
+use LogicException;
+use Debug;
+use ArrayIterator;
+
 /**
  * Implements a "lazy loading" DataObjectSet.
  * Uses {@link DataQuery} to do the actual query generation.
@@ -20,7 +31,7 @@
  * Subclasses of DataList may add other methods that have the same effect.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class DataList extends ViewableData implements SS_List, SS_Filterable, SS_Sortable, SS_Limitable {
 	/**

@@ -1,11 +1,18 @@
 <?php
 
+namespace SilverStripe\ORM\Queries;
+
+use Injector;
+use Deprecation;
+use InvalidArgumentException;
+use SilverStripe\ORM\DB;
+
 /**
  * Object representing a SQL SELECT query.
  * The various parts of the SQL query can be manipulated individually.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class SQLSelect extends SQLConditionalExpression {
 

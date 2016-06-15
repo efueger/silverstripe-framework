@@ -1,5 +1,12 @@
 <?php
 
+namespace SilverStripe\ORM\Versioning;
+
+use GridFieldDetailForm_ItemRequest;
+use FormAction;
+use Convert;
+use SilverStripe\ORM\ValidationException;
+
 /**
  * Provides versioned dataobject support to {@see GridFieldDetailForm_ItemRequest}
  *
@@ -12,7 +19,7 @@ class VersionedGridFieldItemRequest extends GridFieldDetailForm_ItemRequest {
 
 		// Check if record is versionable
 		$record = $this->getRecord();
-        if(!$record || !$record->has_extension('Versioned')) {
+        if(!$record || !$record->has_extension('SilverStripe\ORM\Versioning\Versioned')) {
             return $actions;
         }
 

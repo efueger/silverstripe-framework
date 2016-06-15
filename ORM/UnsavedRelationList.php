@@ -1,6 +1,9 @@
 <?php
 
-use SilverStripe\Model\Relation;
+namespace SilverStripe\ORM;
+
+use InvalidArgumentException;
+use ArrayIterator;
 
 /**
  * An {@link ArrayList} that represents an unsaved relation.
@@ -14,7 +17,7 @@ use SilverStripe\Model\Relation;
  * into an instance of {@link RelationList}.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class UnsavedRelationList extends ArrayList implements Relation {
 

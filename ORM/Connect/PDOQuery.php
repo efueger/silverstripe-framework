@@ -1,9 +1,14 @@
 <?php
 
+namespace SilverStripe\ORM\Connect;
+
+use PDOStatement;
+use PDO;
+
 /**
  * A result-set from a PDO database.
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class PDOQuery extends SS_Query {
 	/**

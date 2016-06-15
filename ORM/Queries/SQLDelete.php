@@ -1,11 +1,15 @@
 <?php
 
+namespace SilverStripe\ORM\Queries;
+
+use Injector;
+
 /**
  * Object representing a SQL DELETE query.
  * The various parts of the SQL query can be manipulated individually.
  *
  * @package framework
- * @subpackage model
+ * @subpackage orm
  */
 class SQLDelete extends SQLConditionalExpression {
 

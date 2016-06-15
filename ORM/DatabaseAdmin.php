@@ -1,6 +1,6 @@
 <?php
 // Include the DB class
-require_once("model/DB.php");
+require_once("DB.php");
 
 /**
  * DatabaseAdmin class

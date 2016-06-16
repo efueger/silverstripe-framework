@@ -1625,7 +1625,7 @@ class UploadField_SelectHandler extends RequestHandler {
 			'Size' => singleton('File')->fieldLabel('Size')
 		));
 		$colsComponent->setFieldCasting(array(
-			'Created' => 'SS_Datetime->Nice'
+			'Created' => 'DBDatetime->Nice'
 		));
 
  		// Set configurable pagination for file list field

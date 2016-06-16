@@ -42,10 +42,10 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		'Surname' => 'Varchar',
 		'Email' => 'Varchar(254)', // See RFC 5321, Section 4.5.3.1.3. (256 minus the < and > character)
 		'TempIDHash' => 'Varchar(160)', // Temporary id used for cms re-authentication
-		'TempIDExpired' => 'SS_Datetime', // Expiry of temp login
+		'TempIDExpired' => 'Datetime', // Expiry of temp login
 		'Password' => 'Varchar(160)',
 		'AutoLoginHash' => 'Varchar(160)', // Used to auto-login the user on password reset
-		'AutoLoginExpired' => 'SS_Datetime',
+		'AutoLoginExpired' => 'Datetime',
 		// This is an arbitrary code pointing to a PasswordEncryptor instance,
 		// not an actual encryption algorithm.
 		// Warning: Never change this field after its the first password hashing without
@@ -53,7 +53,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		'PasswordEncryption' => "Varchar(50)",
 		'Salt' => 'Varchar(50)',
 		'PasswordExpiry' => 'Date',
-		'LockedOutUntil' => 'SS_Datetime',
+		'LockedOutUntil' => 'Datetime',
 		'Locale' => 'Varchar(6)',
 		// handled in registerFailedLogin(), only used if $lock_out_after_incorrect_logins is set
 		'FailedLoginCount' => 'Int',
@@ -563,11 +563,11 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 		if(strpos(Cookie::get('alc_enc'), ':') && Cookie::get('alc_device') && !Session::get("loggedInAs")) {
 			list($uid, $token) = explode(':', Cookie::get('alc_enc'), 2);
-			
+
 			if (!$uid || !$token) {
 				return;
 			}
-			
+
 			$deviceID = Cookie::get('alc_device');
 
 			$member = Member::get()->byId($uid);

@@ -105,7 +105,7 @@ mappings:
   SilverStripe\Model\FieldType\DBTime: SilverStripe\ORM\FieldType\DBTime
   SilverStripe\Model\FieldType\DBVarchar: SilverStripe\ORM\FieldType\DBVarchar
   SilverStripe\Model\FieldType\DBYear: SilverStripe\ORM\FieldType\DBYear
-  SilverStripe\Model\FieldType\SS_Datetime: SilverStripe\ORM\FieldType\SS_Datetime
+  SilverStripe\Model\FieldType\SS_Datetime: SilverStripe\ORM\FieldType\DBDatetime
   ChangeSet: SilverStripe\ORM\Versioning\ChangeSet
   ChangeSetItem: SilverStripe\ORM\Versioning\ChangeSetItem
   DataDifferencer: SilverStripe\ORM\Versioning\DataDifferencer

@@ -325,7 +325,7 @@ class HTMLEditorField_Toolbar extends RequestHandler {
 			'Created' => singleton('File')->fieldLabel('Created'),
 		));
 		$columns->setFieldCasting(array(
-			'Created' => 'SS_Datetime->Nice'
+			'Created' => 'DBDatetime->Nice'
 		));
 
 		$fromCMS = new CompositeField(

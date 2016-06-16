@@ -28,7 +28,7 @@ class SSViewerCacheBlockTest_VersionedModel extends DataObject implements TestOn
 	protected $entropy = 'default';
 
 	private static $extensions = array(
-		"Versioned('Stage', 'Live')"
+		"SilverStripe\\ORM\\Versioning\\Versioned('Stage', 'Live')"
 	);
 
 	public function setEntropy($entropy) {

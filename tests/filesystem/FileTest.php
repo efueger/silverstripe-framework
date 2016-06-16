@@ -331,7 +331,7 @@ class FileTest extends SapphireTest {
 	/**
 	 * @see http://open.silverstripe.org/ticket/5693
 	 *
-	 * @expectedException ValidationException
+	 * @expectedException SilverStripe\ORM\ValidationException
 	 */
 	public function testSetNameWithInvalidExtensionDoesntChangeFilesystem() {
 		$orig = Config::inst()->get('File', 'allowed_extensions');

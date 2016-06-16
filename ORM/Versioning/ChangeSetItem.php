@@ -54,8 +54,8 @@ class ChangeSetItem extends DataObject implements Thumbnail {
 	);
 
 	private static $has_one = array(
-		'SilverStripe\ORM\Versioning\ChangeSet' => 'SilverStripe\ORM\Versioning\ChangeSet',
-		'Object'      => 'SilverStripe\ORM\DataObject',
+		'ChangeSet' => 'SilverStripe\ORM\Versioning\ChangeSet',
+		'Object'    => 'SilverStripe\ORM\DataObject',
 	);
 
 	private static $many_many = array(

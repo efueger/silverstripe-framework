@@ -586,7 +586,7 @@ class HierarchyHideTest_Object extends DataObject implements TestOnly {
 
 	private static $extensions = array(
 		'SilverStripe\\ORM\\Hierarchy\\Hierarchy',
-		"Versioned('Stage', 'Live')",
+		"SilverStripe\\ORM\\Versioning\\Versioned('Stage', 'Live')",
 	);
 
 	public function cmstreeclasses() {

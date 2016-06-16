@@ -22,7 +22,7 @@ class RememberLoginHash extends DataObject {
 	private static $db = array (
 		'DeviceID' => 'Varchar(40)',
 		'Hash' => 'Varchar(160)',
-		'ExpiryDate' => 'SS_Datetime'
+		'ExpiryDate' => 'Datetime'
 	);
 
 	private static $has_one = array (

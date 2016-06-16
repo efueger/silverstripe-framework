@@ -439,7 +439,7 @@ class VersionedLazy_DataObject extends DataObject implements TestOnly {
 		"PageName" => "Varchar"
 	);
 	private static $extensions = array(
-		"Versioned('Stage', 'Live')"
+		"SilverStripe\\ORM\\Versioning\\Versioned('Stage', 'Live')"
 	);
 }
 
@@ -448,6 +448,6 @@ class VersionedLazySub_DataObject extends VersionedLazy_DataObject {
 		"ExtraField" => "Varchar",
 	);
 	private static $extensions = array(
-		"Versioned('Stage', 'Live')"
+		"SilverStripe\\ORM\\Versioning\\Versioned('Stage', 'Live')"
 	);
 }

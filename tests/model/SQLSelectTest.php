@@ -752,7 +752,7 @@ class SQLSelectTest_DO extends DataObject implements TestOnly {
 		"Name" => "Varchar",
 		"Meta" => "Varchar",
 		"Common" => "Varchar",
-		"Date" => "SS_Datetime"
+		"Date" => "Datetime"
 	);
 }
 

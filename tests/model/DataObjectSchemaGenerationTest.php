@@ -210,7 +210,7 @@ class DataObjectSchemaGenerationTest_DO extends DataObject implements TestOnly {
 		'NumberField' => 'Decimal',
 		'FloatingField' => 'Decimal(10,3,1.1)',
 		'TextValue' => 'Varchar',
-		'Date' => 'SS_Datetime',
+		'Date' => 'Datetime',
 		'MyNumber' => 'Int'
 	);
 }

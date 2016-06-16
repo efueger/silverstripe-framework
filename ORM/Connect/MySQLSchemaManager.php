@@ -498,7 +498,7 @@ class MySQLSchemaManager extends DBSchemaManager {
 	 * @param array $values Contains a tokenised list of info about this data type
 	 * @return string
 	 */
-	public function ss_datetime($values) {
+	public function datetime($values) {
 		//For reference, this is what typically gets passed to this function:
 		//$parts=Array('datatype'=>'datetime');
 		//DB::requireField($this->tableName, $this->name, $values);

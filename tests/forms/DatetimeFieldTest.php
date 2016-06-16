@@ -253,7 +253,7 @@ class DatetimeFieldTest extends SapphireTest {
 class DatetimeFieldTest_Model extends DataObject implements TestOnly {
 
 	private static $db = array(
-		'MyDatetime' => 'SS_Datetime'
+		'MyDatetime' => 'Datetime'
 	);
 
 }

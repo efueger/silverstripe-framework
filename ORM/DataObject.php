@@ -229,9 +229,9 @@ class DataObject extends ViewableData implements DataObjectInterface, i18nEntity
 	 */
 	private static $fixed_fields = array(
 		'ID' => 'PrimaryKey',
-		'ClassName' => 'SilverStripe\ORM\FieldType\DBClassName',
-		'LastEdited' => 'SilverStripe\ORM\FieldType\SS_Datetime',
-		'Created' => 'SilverStripe\ORM\FieldType\SS_Datetime',
+		'ClassName' => 'DBClassName',
+		'LastEdited' => 'DBDatetime',
+		'Created' => 'DBDatetime',
 	);
 
 	/**

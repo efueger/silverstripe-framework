@@ -41,7 +41,7 @@ class VersionedOwnershipTest extends SapphireTest {
 	}
 
 	/**
-	 * Virtual "sleep" that doesn't actually slow execution, only advances SS_DateTime::now()
+	 * Virtual "sleep" that doesn't actually slow execution, only advances DBDateTime::now()
 	 *
 	 * @param int $minutes
 	 */

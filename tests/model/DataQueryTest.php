@@ -393,7 +393,7 @@ class DataQueryTest_F extends DataObject implements TestOnly {
 
 	private static $db = array(
 		'SortOrder' => 'Int',
-		'MyDate' => 'SS_Datetime',
+		'MyDate' => 'Datetime',
 		'MyString' => 'Text'
 	);
 }

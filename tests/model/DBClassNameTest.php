@@ -114,7 +114,7 @@ class DBClassNameTest_Object extends DataObject implements TestOnly {
 
 	private static $db = array(
 		'DefaultClass' => 'DBClassName',
-		'AnyClass' => 'DBClassName("DataObject")',
+		'AnyClass' => "DBClassName('SilverStripe\\ORM\\DataObject')",
 		'ChildClass' => 'DBClassName("DBClassNameTest_ObjectSubClass")',
 		'LeafClass' => 'DBClassName("DBClassNameTest_ObjectSubSubClass")'
 	);

@@ -4,6 +4,7 @@ use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\ORM\DataExtension;
+
 /**
  * @package framework
  * @subpackage tests
@@ -53,7 +54,7 @@ class MemberTest extends FunctionalTest {
 
 
 	/**
-	 * @expectedException ValidationException
+	 * @expectedException SilverStripe\ORM\ValidationException
 	 */
 	public function testWriteDoesntMergeNewRecordWithExistingMember() {
 		$m1 = new Member();
@@ -66,7 +67,7 @@ class MemberTest extends FunctionalTest {
 	}
 
 	/**
-	 * @expectedException ValidationException
+	 * @expectedException SilverStripe\ORM\ValidationException
 	 */
 	public function testWriteDoesntMergeExistingMemberOnIdentifierChange() {
 		$m1 = new Member();
@@ -918,7 +919,7 @@ class MemberTest extends FunctionalTest {
 		$firstHash->ExpiryDate = '2000-01-01 00:00:00';
 		$firstHash->write();
 
-		SS_DateTime::set_mock_now('1999-12-31 23:59:59');
+		DBDateTime::set_mock_now('1999-12-31 23:59:59');
 
 		$response = $this->get(
 			'Security/login',
@@ -944,7 +945,7 @@ class MemberTest extends FunctionalTest {
 		$firstHash->ExpiryDate = '2000-01-01 00:00:00';
 		$firstHash->write();
 
-		SS_DateTime::set_mock_now('2000-01-01 00:00:01');
+		DBDateTime::set_mock_now('2000-01-01 00:00:01');
 
 		$response = $this->get(
 			'Security/login',

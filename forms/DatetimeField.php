@@ -7,7 +7,7 @@ use SilverStripe\ORM\FieldType\DBField;
 /**
  * A composite field for date and time entry,
  * based on {@link DateField} and {@link TimeField}.
- * Usually saves into a single {@link SS_Datetime} database column.
+ * Usually saves into a single {@link DBDateTime} database column.
  * If you want to save into {@link Date} or {@link Time} columns,
  * please instanciate the fields separately.
  *

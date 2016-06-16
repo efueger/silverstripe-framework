@@ -62,7 +62,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	/**
 	 * Constructor arg to specify that versioning only is active on this record.
 	 */
-	const VERSIONED = 'SilverStripe\ORM\Versioning\Versioned';
+	const VERSIONED = 'Versioned';
 
 	/**
 	 * The Public stage.

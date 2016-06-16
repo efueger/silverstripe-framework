@@ -6,6 +6,7 @@ use ClassInfo;
 use Config;
 use Extension;
 use Injector;
+use InvalidArgumentException;
 
 /**
  * Allows an object to have extensions applied to it.
@@ -314,6 +315,10 @@ trait Extensible {
 		foreach($extensions as $extension) {
 			list($extensionClass, $extensionArgs) = \Object::parse_class_spec($extension);
 			$sources[] = $extensionClass;
+
+			if (!class_exists($extensionClass)) {
+				throw new InvalidArgumentException("$class references nonexistent $extensionClass in \$extensions");
+			}
 
 			call_user_func(array($extensionClass, 'add_to_class'), $class, $extensionClass, $extensionArgs);
 

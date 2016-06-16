@@ -2,6 +2,7 @@
 
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\Connect\MySQLDatabase;
+use SilverStripe\ORM\Connect\MySQLSchemaManager;
 use SilverStripe\ORM\DataObject;
 
 class FulltextFilterTest extends SapphireTest {
@@ -119,7 +120,7 @@ class FulltextFilterTest_DataObject extends DataObject implements TestOnly {
 	);
 
 	private static $create_table_options = array(
-		"MySQLDatabase" => "ENGINE=MyISAM",
+		MySQLSchemaManager::ID => "ENGINE=MyISAM",
 	);
 
 }

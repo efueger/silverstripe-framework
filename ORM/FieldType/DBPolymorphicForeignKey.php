@@ -14,7 +14,7 @@ class DBPolymorphicForeignKey extends DBComposite {
 
 	private static $composite_db = array(
 		'ID' => 'Int',
-		'Class' => 'DBClassName("DataObject")'
+		'Class' => "DBClassName('SilverStripe\\ORM\\DataObject')"
 	);
 
 	public function scaffoldFormField($title = null, $params = null) {

@@ -17,7 +17,7 @@ class DataExtensionTest extends SapphireTest {
 	);
 
 	protected $requiredExtensions = array(
-		'DataObject' => array( 'DataExtensionTest_AppliedToDO' ),
+		'\SilverStripe\ORM\DataObject' => array( 'DataExtensionTest_AppliedToDO' ),
 	);
 
 	public function testOneToManyAssociationWithExtension() {

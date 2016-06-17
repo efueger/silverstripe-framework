@@ -948,4 +948,101 @@ abstract class DBSchemaManager {
 		return true;
 	}
 
+
+	/**
+	 * Returns data type for 'boolean' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function boolean($values);
+
+	/**
+	 * Returns data type for 'date' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function date($values);
+
+	/**
+	 * Returns data type for 'decimal' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function decimal($values);
+
+	/**
+	 * Returns data type for 'set' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function enum($values);
+
+	/**
+	 * Returns data type for 'set' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function set($values);
+
+	/**
+	 * Returns data type for 'float' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function float($values);
+
+	/**
+	 * Returns data type for 'int' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function int($values);
+
+	/**
+	 * Returns data type for 'datetime' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function datetime($values);
+
+	/**
+	 * Returns data type for 'text' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function text($values);
+
+	/**
+	 * Returns data type for 'time' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function time($values);
+
+	/**
+	 * Returns data type for 'varchar' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function varchar($values);
+
+	/*
+	 * Returns data type for 'year' column
+	 *
+	 * @param array $values Contains a tokenised list of info about this data type
+	 * @return string
+	 */
+	abstract public function year($values);
+
 }

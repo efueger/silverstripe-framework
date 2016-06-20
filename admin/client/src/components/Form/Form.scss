@@ -360,17 +360,19 @@ input.radio {
       }
     }
 
-    .form__field-extra-label {
-      @include make-col-span(3);
-      @include make-col-offset(0);
+    .stacked {
+      .form__field-holder {
+        @include make-col-span(10);
+      }
     }
   }
 }
+
 
 // TEMPORARY
 // Apply .form--inline to forms to state whether or not the label and input should become inline
 // @include form-responsive(turns inline, stops being full width, reduced portion of screen width is used)
 .form--inline,
-.cms-edit-form:not(.AssetAdmin) {
+:not(.AssetAdmin) {
   @include form-responsive(lg, xl, xxl);
 }

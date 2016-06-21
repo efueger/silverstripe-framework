@@ -1,4 +1,9 @@
 <?php
+
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\ORM\DataExtension;
 /**
  * @package framework
  * @subpackage tests
@@ -169,7 +174,7 @@ class MemberTest extends FunctionalTest {
 		$this->assertTrue($passwords->current()->checkPassword('test1'), "Password test1 not found in MemberRecord");
 
 		$passwords->next();
-		$this->assertInstanceOf('DataObject', $passwords->current());
+		$this->assertInstanceOf('SilverStripe\\ORM\\DataObject', $passwords->current());
 		$this->assertTrue($passwords->current()->checkPassword('1nitialPassword'),
 			"Password 1nitialPassword not found in MemberRecord");
 
@@ -952,7 +957,7 @@ class MemberTest extends FunctionalTest {
 		);
 		$this->assertNotContains($message, $response->getBody());
 		$this->session()->inst_set('loggedInAs', null);
-		SS_Datetime::clear_mock_now();
+		DBDatetime::clear_mock_now();
 	}
 
 	public function testRememberMeMultipleDevices() {

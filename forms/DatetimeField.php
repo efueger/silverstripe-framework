@@ -1,6 +1,8 @@
 <?php
 
-use SilverStripe\Model\FieldType\DBField;
+
+use SilverStripe\ORM\FieldType\DBField;
+
 
 /**
  * A composite field for date and time entry,

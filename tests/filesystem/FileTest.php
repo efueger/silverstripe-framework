@@ -2,6 +2,10 @@
 
 use Filesystem as SS_Filesystem;
 use SilverStripe\Filesystem\Storage\AssetStore;
+use SilverStripe\ORM\Versioning\Versioned;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\ValidationException;
+
 
 /**
  * Tests for the File class

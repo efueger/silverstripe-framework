@@ -1,4 +1,7 @@
 <?php
+
+use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\ORM\DataObject;
 /**
  * Persists a token associated with a device for users who opted for the "Remember Me"
  * feature when logging in.
@@ -122,7 +125,7 @@ class RememberLoginHash extends DataObject {
 		$rememberLoginHash->DeviceID = $deviceID;
 		$rememberLoginHash->Hash = $rememberLoginHash->getNewHash($member);
 		$rememberLoginHash->MemberID = $member->ID;
-		$now = SS_Datetime::now();
+		$now = DBDatetime::now();
 		$expiryDate = new DateTime($now->Rfc2822());
 		$tokenExpiryDays = Config::inst()->get('RememberLoginHash', 'token_expiry_days');
 		$expiryDate->add(new DateInterval('P'.$tokenExpiryDays.'D'));

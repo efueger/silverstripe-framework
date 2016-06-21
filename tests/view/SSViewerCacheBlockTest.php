@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\Versioning\Versioned;
+
 // Not actually a data object, we just want a ViewableData object that's just for us
 class SSViewerCacheBlockTest_Model extends DataObject implements TestOnly {
 

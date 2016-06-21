@@ -1,6 +1,15 @@
 <?php
 
 use SilverStripe\Filesystem\Storage\AssetContainer;
+use SilverStripe\ORM\SS_List;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\ValidationException;
+use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\ORM\RelationList;
+use SilverStripe\ORM\UnsavedRelationList;
+use SilverStripe\ORM\DataList;
+
 
 /**
  * Field for uploading single or multiple files of all types, including images.

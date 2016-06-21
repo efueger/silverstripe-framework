@@ -1,6 +1,11 @@
 <?php
 
-use SilverStripe\Model\FieldType\DBClassName;
+
+use SilverStripe\ORM\Connect\MySQLSchemaManager;
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\FieldType\DBClassName;
+use SilverStripe\ORM\DataObject;
+
 
 class DataObjectSchemaGenerationTest extends SapphireTest {
 	protected $extraDataObjects = array(

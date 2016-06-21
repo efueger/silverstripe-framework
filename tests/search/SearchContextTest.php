@@ -1,5 +1,7 @@
 <?php
 
+use SilverStripe\ORM\DataObject;
+
 class SearchContextTest extends SapphireTest {
 
 	protected static $fixture_file = 'SearchContextTest.yml';

@@ -1,5 +1,10 @@
 <?php
 
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\Connect\MySQLDatabase;
+use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\ORM\DataObject;
+
 /**
  * @package framework
  * @subpackage tests

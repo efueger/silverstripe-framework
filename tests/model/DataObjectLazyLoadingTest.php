@@ -1,4 +1,9 @@
 <?php
+
+use SilverStripe\ORM\DB;
+use SilverStripe\ORM\DataList;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\Versioning\Versioned;
 /**
  * @package framework
  * @subpackage tests

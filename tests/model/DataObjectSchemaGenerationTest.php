@@ -134,6 +134,7 @@ class DataObjectSchemaGenerationTest extends SapphireTest {
 		DBClassName::clear_classname_cache();
 		$do1 = new DataObjectSchemaGenerationTest_DO();
 		$fields = DataObject::database_fields('DataObjectSchemaGenerationTest_DO');
+		/** @skipUpgrade */
 		$this->assertEquals("DBClassName", $fields['ClassName']);
 		$this->assertEquals(
 			array(
@@ -149,6 +150,7 @@ class DataObjectSchemaGenerationTest extends SapphireTest {
 		$item1->write();
 		DBClassName::clear_classname_cache();
 		$fields = DataObject::database_fields('DataObjectSchemaGenerationTest_DO');
+		/** @skipUpgrade */
 		$this->assertEquals("DBClassName", $fields['ClassName']);
 		$this->assertEquals(
 			array(
@@ -164,6 +166,7 @@ class DataObjectSchemaGenerationTest extends SapphireTest {
 		$item2->write();
 		DBClassName::clear_classname_cache();
 		$fields = DataObject::database_fields('DataObjectSchemaGenerationTest_DO');
+		/** @skipUpgrade */
 		$this->assertEquals("DBClassName", $fields['ClassName']);
 		$this->assertEquals(
 			array(
@@ -181,6 +184,7 @@ class DataObjectSchemaGenerationTest extends SapphireTest {
 		$item2->write();
 		DBClassName::clear_classname_cache();
 		$fields = DataObject::database_fields('DataObjectSchemaGenerationTest_DO');
+		/** @skipUpgrade */
 		$this->assertEquals("DBClassName", $fields['ClassName']);
 		$this->assertEquals(
 			array(

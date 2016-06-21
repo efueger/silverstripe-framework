@@ -115,3 +115,8 @@ mappings:
   VersionedGridFieldDetailForm: SilverStripe\ORM\Versioning\VersionedGridFieldDetailForm
   VersionedGridFieldItemRequest: SilverStripe\ORM\Versioning\VersionedGridFieldItemRequest
   Hierarchy: SilverStripe\ORM\Hierarchy\Hierarchy
+skipConfigs:
+  - db
+  - casting
+  - table_name
+  - fixed_fields

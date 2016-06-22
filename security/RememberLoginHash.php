@@ -1,7 +1,14 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\ORM\DataObject;
+use Config;
+use DateTime;
+use DateInterval;
+
 /**
  * Persists a token associated with a device for users who opted for the "Remember Me"
  * feature when logging in.

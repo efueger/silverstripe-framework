@@ -1,6 +1,11 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\DataObject;
+use Config;
+
 /**
  * A PermissionRoleCode represents a single permission code assigned to a {@link PermissionRole}.
  *

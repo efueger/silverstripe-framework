@@ -1,6 +1,11 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\DataObject;
+use CsvBulkLoader;
+
 /**
  * @todo Migrate Permission->Arg and Permission->Type values
  *

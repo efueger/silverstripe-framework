@@ -1,6 +1,14 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\ValidationResult;
+use InvalidArgumentException;
+use Controller;
+use Form;
+use Session;
+
 /**
  * Authenticator for the default "member" method
  *

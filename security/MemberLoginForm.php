@@ -1,4 +1,23 @@
 <?php
+
+namespace SilverStripe\Security;
+
+use Director;
+use Requirements;
+use Session;
+use FieldList;
+use HiddenField;
+use FormAction;
+use TextField;
+use PasswordField;
+use CheckboxField;
+use Config;
+use LiteralField;
+use RequiredFields;
+use Controller;
+use Convert;
+use Email;
+
 /**
  * Log-in form for the "member" authentication method.
  *

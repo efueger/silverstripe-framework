@@ -1,4 +1,13 @@
 <?php
+
+namespace SilverStripe\Security;
+
+use Object;
+use TemplateGlobalProvider;
+use Session;
+use HiddenField;
+use Controller;
+
 /**
  * @package framework
  * @subpackage security

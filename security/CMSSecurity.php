@@ -1,5 +1,15 @@
 <?php
 
+namespace SilverStripe\Security;
+
+use Requirements;
+use Controller;
+use Director;
+use Convert;
+use Session;
+use AdminRootController;
+
+
 /**
  * Provides a security interface functionality within the cms
  * @package framework

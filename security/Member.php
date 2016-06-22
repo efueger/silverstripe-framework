@@ -1,5 +1,8 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\ORM\FieldType\DBDatetime;
@@ -10,6 +13,31 @@ use SilverStripe\ORM\SS_List;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\ORM\ManyManyList;
+use TemplateGlobalProvider;
+use Deprecation;
+use i18n;
+use Director;
+use Session;
+use Cookie;
+use Config;
+use SapphireTest;
+use DateTime;
+use DropdownField;
+use ConfirmedPasswordField;
+use Injector;
+use TestMailer;
+use Email;
+use MSSQLDatabase;
+use FieldList;
+use ListboxField;
+use Zend_Locale_Format;
+use Zend_Locale;
+use Zend_Date;
+use MemberDatetimeOptionsetField;
+use HTMLEditorConfig;
+use RequiredFields;
+use GridFieldDetailForm_ItemRequest;
+
 
 
 /**

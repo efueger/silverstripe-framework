@@ -1,8 +1,17 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ArrayList;
+use TemplateGlobalProvider;
+use Config;
+use ClassInfo;
+use TestOnly;
+use Deprecation;
+
 /**
  * Represents a permission assigned to a group.
  * @package framework

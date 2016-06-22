@@ -1,8 +1,30 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
+use Controller;
+use TemplateGlobalProvider;
+use Deprecation;
+use Director;
+use SS_HTTPResponse;
+use Session;
+use Config;
+use Exception;
+use Page;
+use Page_Controller;
+use ArrayData;
+use FieldList;
+use EmailField;
+use FormAction;
+use Convert;
+use Object;
+use Subsite;
+use ClassInfo;
+
 /**
  * Implements a basic security model
  * @package framework

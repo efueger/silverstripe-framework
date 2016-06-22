@@ -1,6 +1,11 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\DataObject;
+
+
 /**
  * Keep track of users' previous passwords, so that we can check that new passwords aren't changed back to old ones.
  * @package framework

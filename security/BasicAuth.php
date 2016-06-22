@@ -1,4 +1,13 @@
 <?php
+
+namespace SilverStripe\Security;
+
+use SapphireTest;
+use Director;
+use SS_HTTPResponse;
+use SS_HTTPResponse_Exception;
+use Config;
+
 /**
  * Provides an interface to HTTP basic authentication.
  *

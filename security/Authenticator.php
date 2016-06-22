@@ -1,4 +1,11 @@
 <?php
+
+namespace SilverStripe\Security;
+
+use Object;
+use Form;
+use Controller;
+
 /**
  * Abstract base class for an authentication method
  *

@@ -1,4 +1,10 @@
 <?php
+
+namespace SilverStripe\Security;
+
+use COM;
+use Exception;
+
 /**
  * Generates entropy values based on strongest available methods
  * (mcrypt_create_iv(), openssl_random_pseudo_bytes(), /dev/urandom, COM.CAPICOM.Utilities.1, mt_rand()).

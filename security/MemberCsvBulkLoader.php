@@ -1,6 +1,12 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\DataObject;
+use CsvBulkLoader;
+use Convert;
+
 /**
  * Imports member records, and checks/updates duplicates based on their
  * 'Email' property.

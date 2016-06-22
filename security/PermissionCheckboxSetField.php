@@ -1,10 +1,18 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 
 use SilverStripe\ORM\SS_List;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\DataObjectInterface;
+use FormField;
+use InvalidArgumentException;
+use Requirements;
+use Config;
+
 
 
 /**

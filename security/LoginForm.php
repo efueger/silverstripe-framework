@@ -1,4 +1,10 @@
 <?php
+
+namespace SilverStripe\Security;
+
+use Form;
+use Injector;
+
 /**
  * Abstract base class for a login form
  *

@@ -1,5 +1,18 @@
 <?php
 
+namespace SilverStripe\Security;
+
+use Controller;
+use FieldList;
+use HiddenField;
+use PasswordField;
+use LiteralField;
+use CheckboxField;
+use FormAction;
+use Session;
+use Convert;
+
+
 /**
  * Provides the in-cms session re-authentication form for the "member" authenticator
  *

@@ -1,8 +1,31 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\UnsavedRelationList;
+use Requirements;
+use FieldList;
+use TabSet;
+use Tab;
+use TextField;
+use DropdownField;
+use TextareaField;
+use Config;
+use GridFieldConfig_RelationEditor;
+use GridFieldButtonRow;
+use GridFieldExportButton;
+use GridFieldPrintButton;
+use GridField;
+use HTMLEditorConfig;
+use LiteralField;
+use ListboxField;
+use HiddenField;
+use InvalidArgumentException;
+use Convert;
+
 /**
  * A security group.
  *

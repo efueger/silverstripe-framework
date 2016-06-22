@@ -1,6 +1,13 @@
 <?php
 
+namespace SilverStripe\Security;
+
+
 use SilverStripe\ORM\DB;
+use Config;
+use ReflectionClass;
+use Exception;
+
 /**
  * Allows pluggable password encryption.
  * By default, this might be PHP's integrated sha1()

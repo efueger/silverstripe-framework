@@ -29,6 +29,8 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 
 	private static $tree_class = 'SilverStripe\\ORM\\Versioning\\ChangeSet';
 
+	private static $item_class = 'SilverStripe\\ORM\\Versioning\\ChangeSetItem';
+
 	private static $url_handlers = [
 		'GET sets' => 'readCampaigns',
 		'POST set/$ID/publish' => 'publishCampaign',
@@ -71,12 +73,17 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 			'publishEndpoint' => [
 				'url' => $this->Link() . 'set/:id/publish',
 				'method' => 'post'
-			]
+			],
+			'classmap' => [
+				'Campaign' => $this->config()->tree_class,
+				'CampaignItem' => $this->config()->item_class,
+			],
 		]);
 	}
 
 	public function schema($request) {
 		// TODO Hardcoding schema until we can get GridField to generate a schema dynamically
+		$treeClassJS = Convert::raw2js($this->config()->tree_class);
 		$json = <<<JSON
 {
 	"id": "Form_EditForm",
@@ -128,7 +135,7 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 			"customValidationMessage": "",
 			"attributes": [],
 			"data": {
-				"recordType": "ChangeSet",
+				"recordType": "{$treeClassJS}",
 				"collectionReadEndpoint": {
 					"url": "admin\/campaigns\/sets",
 					"method": "GET"
@@ -152,7 +159,7 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 				"editFormSchemaEndpoint": "admin\/campaigns\/schema\/DetailEditForm",
 				"columns": [
 					{"name": "Title", "field": "Name"},
-					{"name": "Changes", "field": "_embedded.ChangeSetItems.length"},
+					{"name": "Changes", "field": "ChangesCount"},
 					{"name": "Description", "field": "Description"}
 				]
 			}
@@ -193,11 +200,9 @@ JSON;
 	/**
 	 * REST endpoint to get a list of campaigns.
 	 *
-	 * @param SS_HTTPRequest $request
-	 *
 	 * @return SS_HTTPResponse
 	 */
-	public function readCampaigns(SS_HTTPRequest $request) {
+	public function readCampaigns() {
 		$response = new SS_HTTPResponse();
 		$response->addHeader('Content-Type', 'application/json');
 		$hal = $this->getListResource();
@@ -213,6 +218,8 @@ JSON;
 	protected function getListResource() {
 		$items = $this->getListItems();
 		$count = $items->count();
+		/** @var string $treeClass */
+		$treeClass = $this->config()->tree_class;
 		$hal = [
 			'count' => $count,
 			'total' => $count,
@@ -221,12 +228,12 @@ JSON;
 					'href' => $this->Link('items')
 				]
 			],
-			'_embedded' => ['ChangeSets' => []]
+			'_embedded' => [$treeClass => []]
 		];
 		foreach($items as $item) {
 			/** @var ChangeSet $item */
 			$resource = $this->getChangeSetResource($item);
-			$hal['_embedded']['ChangeSets'][] = $resource;
+			$hal['_embedded'][$treeClass][] = $resource;
 		}
 		return $hal;
 	}
@@ -241,6 +248,8 @@ JSON;
 		// Before presenting the changeset to the client,
 		// synchronise it with new changes.
 		$changeSet->sync();
+		/** @var string $itemClass */
+		$itemClass = $this->config()->item_class;
 		$hal = [
 			'_links' => [
 				'self' => [
@@ -255,7 +264,7 @@ JSON;
 			'State' => $changeSet->State,
 			'canEdit' => $changeSet->canEdit(),
 			'canPublish' => $changeSet->canPublish(),
-			'_embedded' => ['ChangeSetItems' => []]
+			'_embedded' => [$itemClass => []]
 		];
 		foreach($changeSet->Changes() as $changeSetItem) {
 			if(!$changeSetItem) {
@@ -264,8 +273,9 @@ JSON;
 
 			/** @var ChangesetItem $changeSetItem */
 			$resource = $this->getChangeSetItemResource($changeSetItem);
-			$hal['_embedded']['ChangeSetItems'][] = $resource;
+			$hal['_embedded'][$itemClass][] = $resource;
 		}
+		$hal['ChangesCount'] = count($hal['_embedded'][$itemClass]);
 		return $hal;
 	}
 
@@ -340,6 +350,7 @@ JSON;
 		return ChangeSet::get()
 			->filter('State', ChangeSet::STATE_OPEN)
 			->filterByCallback(function($item) {
+				/** @var ChangeSet $item */
 				return ($item->canView());
 			});
 	}
@@ -361,7 +372,8 @@ JSON;
 				return (new SS_HTTPResponse(null, 400));
 			}
 
-			$changeSet = ChangeSet::get()->byId($request->param('ID'));
+			/** @var ChangeSet $changeSet */
+			$changeSet = ChangeSet::get()->byID($request->param('ID'));
 			if(!$changeSet) {
 				return (new SS_HTTPResponse(null, 404));
 			}
@@ -428,6 +440,7 @@ JSON;
 			return (new SS_HTTPResponse(null, 400));
 		}
 
+		/** @var ChangeSet $record */
 		$record = ChangeSet::get()->byID($id);
 		if(!$record) {
 			return (new SS_HTTPResponse(null, 404));
@@ -472,7 +485,7 @@ JSON;
 		// Get record-specific fields
 		$record = null;
 		if($id) {
-			$record = ChangeSet::get()->byId($id);
+			$record = ChangeSet::get()->byID($id);
 			if(!$record || !$record->canView()) {
 				return null;
 			}
@@ -495,6 +508,12 @@ JSON;
 				FormAction::create('cancel', _t('LeftAndMain.CANCEL', 'Cancel'))
 			)
 		);
+
+		// Load into form
+		if($id && $record) {
+			$form->loadDataFrom($record);
+		}
+
 		// Configure form to respond to validation errors with form schema
 		// if requested via react.
 		$form->setValidationResponseCallback(function() use ($form) {

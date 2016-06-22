@@ -30,13 +30,16 @@ class CampaignAdminList extends SilverStripeComponent {
   }
 
   componentDidMount() {
+    const campaignClass = this.props.sectionConfig.classmap.Campaign;
     const fetchURL = this.props.itemListViewEndpoint.replace(/:id/, this.props.campaignId);
     super.componentDidMount();
     this.setBreadcrumbs();
 
     // Only load record if not already present
     if (!Object.keys(this.props.record).length) {
-      this.props.recordActions.fetchRecord('ChangeSet', 'get', fetchURL).then(this.setBreadcrumbs);
+      this.props.recordActions
+        .fetchRecord(campaignClass, 'get', fetchURL)
+        .then(this.setBreadcrumbs);
     }
   }
 
@@ -152,6 +155,9 @@ class CampaignAdminList extends SilverStripeComponent {
           the <a href={pagesLink}>edit page screen</a>.
         </div>
       );
+    const bodyClass = [
+      'container-fluid', 'campaign-items', 'panel-scrollable', 'panel-scrollable--double-toolbar',
+    ];
 
     return (
       <div className="cms-content__split cms-content__split--left-sm">
@@ -159,7 +165,7 @@ class CampaignAdminList extends SilverStripeComponent {
           <Toolbar showBackButton handleBackButtonClick={this.props.handleBackButtonClick}>
             <BreadcrumbComponent multiline crumbs={this.props.breadcrumbs} />
           </Toolbar>
-          <div className="container-fluid campaign-items panel-scrollable panel-scrollable--double-toolbar">
+          <div className={bodyClass.join(' ')}>
             {body}
           </div>
           <div className="toolbar--south">
@@ -236,7 +242,7 @@ class CampaignAdminList extends SilverStripeComponent {
    */
   getItems() {
     if (this.props.record && this.props.record._embedded) {
-      return this.props.record._embedded.ChangeSetItems;
+      return this.props.record._embedded[this.props.sectionConfig.classmap.CampaignItem];
     }
 
     return null;
@@ -278,6 +284,7 @@ class CampaignAdminList extends SilverStripeComponent {
     e.preventDefault();
     this.props.campaignActions.publishCampaign(
       this.props.publishApi,
+      this.props.classmap.Campaign,
       this.props.campaignId
     );
   }
@@ -300,9 +307,10 @@ CampaignAdminList.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   // Find record specific to this item
+  const campaignClass = ownProps.sectionConfig.classmap.Campaign;
   let record = null;
-  if (state.records && state.records.ChangeSet && ownProps.campaignId) {
-    record = state.records.ChangeSet[parseInt(ownProps.campaignId, 10)];
+  if (state.records && state.records[campaignClass] && ownProps.campaignId) {
+    record = state.records[campaignClass][parseInt(ownProps.campaignId, 10)];
   }
   return {
     config: state.config,

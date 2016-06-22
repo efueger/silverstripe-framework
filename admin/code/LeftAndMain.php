@@ -212,7 +212,7 @@ class LeftAndMain extends Controller implements PermissionProvider {
 		$combinedClientConfig[$token->getName()] = $token->getValue();
 
 		// Set env
-		$combinedClientConfig['environment'] = 'live'; //Director::get_environment_type();
+		$combinedClientConfig['environment'] = Director::get_environment_type();
 
 		return Convert::raw2json($combinedClientConfig);
 	}

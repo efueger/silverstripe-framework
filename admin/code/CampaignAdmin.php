@@ -29,8 +29,6 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 
 	private static $tree_class = 'SilverStripe\\ORM\\Versioning\\ChangeSet';
 
-	private static $item_class = 'SilverStripe\\ORM\\Versioning\\ChangeSetItem';
-
 	private static $url_handlers = [
 		'GET sets' => 'readCampaigns',
 		'POST set/$ID/publish' => 'publishCampaign',
@@ -74,10 +72,7 @@ class CampaignAdmin extends LeftAndMain implements PermissionProvider {
 				'url' => $this->Link() . 'set/:id/publish',
 				'method' => 'post'
 			],
-			'classmap' => [
-				'Campaign' => $this->config()->tree_class,
-				'CampaignItem' => $this->config()->item_class,
-			],
+			'treeClass' => $this->config()->tree_class
 		]);
 	}
 
@@ -248,8 +243,6 @@ JSON;
 		// Before presenting the changeset to the client,
 		// synchronise it with new changes.
 		$changeSet->sync();
-		/** @var string $itemClass */
-		$itemClass = $this->config()->item_class;
 		$hal = [
 			'_links' => [
 				'self' => [
@@ -264,7 +257,7 @@ JSON;
 			'State' => $changeSet->State,
 			'canEdit' => $changeSet->canEdit(),
 			'canPublish' => $changeSet->canPublish(),
-			'_embedded' => [$itemClass => []]
+			'_embedded' => ['items' => []]
 		];
 		foreach($changeSet->Changes() as $changeSetItem) {
 			if(!$changeSetItem) {
@@ -273,9 +266,9 @@ JSON;
 
 			/** @var ChangesetItem $changeSetItem */
 			$resource = $this->getChangeSetItemResource($changeSetItem);
-			$hal['_embedded'][$itemClass][] = $resource;
+			$hal['_embedded']['items'][] = $resource;
 		}
-		$hal['ChangesCount'] = count($hal['_embedded'][$itemClass]);
+		$hal['ChangesCount'] = count($hal['_embedded']['items']);
 		return $hal;
 	}
 

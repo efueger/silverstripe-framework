@@ -30,7 +30,6 @@ class CampaignAdminList extends SilverStripeComponent {
   }
 
   componentDidMount() {
-    const campaignClass = this.props.sectionConfig.classmap.Campaign;
     const fetchURL = this.props.itemListViewEndpoint.replace(/:id/, this.props.campaignId);
     super.componentDidMount();
     this.setBreadcrumbs();
@@ -38,7 +37,7 @@ class CampaignAdminList extends SilverStripeComponent {
     // Only load record if not already present
     if (!Object.keys(this.props.record).length) {
       this.props.recordActions
-        .fetchRecord(campaignClass, 'get', fetchURL)
+        .fetchRecord(this.props.treeClass, 'get', fetchURL)
         .then(this.setBreadcrumbs);
     }
   }
@@ -242,7 +241,7 @@ class CampaignAdminList extends SilverStripeComponent {
    */
   getItems() {
     if (this.props.record && this.props.record._embedded) {
-      return this.props.record._embedded[this.props.sectionConfig.classmap.CampaignItem];
+      return this.props.record._embedded.items;
     }
 
     return null;
@@ -284,7 +283,7 @@ class CampaignAdminList extends SilverStripeComponent {
     e.preventDefault();
     this.props.campaignActions.publishCampaign(
       this.props.publishApi,
-      this.props.classmap.Campaign,
+      this.props.treeClass,
       this.props.campaignId
     );
   }
@@ -307,15 +306,16 @@ CampaignAdminList.propTypes = {
 
 function mapStateToProps(state, ownProps) {
   // Find record specific to this item
-  const campaignClass = ownProps.sectionConfig.classmap.Campaign;
   let record = null;
-  if (state.records && state.records[campaignClass] && ownProps.campaignId) {
-    record = state.records[campaignClass][parseInt(ownProps.campaignId, 10)];
+  const treeClass = ownProps.sectionConfig.treeClass;
+  if (state.records && state.records[treeClass] && ownProps.campaignId) {
+    record = state.records[treeClass][parseInt(ownProps.campaignId, 10)];
   }
   return {
     config: state.config,
     record: record || {},
     campaign: state.campaign,
+    treeClass,
     breadcrumbs: state.breadcrumbs,
   };
 }

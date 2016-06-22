@@ -3,12 +3,14 @@
 namespace SilverStripe\ORM\FieldType;
 
 use Convert;
-use Member;
+
 use DatetimeField;
 use Zend_Date;
 use TemplateGlobalProvider;
 use DateTime;
 use SilverStripe\ORM\DB;
+use SilverStripe\Security\Member;
+
 
 /**
  * Represents a date-time field.

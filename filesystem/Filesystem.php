@@ -1,6 +1,9 @@
 <?php
 
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
+
 /**
  * A collection of static methods for manipulating the filesystem.
  *

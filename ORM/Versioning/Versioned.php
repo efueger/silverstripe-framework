@@ -8,10 +8,10 @@ use Deprecation;
 use InvalidArgumentException;
 use Config;
 use LogicException;
-use Member;
+
 use ClassInfo;
 use Object;
-use Permission;
+
 use Director;
 use Cookie;
 use FieldList;
@@ -25,6 +25,9 @@ use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\ORM\Queries\SQLSelect;
 use SilverStripe\ORM\Queries\SQLUpdate;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 
 /**
  * The Versioned extension allows your DataObjects to have several versions,

@@ -34,7 +34,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 			array(
 				'SS_HTTPRequest', ' ', 'as', ' ', 'Request', ',',
 				'SS_HTTPResponse', ' ', 'AS', ' ', 'Response', ',',
-				'PermissionProvider', ' ', 'AS', ' ', 'P',
+				'SilverStripe\\Security\\PermissionProvider', ' ', 'AS', ' ', 'P',
 			),
 			array('silverstripe', '\\', 'test', '\\', 'ClassA'),
 			array('\\', 'Object'),
@@ -59,7 +59,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 			'Cont' => 'Controller',
 			'Request' => 'SS_HTTPRequest',
 			'Response' => 'SS_HTTPResponse',
-			'P' => 'PermissionProvider',
+			'P' => 'SilverStripe\\Security\\PermissionProvider',
 			'silverstripe\test\ClassA',
 			'\Object',
 		);
@@ -71,7 +71,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 	}
 
 	public function testClassInfoIsCorrect() {
-		$this->assertContains('SilverStripe\Framework\Tests\ClassI', ClassInfo::implementorsOf('PermissionProvider'));
+		$this->assertContains('SilverStripe\Framework\Tests\ClassI', ClassInfo::implementorsOf('SilverStripe\\Security\\PermissionProvider'));
 
 		//because we're using a nested manifest we have to "coalesce" the descendants again to correctly populate the
 		// descendants of the core classes we want to test against - this is a limitation of the test manifest not
@@ -89,7 +89,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 
 		$this->assertTrue(ClassInfo::exists('silverstripe\test\ClassA'));
 
-		$this->assertEquals('PermissionProvider', $method->invokeArgs($this->manifest, array(
+		$this->assertEquals('SilverStripe\\Security\\PermissionProvider', $method->invokeArgs($this->manifest, array(
 			'\PermissionProvider',
 			'Test\Namespace',
 			array(
@@ -98,11 +98,11 @@ class NamespacedClassManifestTest extends SapphireTest {
 			),
 		)));
 
-		$this->assertEquals('PermissionProvider', $method->invokeArgs($this->manifest, array(
-			'PermissionProvider',
+		$this->assertEquals('SilverStripe\\Security\\PermissionProvider', $method->invokeArgs($this->manifest, array(
+			'SilverStripe\\Security\\PermissionProvider',
 			'Test\NAmespace',
 			array(
-				'PermissionProvider',
+				'SilverStripe\\Security\\PermissionProvider',
 			)
 		)));
 
@@ -110,7 +110,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 			'',
 			'TextNamespace',
 			array(
-				'PermissionProvider',
+				'SilverStripe\\Security\\PermissionProvider',
 			),
 		)));
 
@@ -125,7 +125,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 			'Test\Namespace',
 			array(
 				'silverstripe\test\ClassA',
-				'PermissionProvider',
+				'SilverStripe\\Security\\PermissionProvider',
 			),
 		)));
 

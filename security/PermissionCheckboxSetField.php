@@ -104,7 +104,7 @@ class PermissionCheckboxSetField extends FormField {
 			$record = $this->form->getRecord();
 			if(
 				$record
-				&& (is_a($record, 'Group') || is_a($record, 'PermissionRole'))
+				&& (is_a($record, 'SilverStripe\\Security\\Group') || is_a($record, 'SilverStripe\\Security\\PermissionRole'))
 				&& !$records->find('ID', $record->ID)
 			) {
 				$records->push($record);
@@ -125,7 +125,7 @@ class PermissionCheckboxSetField extends FormField {
 
 			// Special case for Group records (not PermissionRole):
 			// Determine inherited assignments
-			if(is_a($record, 'Group')) {
+			if(is_a($record, 'SilverStripe\\Security\\Group')) {
 				// Get all permissions from roles
 				if ($record->Roles()->Count()) {
 					foreach($record->Roles() as $role) {
@@ -180,7 +180,7 @@ class PermissionCheckboxSetField extends FormField {
 
 		$odd = 0;
 		$options = '';
-		$globalHidden = (array)Config::inst()->get('Permission', 'hidden_permissions');
+		$globalHidden = (array)Config::inst()->get('SilverStripe\\Security\\Permission', 'hidden_permissions');
 		if($this->source) {
 			$privilegedPermissions = Permission::config()->privileged_permissions;
 

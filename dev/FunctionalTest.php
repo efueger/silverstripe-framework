@@ -1,5 +1,8 @@
 <?php
 
+use SilverStripe\Security\BasicAuth;
+use SilverStripe\Security\SecurityToken;
+
 /**
  * SilverStripe-specific testing object designed to support functional testing of your web app.  It simulates get/post
  * requests, form submission, and can validate resulting HTML, looking up content by CSS selector.
@@ -367,7 +370,7 @@ class FunctionalTest extends SapphireTest {
 	public function logInAs($member) {
 		if(is_object($member)) $memberID = $member->ID;
 		elseif(is_numeric($member)) $memberID = $member;
-		else $memberID = $this->idFromFixture('Member', $member);
+		else $memberID = $this->idFromFixture('SilverStripe\\Security\\Member', $member);
 
 		$this->session()->inst_set('loggedInAs', $memberID);
 	}

@@ -1,4 +1,7 @@
 <?php
+
+use SilverStripe\Security\PasswordEncryptor_Blowfish;
+use SilverStripe\Security\PasswordEncryptor;
 class PasswordEncryptorTest extends SapphireTest {
 
 	/**
@@ -19,7 +22,7 @@ class PasswordEncryptorTest extends SapphireTest {
 	}
 
 	public function testCreateForCode() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test'=>array('PasswordEncryptorTest_TestEncryptor'=>null)));
 		$e = PasswordEncryptor::create_for_algorithm('test');
 		$this->assertInstanceOf('PasswordEncryptorTest_TestEncryptor', $e );
@@ -33,7 +36,7 @@ class PasswordEncryptorTest extends SapphireTest {
 	}
 
 	public function testRegister() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test'=>array('PasswordEncryptorTest_TestEncryptor'=>null)));
 		$encryptors = PasswordEncryptor::get_encryptors();
 		$this->assertContains('test', array_keys($encryptors));
@@ -42,21 +45,21 @@ class PasswordEncryptorTest extends SapphireTest {
 	}
 
 	public function testUnregister() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test'=>array('PasswordEncryptorTest_TestEncryptor'=>null)));
-		Config::inst()->remove('PasswordEncryptor', 'encryptors', 'test');
+		Config::inst()->remove('SilverStripe\\Security\\PasswordEncryptor', 'encryptors', 'test');
 		$this->assertNotContains('test', array_keys(PasswordEncryptor::get_encryptors()));
 	}
 
 	public function testEncryptorPHPHashWithArguments() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test_md5'=>array('PasswordEncryptor_PHPHash'=>'md5')));
 		$e = PasswordEncryptor::create_for_algorithm('test_md5');
 		$this->assertEquals('md5', $e->getAlgorithm());
 	}
 
 	public function testEncryptorPHPHash() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test_sha1'=>array('PasswordEncryptor_PHPHash'=>'sha1')));
 		$e = PasswordEncryptor::create_for_algorithm('test_sha1');
 		$password = 'mypassword';
@@ -68,7 +71,7 @@ class PasswordEncryptorTest extends SapphireTest {
 	}
 
 	public function testEncryptorBlowfish() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test_blowfish'=>array('PasswordEncryptor_Blowfish'=>'')));
 		$e = PasswordEncryptor::create_for_algorithm('test_blowfish');
 
@@ -114,7 +117,7 @@ class PasswordEncryptorTest extends SapphireTest {
 	}
 
 	public function testEncryptorPHPHashCheck() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test_sha1'=>array('PasswordEncryptor_PHPHash'=>'sha1')));
 		$e = PasswordEncryptor::create_for_algorithm('test_sha1');
 		$this->assertTrue($e->check(sha1('mypassword'), 'mypassword'));
@@ -128,7 +131,7 @@ class PasswordEncryptorTest extends SapphireTest {
 	 * 	php -r "echo(base_convert(sha1('mypassword'), 16, 36));"
 	 */
 	public function testEncryptorLegacyPHPHashCheck() {
-		Config::inst()->update('PasswordEncryptor', 'encryptors',
+		Config::inst()->update('SilverStripe\\Security\\PasswordEncryptor', 'encryptors',
 			array('test_sha1legacy'=>array('PasswordEncryptor_LegacyPHPHash'=>'sha1')));
 		$e = PasswordEncryptor::create_for_algorithm('test_sha1legacy');
 		// precomputed hashes for 'mypassword' from different architectures

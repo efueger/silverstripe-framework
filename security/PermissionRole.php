@@ -33,11 +33,11 @@ class PermissionRole extends DataObject {
 	);
 
 	private static $has_many = array(
-		"Codes" => "PermissionRoleCode",
+		"Codes" => "SilverStripe\\Security\\PermissionRoleCode",
 	);
 
 	private static $belongs_many_many = array(
-		"Groups" => "Group",
+		"Groups" => "SilverStripe\\Security\\Group",
 	);
 
 	private static $default_sort = '"Title"';
@@ -56,13 +56,13 @@ class PermissionRole extends DataObject {
 			'Root.Main',
 			$permissionField = new PermissionCheckboxSetField(
 				'Codes',
-				singleton('Permission')->i18n_plural_name(),
-				'PermissionRoleCode',
+				singleton('SilverStripe\\Security\\Permission')->i18n_plural_name(),
+				'SilverStripe\\Security\\PermissionRoleCode',
 				'RoleID'
 			)
 		);
 		$permissionField->setHiddenPermissions(
-			Config::inst()->get('Permission', 'hidden_permissions')
+			Config::inst()->get('SilverStripe\\Security\\Permission', 'hidden_permissions')
 		);
 
 		return $fields;

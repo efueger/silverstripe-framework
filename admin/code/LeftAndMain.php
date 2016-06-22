@@ -15,6 +15,12 @@ use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\Queries\SQLSelect;
+use SilverStripe\Security\SecurityToken;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
+use SilverStripe\Security\PermissionProvider;
+
 
 
 /**

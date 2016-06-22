@@ -131,7 +131,7 @@ class MemberAuthenticator extends Authenticator {
 
 			} else {
 				// Audit logging hook
-				singleton('Member')->extend('authenticationFailedUnknownUser', $data);
+				singleton('SilverStripe\\Security\\Member')->extend('authenticationFailedUnknownUser', $data);
 			}
 		}
 
@@ -184,11 +184,11 @@ class MemberAuthenticator extends Authenticator {
 	 *              method
 	 */
 	public static function get_login_form(Controller $controller) {
-		return MemberLoginForm::create($controller, "LoginForm");
+		return MemberLoginForm::create($controller, "SilverStripe\\Security\\LoginForm");
 	}
 
 	public static function get_cms_login_form(\Controller $controller) {
-		return CMSMemberLoginForm::create($controller, "LoginForm");
+		return CMSMemberLoginForm::create($controller, "SilverStripe\\Security\\LoginForm");
 	}
 
 	public static function supports_cms() {

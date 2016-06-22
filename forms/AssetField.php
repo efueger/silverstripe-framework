@@ -6,6 +6,8 @@ use SilverStripe\Filesystem\Storage\DBFile;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\Security\Permission;
+
 
 
 /**

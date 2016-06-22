@@ -9,6 +9,9 @@ use SilverStripe\ORM\Versioning\Versioned;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 
 
 /**
@@ -100,7 +103,7 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer, Thumb
 
 	private static $has_one = array(
 		"Parent" => "File",
-		"Owner" => "Member"
+		"Owner" => "SilverStripe\\Security\\Member"
 	);
 
 	private static $defaults = array(

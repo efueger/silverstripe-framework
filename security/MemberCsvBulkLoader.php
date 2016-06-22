@@ -23,7 +23,7 @@ class MemberCsvBulkLoader extends CsvBulkLoader {
 	protected $groups = array();
 
 	public function __construct($objectClass = null) {
-		if(!$objectClass) $objectClass = 'Member';
+		if(!$objectClass) $objectClass = 'SilverStripe\\Security\\Member';
 
 		parent::__construct($objectClass);
 	}

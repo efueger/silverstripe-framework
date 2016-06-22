@@ -1,4 +1,6 @@
 <?php
+
+use SilverStripe\Security\Member;
 /**
  * The object manages the main CMS menu. See {@link LeftAndMain::init()} for
  * example usage.

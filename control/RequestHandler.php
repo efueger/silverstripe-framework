@@ -1,6 +1,10 @@
 <?php
 
 use SilverStripe\ORM\DataModel;
+use SilverStripe\Security\Security;
+use SilverStripe\Security\PermissionFailureException;
+use SilverStripe\Security\Permission;
+
 
 /**
  * This class is the base class of any SilverStripe object that can be used to handle HTTP requests.

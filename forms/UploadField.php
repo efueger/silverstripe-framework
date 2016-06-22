@@ -9,6 +9,8 @@ use SilverStripe\ORM\DataObjectInterface;
 use SilverStripe\ORM\RelationList;
 use SilverStripe\ORM\UnsavedRelationList;
 use SilverStripe\ORM\DataList;
+use SilverStripe\Security\Permission;
+
 
 
 /**

@@ -2,6 +2,9 @@
 
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 
 /**
  * @package framework
@@ -15,7 +18,7 @@ class CMSProfileController extends LeftAndMain {
 
 	private static $required_permission_codes = false;
 
-	private static $tree_class = 'Member';
+	private static $tree_class = 'SilverStripe\\Security\\Member';
 
 	public function getEditForm($id = null, $fields = null) {
 		$this->setCurrentPageID(Member::currentUserID());
@@ -40,7 +43,7 @@ class CMSProfileController extends LeftAndMain {
 		if($member = Member::currentUser()) {
 			$form->setValidator($member->getValidator());
 		} else {
-			$form->setValidator(Injector::inst()->get('Member')->getValidator());
+			$form->setValidator(Injector::inst()->get('SilverStripe\\Security\\Member')->getValidator());
 		}
 
 		if($form->Fields()->hasTabset()) {
@@ -70,7 +73,7 @@ class CMSProfileController extends LeftAndMain {
 	}
 
 	public function save($data, $form) {
-		$member = DataObject::get_by_id("Member", $data['ID']);
+		$member = DataObject::get_by_id("SilverStripe\\Security\\Member", $data['ID']);
 		if(!$member) return $this->httpError(404);
 		$origLocale = $member->Locale;
 

@@ -39,7 +39,7 @@ class MemberLoginForm extends LoginForm {
 	 */
 	public $loggedInAsField = 'FirstName';
 
-	protected $authenticator_class = 'MemberAuthenticator';
+	protected $authenticator_class = 'SilverStripe\\Security\\MemberAuthenticator';
 
 	/**
 	 * Since the logout and dologin actions may be conditionally removed, it's necessary to ensure these
@@ -94,7 +94,7 @@ class MemberLoginForm extends LoginForm {
 			);
 		} else {
 			if(!$fields) {
-				$label=singleton('Member')->fieldLabel(Member::config()->unique_identifier_field);
+				$label=singleton('SilverStripe\\Security\\Member')->fieldLabel(Member::config()->unique_identifier_field);
 				$fields = FieldList::create(
 					HiddenField::create("AuthenticationMethod", null, $this->authenticator_class, $this),
 					// Regardless of what the unique identifer field is (usually 'Email'), it will be held in the
@@ -118,7 +118,7 @@ class MemberLoginForm extends LoginForm {
 							'title',
 							sprintf(
 								_t('Member.REMEMBERME', "Remember me next time? (for %d days on this device)"),
-								Config::inst()->get('RememberLoginHash', 'token_expiry_days')
+								Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'token_expiry_days')
 							)
 						)
 					);
@@ -231,7 +231,7 @@ JS;
 			if(isset($_REQUEST['BackURL']) && $backURL = $_REQUEST['BackURL']) {
 				Session::set('BackURL', $backURL);
 			}
-			$cp = ChangePasswordForm::create($this->controller, 'ChangePasswordForm');
+			$cp = ChangePasswordForm::create($this->controller, 'SilverStripe\\Security\\ChangePasswordForm');
 			$cp->sessionMessage(
 				_t('Member.PASSWORDEXPIRED', 'Your password has expired. Please choose a new one.'),
 				'good'

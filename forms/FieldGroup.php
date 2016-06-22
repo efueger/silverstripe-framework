@@ -89,7 +89,7 @@ class FieldGroup extends CompositeField {
 				$compositeTitle .= $subfield->getName();
 				if($subfield->getName()) $count++;
 			}
-			if($count == 1) $compositeTitle .= 'Group';
+			if($count == 1) $compositeTitle .= 'SilverStripe\\Security\\Group';
 			return preg_replace("/[^a-zA-Z0-9]+/", "", $compositeTitle);
 		}
 

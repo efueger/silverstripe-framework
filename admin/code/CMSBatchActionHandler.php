@@ -4,6 +4,8 @@ use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\Versioning\Versioned;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\SecurityToken;
+
 
 /**
  * Special request handler for admin/batchaction

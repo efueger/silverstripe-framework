@@ -5,12 +5,15 @@ namespace SilverStripe\ORM;
 use Controller;
 use SapphireTest;
 use Director;
-use Security;
-use Permission;
+
+
 use SS_ClassLoader;
 use ClassInfo;
 use TestOnly;
 use Deprecation;
+use SilverStripe\Security\Security;
+use SilverStripe\Security\Permission;
+
 
 // Include the DB class
 require_once("DB.php");

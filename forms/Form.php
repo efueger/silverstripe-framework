@@ -2,6 +2,9 @@
 
 use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\Security\SecurityToken;
+use SilverStripe\Security\NullSecurityToken;
+
 /**
  * Base class for all forms.
  * The form class is an extensible base for all forms on a SilverStripe application.  It can be used

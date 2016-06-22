@@ -41,8 +41,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 		'passwordsent',
 		'changepassword',
 		'ping',
-		'LoginForm',
-		'ChangePasswordForm',
+		'SilverStripe\\Security\\LoginForm',
+		'SilverStripe\\Security\\ChangePasswordForm',
 		'LostPasswordForm',
 	);
 
@@ -325,7 +325,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 		$controller->extend('permissionDenied', $member);
 
 		return $controller->redirect(
-			Config::inst()->get('Security', 'login_url')
+			Config::inst()->get('SilverStripe\\Security\\Security', 'login_url')
 			. "?BackURL=" . urlencode($_SERVER['REQUEST_URI'])
 		);
 	}
@@ -397,7 +397,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * @return string Returns the link to the given action
 	 */
 	public function Link($action = null) {
-		return Controller::join_links(Director::baseURL(), "Security", $action);
+		return Controller::join_links(Director::baseURL(), "SilverStripe\\Security\\Security", $action);
 	}
 
 	/**
@@ -470,7 +470,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 		// Use sitetree pages to render the security page
 		$tmpPage = new Page();
 		$tmpPage->Title = $title;
-		$tmpPage->URLSegment = "Security";
+		$tmpPage->URLSegment = "SilverStripe\\Security\\Security";
 		// Disable ID-based caching  of the log-in page by making it a random number
 		$tmpPage->ID = -1 * rand(1,10000000);
 
@@ -487,7 +487,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * @return array Template list
 	 */
 	public function getTemplatesFor($action) {
-		return array("Security_{$action}", 'Security', $this->stat('template_main'), 'BlankPage');
+		return array("Security_{$action}", 'SilverStripe\\Security\\Security', $this->stat('template_main'), 'BlankPage');
 	}
 
 	/**
@@ -768,7 +768,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * @return Form Returns the lost password form
 	 */
 	public function ChangePasswordForm() {
-		return Object::create('ChangePasswordForm', $this, 'ChangePasswordForm');
+		return Object::create('SilverStripe\\Security\\ChangePasswordForm', $this, 'SilverStripe\\Security\\ChangePasswordForm');
 	}
 
 	/**
@@ -816,12 +816,12 @@ class Security extends Controller implements TemplateGlobalProvider {
 		}
 
 		if(!$adminGroup) {
-			singleton('Group')->requireDefaultRecords();
+			singleton('SilverStripe\\Security\\Group')->requireDefaultRecords();
 			$adminGroup = Permission::get_groups_by_permission('ADMIN')->First();
 		}
 
 		if(!$member) {
-			singleton('Member')->requireDefaultRecords();
+			singleton('SilverStripe\\Security\\Member')->requireDefaultRecords();
 			$member = Permission::get_members_by_permission('ADMIN')->First();
 		}
 
@@ -1026,9 +1026,9 @@ class Security extends Controller implements TemplateGlobalProvider {
 			return self::$database_is_ready;
 		}
 
-		$requiredClasses = ClassInfo::dataClassesFor('Member');
-		$requiredClasses[] = 'Group';
-		$requiredClasses[] = 'Permission';
+		$requiredClasses = ClassInfo::dataClassesFor('SilverStripe\\Security\\Member');
+		$requiredClasses[] = 'SilverStripe\\Security\\Group';
+		$requiredClasses[] = 'SilverStripe\\Security\\Permission';
 
 		foreach($requiredClasses as $class) {
 			// Skip test classes, as not all test classes are scaffolded at once

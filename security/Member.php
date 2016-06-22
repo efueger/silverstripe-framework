@@ -91,14 +91,14 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	);
 
 	private static $belongs_many_many = array(
-		'Groups' => 'Group',
+		'Groups' => 'SilverStripe\\Security\\Group',
 	);
 
 	private static $has_one = array();
 
 	private static $has_many = array(
-		'LoggedPasswords' => 'MemberPassword',
-		'RememberLoginHashes' => 'RememberLoginHash'
+		'LoggedPasswords' => 'SilverStripe\\Security\\MemberPassword',
+		'RememberLoginHashes' => 'SilverStripe\\Security\\RememberLoginHash'
 	);
 
 	private static $many_many = array();
@@ -271,7 +271,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		if(!Security::has_default_admin()) return null;
 
 		// Find or create ADMIN group
-		singleton('Group')->requireDefaultRecords();
+		singleton('SilverStripe\\Security\\Group')->requireDefaultRecords();
 		$adminGroup = Permission::get_groups_by_permission('ADMIN')->First();
 
 		// Find member
@@ -510,8 +510,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		}
 		if($remember) {
 			$rememberLoginHash = RememberLoginHash::generate($this);
-			$tokenExpiryDays = Config::inst()->get('RememberLoginHash', 'token_expiry_days');
-			$deviceExpiryDays = Config::inst()->get('RememberLoginHash', 'device_expiry_days');
+			$tokenExpiryDays = Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'token_expiry_days');
+			$deviceExpiryDays = Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'device_expiry_days');
 			Cookie::set('alc_enc', $this->ID . ':' . $rememberLoginHash->getToken(),
 				$tokenExpiryDays, null, null, null, true);
 			Cookie::set('alc_device', $rememberLoginHash->DeviceID, $deviceExpiryDays, null, null, null, true);
@@ -526,7 +526,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		$this->registerSuccessfulLogin();
 
 		// Don't set column if its not built yet (the login might be precursor to a /dev/build...)
-		if(array_key_exists('LockedOutUntil', DB::field_list('Member'))) {
+		if(array_key_exists('LockedOutUntil', DB::field_list('SilverStripe\\Security\\Member'))) {
 			$this->LockedOutUntil = null;
 		}
 
@@ -562,7 +562,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 */
 	public static function logged_in_session_exists() {
 		if($id = Member::currentUserID()) {
-			if($member = DataObject::get_by_id('Member', $id)) {
+			if($member = DataObject::get_by_id('SilverStripe\\Security\\Member', $id)) {
 				if($member->exists()) return true;
 			}
 		}
@@ -634,7 +634,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 				if ($rememberLoginHash) {
 					$rememberLoginHash->renew();
-					$tokenExpiryDays = Config::inst()->get('RememberLoginHash', 'token_expiry_days');
+					$tokenExpiryDays = Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'token_expiry_days');
 					Cookie::set('alc_enc', $member->ID . ':' . $rememberLoginHash->getToken(),
 						$tokenExpiryDays, null, null, false, true);
 				}
@@ -711,7 +711,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 			$generator = new RandomGenerator();
 			$token = $generator->randomToken();
 			$hash = $this->encryptWithUserSettings($token);
-		} while(DataObject::get_one('Member', array(
+		} while(DataObject::get_one('SilverStripe\\Security\\Member', array(
 			'"Member"."AutoLoginHash"' => $hash
 		)));
 
@@ -748,7 +748,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	public static function member_from_autologinhash($hash, $login = false) {
 
 		$nowExpression = DB::get_conn()->now();
-		$member = DataObject::get_one('Member', array(
+		$member = DataObject::get_one('SilverStripe\\Security\\Member', array(
 			"\"Member\".\"AutoLoginHash\"" => $hash,
 			"\"Member\".\"AutoLoginExpired\" > $nowExpression" // NOW() can't be parameterised
 		));
@@ -843,7 +843,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * @return Member_Validator
 	 */
 	public function getValidator() {
-		$validator = Injector::inst()->create('Member_Validator');
+		$validator = Injector::inst()->create('SilverStripe\\Security\\Member_Validator');
 		$validator->setForMember($this);
 		$this->extend('updateValidator', $validator);
 
@@ -888,7 +888,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * @return string Returns a random password.
 	 */
 	public static function create_new_password() {
-		$words = Config::inst()->get('Security', 'word_list');
+		$words = Config::inst()->get('SilverStripe\\Security\\Security', 'word_list');
 
 		if($words && file_exists($words)) {
 			$words = file($words);
@@ -925,7 +925,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 			if($this->ID) {
 				$filter[] = array('"Member"."ID" <> ?' => $this->ID);
 			}
-			$existingRecord = DataObject::get_one('Member', $filter);
+			$existingRecord = DataObject::get_one('SilverStripe\\Security\\Member', $filter);
 
 			if($existingRecord) {
 				throw new ValidationException(ValidationResult::create(false, _t(
@@ -1070,9 +1070,9 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 */
 	public function inGroup($group, $strict = false) {
 		if(is_numeric($group)) {
-			$groupCheckObj = DataObject::get_by_id('Group', $group);
+			$groupCheckObj = DataObject::get_by_id('SilverStripe\\Security\\Group', $group);
 		} elseif(is_string($group)) {
-			$groupCheckObj = DataObject::get_one('Group', array(
+			$groupCheckObj = DataObject::get_one('SilverStripe\\Security\\Group', array(
 				'"Group"."Code"' => $group
 			));
 		} elseif($group instanceof Group) {
@@ -1099,7 +1099,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * @param string Title of the group
 	 */
 	public function addToGroupByCode($groupcode, $title = "") {
-		$group = DataObject::get_one('Group', array(
+		$group = DataObject::get_one('SilverStripe\\Security\\Group', array(
 			'"Group"."Code"' => $groupcode
 		));
 
@@ -1182,7 +1182,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * @param String $tableName
 	 * @return String SQL
 	 */
-	public static function get_title_sql($tableName = 'Member') {
+	public static function get_title_sql($tableName = 'SilverStripe\\Security\\Member') {
 		// This should be abstracted to SSDatabase concatOperator or similar.
 		$op = (DB::get_conn() instanceof MSSQLDatabase) ? " + " : " || ";
 
@@ -1277,7 +1277,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * @return Member_Groupset
 	 */
 	public function Groups() {
-		$groups = Member_GroupSet::create('Group', 'Group_Members', 'GroupID', 'MemberID');
+		$groups = Member_GroupSet::create('SilverStripe\\Security\\Group', 'Group_Members', 'GroupID', 'MemberID');
 		$groups = $groups->forForeignID($this->ID);
 
 		$this->extend('updateGroups', $groups);
@@ -1354,8 +1354,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 			}
 
 			$permsClause = DB::placeholders($perms);
-			$groups = DataObject::get('Group')
-				->innerJoin("Permission", '"Permission"."GroupID" = "Group"."ID"')
+			$groups = DataObject::get('SilverStripe\\Security\\Group')
+				->innerJoin("SilverStripe\\Security\\Permission", '"Permission"."GroupID" = "Group"."ID"')
 				->where(array(
 					"\"Permission\".\"Code\" IN ($permsClause)" => $perms
 				));
@@ -1373,7 +1373,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 		$members = Member::get()
 			->innerJoin("Group_Members", '"Group_Members"."MemberID" = "Member"."ID"')
-			->innerJoin("Group", '"Group"."ID" = "Group_Members"."GroupID"');
+			->innerJoin("SilverStripe\\Security\\Group", '"Group"."ID" = "Group_Members"."GroupID"');
 		if($groupIDList) {
 			$groupClause = DB::placeholders($groupIDList);
 			$members = $members->where(array(
@@ -1457,7 +1457,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 				}
 				asort($groupsMap);
 				$fields->addFieldToTab('Root.Main',
-					ListboxField::create('DirectGroups', singleton('Group')->i18n_plural_name())
+					ListboxField::create('DirectGroups', singleton('SilverStripe\\Security\\Group')->i18n_plural_name())
 						->setSource($groupsMap)
 						->setAttribute(
 							'data-placeholder',
@@ -1473,12 +1473,12 @@ class Member extends DataObject implements TemplateGlobalProvider {
 					$permissionsField = new PermissionCheckboxSetField_Readonly(
 						'Permissions',
 						false,
-						'Permission',
+						'SilverStripe\\Security\\Permission',
 						'GroupID',
 						// we don't want parent relationships, they're automatically resolved in the field
 						$self->getManyManyComponents('Groups')
 					);
-					$fields->findOrMakeTab('Root.Permissions', singleton('Permission')->i18n_plural_name());
+					$fields->findOrMakeTab('Root.Permissions', singleton('SilverStripe\\Security\\Permission')->i18n_plural_name());
 					$fields->addFieldToTab('Root.Permissions', $permissionsField);
 				}
 			}
@@ -1781,7 +1781,7 @@ class Member_GroupSet extends ManyManyList {
 		$allGroupIDs = array();
 		while($groupIDs) {
 			$allGroupIDs = array_merge($allGroupIDs, $groupIDs);
-			$groupIDs = DataObject::get("Group")->byIDs($groupIDs)->column("ParentID");
+			$groupIDs = DataObject::get("SilverStripe\\Security\\Group")->byIDs($groupIDs)->column("ParentID");
 			$groupIDs = array_filter($groupIDs);
 		}
 
@@ -1837,7 +1837,7 @@ class Member_GroupSet extends ManyManyList {
 	protected function getMember() {
 		$id = $this->getForeignID();
 		if($id) {
-			return DataObject::get_by_id('Member', $id);
+			return DataObject::get_by_id('SilverStripe\\Security\\Member', $id);
 		}
 	}
 }

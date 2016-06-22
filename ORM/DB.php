@@ -160,7 +160,7 @@ class DB {
 				));
 			}
 
-			$key = Config::inst()->get('Security', 'token');
+			$key = Config::inst()->get('SilverStripe\\Security\\Security', 'token');
 			if(!$key) {
 				throw new LogicException('"Security.token" not found, run "sake dev/generatesecuretoken"');
 			}
@@ -192,7 +192,7 @@ class DB {
 		$iv = Cookie::get("alternativeDatabaseNameIv");
 
 		if($name) {
-			$key = Config::inst()->get('Security', 'token');
+			$key = Config::inst()->get('SilverStripe\\Security\\Security', 'token');
 			if(!$key) {
 				throw new LogicException('"Security.token" not found, run "sake dev/generatesecuretoken"');
 			}

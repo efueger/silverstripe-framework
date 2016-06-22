@@ -32,7 +32,7 @@ abstract class PasswordEncryptor {
 	 * @return Array Map of encryptor code to the used class.
 	 */
 	public static function get_encryptors() {
-		return Config::inst()->get('PasswordEncryptor', 'encryptors');
+		return Config::inst()->get('SilverStripe\\Security\\PasswordEncryptor', 'encryptors');
 	}
 
 	/**

@@ -1,6 +1,9 @@
 <?php
 
 use SilverStripe\ORM\DataModel;
+use SilverStripe\Security\BasicAuth;
+use SilverStripe\Security\Member;
+
 
 /**
  * Controllers are the cornerstone of all site functionality in SilverStripe. The {@link Director}

@@ -36,7 +36,7 @@ class LoginAttempt extends DataObject {
 	);
 
 	private static $has_one = array(
-		'Member' => 'Member', // only linked if the member actually exists
+		'Member' => 'SilverStripe\\Security\\Member', // only linked if the member actually exists
 	);
 
 	private static $has_many = array();

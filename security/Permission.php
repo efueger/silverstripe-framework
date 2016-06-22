@@ -35,7 +35,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		"Type" => "Int(1)"
 	);
 	private static $has_one = array(
-		"Group" => "Group"
+		"Group" => "SilverStripe\\Security\\Group"
 	);
 	private static $indexes = array(
 		"Code" => true
@@ -184,7 +184,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		if(!is_array($code)) $code = array($code);
 
 		if($arg == 'any') {
-			$adminImpliesAll = (bool)Config::inst()->get('Permission', 'admin_implies_all');
+			$adminImpliesAll = (bool)Config::inst()->get('SilverStripe\\Security\\Permission', 'admin_implies_all');
 			// Cache the permissions in memory
 			if(!isset(self::$cache_permissions[$memberID])) {
 				self::$cache_permissions[$memberID] = self::permissions_for_member($memberID);
@@ -244,7 +244,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 					user_error("Permission::checkMember: bad arg '$arg'", E_USER_ERROR);
 				}
 		}
-		$adminFilter = (Config::inst()->get('Permission', 'admin_implies_all')) ?  ",'ADMIN'" : '';
+		$adminFilter = (Config::inst()->get('SilverStripe\\Security\\Permission', 'admin_implies_all')) ?  ",'ADMIN'" : '';
 
 		// Raw SQL for efficiency
 		$permission = DB::prepared_query(
@@ -268,7 +268,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		if($permission) return $permission;
 
 		// Strict checking disabled?
-		if(!Config::inst()->get('Permission', 'strict_checking') || !$strict) {
+		if(!Config::inst()->get('SilverStripe\\Security\\Permission', 'strict_checking') || !$strict) {
 			$hasPermission = DB::prepared_query(
 				"SELECT COUNT(*)
 				FROM \"Permission\"
@@ -341,7 +341,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 			if($member && isset($_SESSION['Permission_groupList'][$member->ID]))
 				return $_SESSION['Permission_groupList'][$member->ID];
 		} else {
-			$member = DataObject::get_by_id("Member", $memberID);
+			$member = DataObject::get_by_id("SilverStripe\\Security\\Member", $memberID);
 		}
 
 		if($member) {
@@ -460,7 +460,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		$members = Member::get()
 			->where(array("\"Group\".\"ID\" IN ($groupClause)" => $groupIDs))
 			->leftJoin("Group_Members", '"Member"."ID" = "Group_Members"."MemberID"')
-			->leftJoin("Group", '"Group_Members"."GroupID" = "Group"."ID"');
+			->leftJoin("SilverStripe\\Security\\Group", '"Group_Members"."GroupID" = "Group"."ID"');
 
 		return $members;
 	}
@@ -475,15 +475,15 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		$codeClause = DB::placeholders($codeParams);
 
 		// Via Roles are groups that have the permission via a role
-		return DataObject::get('Group')
+		return DataObject::get('SilverStripe\\Security\\Group')
 			->where(array(
 				"\"PermissionRoleCode\".\"Code\" IN ($codeClause) OR \"Permission\".\"Code\" IN ($codeClause)"
 				=> array_merge($codeParams, $codeParams)
 			))
-			->leftJoin('Permission', "\"Permission\".\"GroupID\" = \"Group\".\"ID\"")
+			->leftJoin('SilverStripe\\Security\\Permission', "\"Permission\".\"GroupID\" = \"Group\".\"ID\"")
 			->leftJoin('Group_Roles', "\"Group_Roles\".\"GroupID\" = \"Group\".\"ID\"")
-			->leftJoin('PermissionRole', "\"Group_Roles\".\"PermissionRoleID\" = \"PermissionRole\".\"ID\"")
-			->leftJoin('PermissionRoleCode', "\"PermissionRoleCode\".\"RoleID\" = \"PermissionRole\".\"ID\"");
+			->leftJoin('SilverStripe\\Security\\PermissionRole', "\"Group_Roles\".\"PermissionRoleID\" = \"PermissionRole\".\"ID\"")
+			->leftJoin('SilverStripe\\Security\\PermissionRoleCode', "\"PermissionRoleCode\".\"RoleID\" = \"PermissionRole\".\"ID\"");
 	}
 
 
@@ -500,7 +500,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	 *  suitable for using in an interface.
 	 */
 	public static function get_codes($grouped = true) {
-		$classes = ClassInfo::implementorsOf('PermissionProvider');
+		$classes = ClassInfo::implementorsOf('SilverStripe\\Security\\PermissionProvider');
 
 		$allCodes = array();
 		$adminCategory = _t('Permission.AdminGroup', 'Administrator');
@@ -601,7 +601,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	public static function add_to_hidden_permissions($code){
 		if(is_string($codes)) $codes = array($codes);
 		Deprecation::notice('4.0', 'Use "Permission.hidden_permissions" config setting instead');
-		Config::inst()->update('Permission', 'hidden_permissions', $codes);
+		Config::inst()->update('SilverStripe\\Security\\Permission', 'hidden_permissions', $codes);
 	}
 
 	/**
@@ -614,7 +614,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	public static function remove_from_hidden_permissions($code){
 		if(is_string($codes)) $codes = array($codes);
 		Deprecation::notice('4.0', 'Use "Permission.hidden_permissions" config setting instead');
-		Config::inst()->remove('Permission', 'hidden_permissions', $codes);
+		Config::inst()->remove('SilverStripe\\Security\\Permission', 'hidden_permissions', $codes);
 	}
 
 	/**

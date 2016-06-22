@@ -48,7 +48,7 @@ use SilverStripe\ORM\DataObjectInterface;
  * @subpackage fields-relational
  */
 class TreeMultiselectField extends TreeDropdownField {
-	public function __construct($name, $title=null, $sourceObject="Group", $keyField="ID", $labelField="Title") {
+	public function __construct($name, $title=null, $sourceObject="SilverStripe\\Security\\Group", $keyField="ID", $labelField="Title") {
 		parent::__construct($name, $title, $sourceObject, $keyField, $labelField);
 		$this->removeExtraClass('single');
 		$this->addExtraClass('multiple');

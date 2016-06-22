@@ -21,7 +21,7 @@ use Convert;
  */
 class CMSMemberLoginForm extends LoginForm {
 
-	protected $authenticator_class = 'MemberAuthenticator';
+	protected $authenticator_class = 'SilverStripe\\Security\\MemberAuthenticator';
 
 	/**
 	 * Get link to use for external security actions
@@ -123,7 +123,7 @@ class CMSMemberLoginForm extends LoginForm {
 	 */
 	protected function redirectToChangePassword() {
 		// Since this form is loaded via an iframe, this redirect must be performed via javascript
-		$changePasswordForm = new ChangePasswordForm($this->controller, 'ChangePasswordForm');
+		$changePasswordForm = new ChangePasswordForm($this->controller, 'SilverStripe\\Security\\ChangePasswordForm');
 		$changePasswordForm->sessionMessage(
 			_t('Member.PASSWORDEXPIRED', 'Your password has expired. Please choose a new one.'),
 			'good'

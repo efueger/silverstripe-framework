@@ -4,6 +4,8 @@ use SilverStripe\Filesystem\Storage\AssetContainer;
 use SilverStripe\Filesystem\Storage\AssetNameGenerator;
 use SilverStripe\Filesystem\Storage\AssetStore;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Member;
+
 
 
 /**

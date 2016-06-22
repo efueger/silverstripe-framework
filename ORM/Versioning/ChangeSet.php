@@ -2,8 +2,8 @@
 
 namespace SilverStripe\ORM\Versioning;
 
-use Member;
-use Permission;
+
+
 use FieldList;
 use TextField;
 use ReadonlyField;
@@ -13,6 +13,9 @@ use LogicException;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 
 /**
  * The ChangeSet model tracks several VersionedAndStaged objects for later publication as a single
@@ -57,7 +60,7 @@ class ChangeSet extends DataObject {
 	);
 
 	private static $has_one = array(
-		'Owner' => 'Member',
+		'Owner' => 'SilverStripe\\Security\\Member',
 	);
 
 	private static $casting = array(

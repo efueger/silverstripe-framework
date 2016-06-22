@@ -19,8 +19,8 @@ use SearchContext;
 use FieldList;
 use FormField;
 use FormScaffolder;
-use Member;
-use Permission;
+
+
 use Object;
 use SearchFilter;
 use SilverStripe\ORM\Queries\SQLInsert;
@@ -30,6 +30,9 @@ use SilverStripe\ORM\FieldType\DBField;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\ORM\FieldType\DBComposite;
 use SilverStripe\ORM\FieldType\DBClassName;
+use SilverStripe\Security\Member;
+use SilverStripe\Security\Permission;
+
 
 /**
  * A single database record & abstract class for the data-access-model.

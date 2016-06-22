@@ -3,6 +3,8 @@
 
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\Security\Member;
+
 
 
 /**

@@ -1,6 +1,9 @@
 <?php
 
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Permission;
+use SilverStripe\Security\Security;
+
 /**
  * Encrypt all passwords
  *
@@ -37,7 +40,7 @@ class EncryptAllPasswordsTask extends BuildTask {
 		}
 
 		// Are there members with a clear text password?
-		$members = DataObject::get("Member")->where(array(
+		$members = DataObject::get("SilverStripe\\Security\\Member")->where(array(
 			'"Member"."PasswordEncryption"' => 'none',
 			'"Member"."Password" IS NOT NULL'
 		));

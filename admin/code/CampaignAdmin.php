@@ -3,6 +3,9 @@
 use SilverStripe\ORM\Versioning\ChangeSet;
 use SilverStripe\ORM\Versioning\ChangeSetItem;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\SecurityToken;
+use SilverStripe\Security\PermissionProvider;
+
 
 /**
  * Campaign section of the CMS

@@ -2,6 +2,8 @@
 
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\Security\Member;
+
 
 /**
  * Two masked input fields, checks for matching passwords.

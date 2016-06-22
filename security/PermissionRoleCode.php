@@ -24,14 +24,14 @@ class PermissionRoleCode extends DataObject {
 	);
 
 	private static $has_one = array(
-		"Role" => "PermissionRole",
+		"Role" => "SilverStripe\\Security\\PermissionRole",
 	);
 
 	public function validate() {
 		$result = parent::validate();
 
 		// Check that new code doesn't increase privileges, unless an admin is editing.
-		$privilegedCodes = Config::inst()->get('Permission', 'privileged_permissions');
+		$privilegedCodes = Config::inst()->get('SilverStripe\\Security\\Permission', 'privileged_permissions');
 		if(
 			$this->Code
 			&& in_array($this->Code, $privilegedCodes)

@@ -33,7 +33,7 @@ class RememberLoginHash extends DataObject {
 	);
 
 	private static $has_one = array (
-		'Member' => 'Member',
+		'Member' => 'SilverStripe\\Security\\Member',
 	);
 
 	private static $indexes = array(
@@ -121,7 +121,7 @@ class RememberLoginHash extends DataObject {
 	 */
 	public static function generate(Member $member) {
 		if(!$member->exists()) { return; }
-		if (Config::inst()->get('RememberLoginHash', 'force_single_token') == true) {
+		if (Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'force_single_token') == true) {
 			$rememberLoginHash = RememberLoginHash::get()->filter('MemberID', $member->ID)->removeAll();
 		}
 		$rememberLoginHash = RememberLoginHash::create();
@@ -134,7 +134,7 @@ class RememberLoginHash extends DataObject {
 		$rememberLoginHash->MemberID = $member->ID;
 		$now = DBDatetime::now();
 		$expiryDate = new DateTime($now->Rfc2822());
-		$tokenExpiryDays = Config::inst()->get('RememberLoginHash', 'token_expiry_days');
+		$tokenExpiryDays = Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'token_expiry_days');
 		$expiryDate->add(new DateInterval('P'.$tokenExpiryDays.'D'));
 		$rememberLoginHash->ExpiryDate = $expiryDate->format('Y-m-d H:i:s');
 		$rememberLoginHash->extend('onAfterGenerateToken');
@@ -163,7 +163,7 @@ class RememberLoginHash extends DataObject {
 	public static function clear(Member $member, $alcDevice = null) {
 		if(!$member->exists()) { return; }
 		$filter = array('MemberID'=>$member->ID);
-		if ((Config::inst()->get('RememberLoginHash', 'logout_across_devices') == false) && $alcDevice) {
+		if ((Config::inst()->get('SilverStripe\\Security\\RememberLoginHash', 'logout_across_devices') == false) && $alcDevice) {
 			$filter['DeviceID'] = $alcDevice;
 		}
 		RememberLoginHash::get()

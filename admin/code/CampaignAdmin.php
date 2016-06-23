@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\ORM\SS_List;
 use SilverStripe\ORM\Versioning\ChangeSet;
 use SilverStripe\ORM\Versioning\ChangeSetItem;
 use SilverStripe\ORM\DataObject;

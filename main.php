@@ -165,7 +165,7 @@ $chain
 		}
 
 		// Fail and redirect the user to the login page
-		$loginPage = Director::absoluteURL(Config::inst()->get('SilverStripe\\Security\\Security', 'login_url'));
+		$loginPage = Director::absoluteURL(Security::config()->login_url);
 		$loginPage .= "?BackURL=" . urlencode($_SERVER['REQUEST_URI']);
 		header('location: '.$loginPage, true, 302);
 		die;

@@ -3,13 +3,13 @@ DataExtensionTest_RelatedObject:
       FieldOne: Obj1
    obj2:
       FieldOne: Obj2
-Permission:
+'SilverStripe\Security\Permission':
    adminpermission:
       Code: ADMIN
-Group:
+'SilverStripe\Security\Group':
    admingroup:
       Permissions: =>Permission.adminpermission
-Member:
+'SilverStripe\Security\Member':
    admin:
       Email: admin@test.com
       Groups: =>Group.admingroup

@@ -9,7 +9,10 @@ use BadMethodCallException;
 use CMSPreviewable;
 use Controller;
 use SilverStripe\Filesystem\Thumbnail;
+use SilverStripe\ORM\DataList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\ManyManyList;
+use SilverStripe\ORM\SS_List;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
 

@@ -2,6 +2,7 @@
 
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Security\Member;
 
 
@@ -143,7 +144,7 @@ class ConfirmedPasswordField extends FormField {
 	/**
 	 * @param array $properties
 	 *
-	 * @return HTMLText
+	 * @return DBHTMLText
 	 */
 	public function Field($properties = array()) {
 		Requirements::javascript(FRAMEWORK_DIR . '/thirdparty/jquery/jquery.js');

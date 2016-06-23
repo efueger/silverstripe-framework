@@ -11,6 +11,7 @@ use CheckboxField;
 use FormAction;
 use Session;
 use Convert;
+use SS_HTTPResponse;
 
 
 /**
@@ -81,7 +82,7 @@ class CMSMemberLoginForm extends LoginForm {
 	/**
 	 * Try to authenticate the user
 	 *
-	 * @param array Submitted data
+	 * @param array $data Submitted data
 	 * @return Member Returns the member object on successful authentication
 	 *                or NULL on failure.
 	 */
@@ -102,6 +103,7 @@ class CMSMemberLoginForm extends LoginForm {
 	 * This method is called when the user clicks on "Log in"
 	 *
 	 * @param array $data Submitted data
+	 * @return \SS_HTTPResponse
 	 */
 	public function dologin($data) {
 		if($this->performLogin($data)) {

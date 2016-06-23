@@ -3,10 +3,12 @@
 namespace SilverStripe\Security;
 
 
+use Form;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DB;
 use Controller;
+use SS_HTTPRequest;
 use TemplateGlobalProvider;
 use Deprecation;
 use Director;
@@ -22,7 +24,6 @@ use EmailField;
 use FormAction;
 use Convert;
 use Object;
-use Subsite;
 use ClassInfo;
 
 /**
@@ -363,6 +364,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * Get the login form to process according to the submitted data
 	 *
 	 * @return Form
+	 * @throws Exception
 	 */
 	public function LoginForm() {
 		$authenticator = $this->getAuthenticator();
@@ -580,7 +582,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 
 	public function basicauthlogin() {
 		$member = BasicAuth::requireLogin("SilverStripe login", 'ADMIN');
-		$member->LogIn();
+		$member->logIn();
 	}
 
 	/**
@@ -674,7 +676,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * - t: plaintext token
 	 *
 	 * @param Member $member Member object associated with this link.
-	 * @param string $autoLoginHash The auto login token.
+	 * @param string $autologinToken The auto login token.
+	 * @return string
 	 */
 	public static function getPasswordResetLink($member, $autologinToken) {
 		$autologinToken = urldecode($autologinToken);
@@ -704,7 +707,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 		// Extract the member from the URL.
 		$member = null;
 		if (isset($_REQUEST['m'])) {
-			$member = Member::get()->filter('ID', (int)$_REQUEST['m'])->First();
+			$member = Member::get()->filter('ID', (int)$_REQUEST['m'])->first();
 		}
 
 		// Check whether we are merely changin password, or resetting.
@@ -775,7 +778,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * Gets the template for an include used for security.
 	 * For use in any subclass.
 	 *
-	 * @return string|array Returns the template(s) for rendering
+	 * @param string $name
+	 * @return array Returns the template(s) for rendering
 	 */
 	public function getIncludeTemplate($name) {
 		return array('Security_' . $name);
@@ -798,17 +802,17 @@ class Security extends Controller implements TemplateGlobalProvider {
 		// coupling to subsites module
 		$origSubsite = null;
 		if(is_callable('Subsite::changeSubsite')) {
-			$origSubsite = Subsite::currentSubsiteID();
-			Subsite::changeSubsite(0);
+			$origSubsite = \Subsite::currentSubsiteID();
+			\Subsite::changeSubsite(0);
 		}
 
 		$member = null;
 
 		// find a group with ADMIN permission
-		$adminGroup = Permission::get_groups_by_permission('ADMIN')->First();
+		$adminGroup = Permission::get_groups_by_permission('ADMIN')->first();
 
 		if(is_callable('Subsite::changeSubsite')) {
-			Subsite::changeSubsite($origSubsite);
+			\Subsite::changeSubsite($origSubsite);
 		}
 
 		if ($adminGroup) {
@@ -817,12 +821,12 @@ class Security extends Controller implements TemplateGlobalProvider {
 
 		if(!$adminGroup) {
 			singleton('SilverStripe\\Security\\Group')->requireDefaultRecords();
-			$adminGroup = Permission::get_groups_by_permission('ADMIN')->First();
+			$adminGroup = Permission::get_groups_by_permission('ADMIN')->first();
 		}
 
 		if(!$member) {
 			singleton('SilverStripe\\Security\\Member')->requireDefaultRecords();
-			$member = Permission::get_members_by_permission('ADMIN')->First();
+			$member = Permission::get_members_by_permission('ADMIN')->first();
 		}
 
 		if(!$member) {
@@ -863,6 +867,7 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 *
 	 * @param string $username The user name
 	 * @param string $password The password (in cleartext)
+	 * @return bool
 	 */
 	public static function setDefaultAdmin($username, $password) {
 		// don't overwrite if already set

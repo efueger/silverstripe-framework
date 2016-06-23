@@ -3,6 +3,8 @@
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\DataObjectInterface;
+use SilverStripe\ORM\FieldType\DBHTMLText;
+
 /**
  * This formfield represents many-many joins using a tree selector shown in a dropdown styled element
  * which can be added to any form usually in the CMS.
@@ -88,9 +90,13 @@ class TreeMultiselectField extends TreeDropdownField {
 				return $record->$fieldName();
 		}
 	}
+
 	/**
 	 * We overwrite the field attribute to add our hidden fields, as this
 	 * formfield can contain multiple values.
+	 *
+	 * @param array $properties
+	 * @return DBHTMLText
 	 */
 	public function Field($properties = array()) {
 		Requirements::add_i18n_javascript(FRAMEWORK_DIR . '/client/lang');
@@ -146,6 +152,8 @@ class TreeMultiselectField extends TreeDropdownField {
 	 * Save the results into the form
 	 * Calls function $record->onChange($items) before saving to the assummed
 	 * Component set.
+	 *
+	 * @param DataObjectInterface $record
 	 */
 	public function saveInto(DataObjectInterface $record) {
 		// Detect whether this field has actually been updated

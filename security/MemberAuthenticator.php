@@ -131,7 +131,7 @@ class MemberAuthenticator extends Authenticator {
 
 			} else {
 				// Audit logging hook
-				singleton('SilverStripe\\Security\\Member')->extend('authenticationFailedUnknownUser', $data);
+				Member::singleton()->extend('authenticationFailedUnknownUser', $data);
 			}
 		}
 
@@ -178,7 +178,7 @@ class MemberAuthenticator extends Authenticator {
 	/**
 	 * Method that creates the login form for this authentication method
 	 *
-	 * @param Controller The parent controller, necessary to create the
+	 * @param Controller $controller The parent controller, necessary to create the
 	 *                   appropriate form action tag
 	 * @return Form Returns the login form to use with this authentication
 	 *              method

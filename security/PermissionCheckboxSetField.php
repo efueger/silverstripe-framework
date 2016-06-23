@@ -4,6 +4,7 @@ namespace SilverStripe\Security;
 
 
 
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\ORM\SS_List;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\FieldType\DBField;
@@ -29,7 +30,7 @@ use Config;
 class PermissionCheckboxSetField extends FormField {
 
 	/**
-	 * @var Array Filter certain permission codes from the output.
+	 * @var array Filter certain permission codes from the output.
 	 * Useful to simplify the interface
 	 */
 	protected $hiddenPermissions = array();
@@ -74,14 +75,14 @@ class PermissionCheckboxSetField extends FormField {
 	}
 
 	/**
-	 * @param Array $codes
+	 * @param array $codes
 	 */
 	public function setHiddenPermissions($codes) {
 		$this->hiddenPermissions = $codes;
 	}
 
 	/**
-	 * @return Array
+	 * @return array
 	 */
 	public function getHiddenPermissions() {
 		return $this->hiddenPermissions;
@@ -89,7 +90,7 @@ class PermissionCheckboxSetField extends FormField {
 
 	/**
 	 * @param array $properties
-	 * @return HTMLText
+	 * @return DBHTMLText
 	 */
 	public function Field($properties = array()) {
 		Requirements::css(FRAMEWORK_DIR . '/client/dist/styles/CheckboxSetField.css');
@@ -104,7 +105,7 @@ class PermissionCheckboxSetField extends FormField {
 			$record = $this->form->getRecord();
 			if(
 				$record
-				&& (is_a($record, 'SilverStripe\\Security\\Group') || is_a($record, 'SilverStripe\\Security\\PermissionRole'))
+				&& ($record instanceof Group || $record instanceof PermissionRole)
 				&& !$records->find('ID', $record->ID)
 			) {
 				$records->push($record);
@@ -196,7 +197,7 @@ class PermissionCheckboxSetField extends FormField {
 					$odd = ($odd + 1) % 2;
 					$extraClass = $odd ? 'odd' : 'even';
 					$extraClass .= ' val' . str_replace(' ', '', $code);
-					$itemID = $this->id() . '_' . preg_replace('/[^a-zA-Z0-9]+/', '', $code);
+					$itemID = $this->ID() . '_' . preg_replace('/[^a-zA-Z0-9]+/', '', $code);
 					$checked = $disabled = $inheritMessage = '';
 					$checked = (isset($uninheritedCodes[$code]) || isset($inheritedCodes[$code]))
 						? ' checked="checked"'
@@ -248,7 +249,7 @@ class PermissionCheckboxSetField extends FormField {
 		}
 		if($this->readonly) {
 			return DBField::create_field('HTMLText',
-				"<ul id=\"{$this->id()}\" class=\"optionset checkboxsetfield{$this->extraClass()}\">\n" .
+				"<ul id=\"{$this->ID()}\" class=\"optionset checkboxsetfield{$this->extraClass()}\">\n" .
 				"<li class=\"help\">" .
 				_t(
 					'Permissions.UserPermissionsIntro',
@@ -261,7 +262,7 @@ class PermissionCheckboxSetField extends FormField {
 			);
 		} else {
 			return DBField::create_field('HTMLText',
-			    "<ul id=\"{$this->id()}\" class=\"optionset checkboxsetfield{$this->extraClass()}\">\n" .
+			    "<ul id=\"{$this->ID()}\" class=\"optionset checkboxsetfield{$this->extraClass()}\">\n" .
 				$options .
 				"</ul>\n"
 			);
@@ -271,7 +272,7 @@ class PermissionCheckboxSetField extends FormField {
 	/**
 	 * Update the permission set associated with $record DataObject
 	 *
-	 * @param DataObject $record
+	 * @param DataObjectInterface $record
 	 */
 	public function saveInto(DataObjectInterface $record) {
 		$fieldname = $this->name;

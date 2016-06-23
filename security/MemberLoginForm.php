@@ -8,6 +8,7 @@ use Session;
 use FieldList;
 use HiddenField;
 use FormAction;
+use SS_HTTPResponse;
 use TextField;
 use PasswordField;
 use CheckboxField;
@@ -57,7 +58,7 @@ class MemberLoginForm extends LoginForm {
 	 *                               create the appropriate form action tag.
 	 * @param string $name The method on the controller that will return this
 	 *                     form object.
-	 * @param FieldList|FormField $fields All of the fields in the form - a
+	 * @param FieldList $fields All of the fields in the form - a
 	 *                                   {@link FieldList} of {@link FormField}
 	 *                                   objects.
 	 * @param FieldList|FormAction $actions All of the action buttons in the
@@ -66,7 +67,6 @@ class MemberLoginForm extends LoginForm {
 	 * @param bool $checkCurrentUser If set to TRUE, it will be checked if a
 	 *                               the user is currently logged in, and if
 	 *                               so, only a logout button will be rendered
-	 * @param string $authenticatorClassName Name of the authenticator class that this form uses.
 	 */
 	public function __construct($controller, $name, $fields = null, $actions = null,
 								$checkCurrentUser = true) {
@@ -294,7 +294,7 @@ JS;
 	/**
 	 * Try to authenticate the user
 	 *
-	 * @param array Submitted data
+	 * @param array $data Submitted data
 	 * @return Member Returns the member object on successful authentication
 	 *                or NULL on failure.
 	 */
@@ -319,6 +319,7 @@ JS;
 	 * in the form detailing why the action was denied.
 	 *
 	 * @param array $data Submitted data
+	 * @return SS_HTTPResponse
 	 */
 	public function forgotPassword($data) {
 		// Ensure password is given

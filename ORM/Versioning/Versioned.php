@@ -2,6 +2,7 @@
 
 namespace SilverStripe\ORM\Versioning;
 
+use SS_HTTPRequest;
 use TemplateGlobalProvider;
 use Session;
 use Deprecation;
@@ -238,8 +239,8 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	 * Amend freshly created DataQuery objects with versioned-specific
 	 * information.
 	 *
-	 * @param SQLSelect
-	 * @param DataQuery
+	 * @param SQLSelect $query
+	 * @param DataQuery $dataQuery
 	 */
 	public function augmentDataQueryCreation(SQLSelect &$query, DataQuery &$dataQuery) {
 		$parts = explode('.', Versioned::get_reading_mode());
@@ -2400,7 +2401,7 @@ class Versioned extends DataExtension implements TemplateGlobalProvider {
 	}
 
 	/**
-	 * @param FieldList
+	 * @param FieldList $fields
 	 */
 	public function updateCMSFields(FieldList $fields) {
 		// remove the version field from the CMS as this should be left

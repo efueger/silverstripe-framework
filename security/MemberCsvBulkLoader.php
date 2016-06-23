@@ -70,14 +70,14 @@ class MemberCsvBulkLoader extends CsvBulkLoader {
 	}
 
 	/**
-	 * @param Array $groups
+	 * @param array $groups
 	 */
 	public function setGroups($groups) {
 		$this->groups = $groups;
 	}
 
 	/**
-	 * @return Array
+	 * @return array
 	 */
 	public function getGroups() {
 		return $this->groups;

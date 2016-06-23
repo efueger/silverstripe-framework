@@ -8,6 +8,7 @@ use Director;
 use Convert;
 use Session;
 use AdminRootController;
+use SS_HTTPResponse;
 
 
 /**

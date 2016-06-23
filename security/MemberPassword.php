@@ -39,6 +39,8 @@ class MemberPassword extends DataObject {
 	/**
 	 * Log a password change from the given member.
 	 * Call MemberPassword::log($this) from within Member whenever the password is changed.
+	 *
+	 * @param Member $member
 	 */
 	public static function log($member) {
 		$record = new MemberPassword();

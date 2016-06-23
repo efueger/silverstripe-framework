@@ -45,7 +45,7 @@ Image:
     FileFilename: FileTest.png
     FileHash: 55b443b60176235ef09801153cca4e6da7494a0c
     Name: FileTest.png
-Permission:
+'SilverStripe\Security\Permission':
   admin:
     Code: ADMIN
   cmsmain:
@@ -54,7 +54,7 @@ Permission:
     Code: CMS_ACCESS_AssetAdmin
   securityadmin:
     Code: CMS_ACCESS_SecurityAdmin
-Group:
+'SilverStripe\Security\Group':
   admins:
     Title: Administrators
     Permissions: =>Permission.admin
@@ -67,7 +67,7 @@ Group:
   assetusers:
     Title: 'Asset Users'
     Permissions: =>Permission.assetadmin
-Member:
+'SilverStripe\Security\Member':
   frontend:
     Email: frontend@example.com
   cms:

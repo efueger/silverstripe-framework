@@ -3,6 +3,7 @@
 use SilverStripe\ORM\Versioning\Versioned;
 use SilverStripe\ORM\DatabaseAdmin;
 use SilverStripe\Security\Permission;
+use SilverStripe\Security\RandomGenerator;
 use SilverStripe\Security\Security;
 
 

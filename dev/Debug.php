@@ -33,6 +33,9 @@ class Debug {
 	/**
 	 * Show the contents of val in a debug-friendly way.
 	 * Debug::show() is intended to be equivalent to dprintr()
+	 * 
+	 * @param mixed $val
+	 * @param bool $showHeader
 	 */
 	public static function show($val, $showHeader = true) {
 		if(!Director::isLive()) {

@@ -4,7 +4,8 @@ namespace SilverStripe\Security;
 
 
 use SilverStripe\ORM\DataObject;
-use Config;
+use SilverStripe\ORM\HasManyList;
+use SilverStripe\ORM\ManyManyList;
 
 /**
  * A PermissionRole represents a collection of permission codes that can be applied to groups.
@@ -56,13 +57,13 @@ class PermissionRole extends DataObject {
 			'Root.Main',
 			$permissionField = new PermissionCheckboxSetField(
 				'Codes',
-				singleton('SilverStripe\\Security\\Permission')->i18n_plural_name(),
+				Permission::singleton()->i18n_plural_name(),
 				'SilverStripe\\Security\\PermissionRoleCode',
 				'RoleID'
 			)
 		);
 		$permissionField->setHiddenPermissions(
-			Config::inst()->get('SilverStripe\\Security\\Permission', 'hidden_permissions')
+			Permission::config()->hidden_permissions
 		);
 
 		return $fields;

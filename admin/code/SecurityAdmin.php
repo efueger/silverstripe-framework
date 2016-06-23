@@ -19,7 +19,7 @@ class SecurityAdmin extends LeftAndMain implements PermissionProvider {
 
 	private static $url_rule = '/$Action/$ID/$OtherID';
 
-	private static $menu_title = 'SilverStripe\\Security\\Security';
+	private static $menu_title = 'Security';
 
 	private static $tree_class = 'SilverStripe\\Security\\Group';
 
@@ -43,6 +43,9 @@ class SecurityAdmin extends LeftAndMain implements PermissionProvider {
 
 	/**
 	 * Shortcut action for setting the correct active tab.
+	 *
+	 * @param SS_HTTPRequest $request
+	 * @return SS_HTTPResponse
 	 */
 	public function users($request) {
 		return $this->index($request);
@@ -50,6 +53,9 @@ class SecurityAdmin extends LeftAndMain implements PermissionProvider {
 
 	/**
 	 * Shortcut action for setting the correct active tab.
+	 *
+	 * @param SS_HTTPRequest $request
+	 * @return SS_HTTPResponse
 	 */
 	public function groups($request) {
 		return $this->index($request);
@@ -57,6 +63,9 @@ class SecurityAdmin extends LeftAndMain implements PermissionProvider {
 
 	/**
 	 * Shortcut action for setting the correct active tab.
+	 *
+	 * @param SS_HTTPRequest $request
+	 * @return SS_HTTPResponse
 	 */
 	public function roles($request) {
 		return $this->index($request);
@@ -86,7 +95,7 @@ class SecurityAdmin extends LeftAndMain implements PermissionProvider {
 		if($record && method_exists($record, 'getValidator')) {
 			$validator = $record->getValidator();
 		} else {
-			$validator = Injector::inst()->get('SilverStripe\\Security\\Member')->getValidator();
+			$validator = Member::singleton()->getValidator();
 		}
 
 		$memberListConfig

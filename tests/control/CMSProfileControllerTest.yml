@@ -1,4 +1,4 @@
-Permission:
+'SilverStripe\Security\Permission':
   admin:
     Code: ADMIN
   cmsmain:
@@ -8,7 +8,7 @@ Permission:
   test:
     Code: CMS_ACCESS_TestController
 
-Group:
+'SilverStripe\Security\Group':
   admins:
     Title: Administrators
     Permissions: =>Permission.admin
@@ -19,7 +19,7 @@ Group:
     Title: Test group
     Permissions: =>Permission.test
 
-Member:
+'SilverStripe\Security\Member':
   admin:
     FirstName: Admin
     Email: admin@user.com

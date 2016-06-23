@@ -189,7 +189,7 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer, Thumb
 
 	/**
 	 * @config
-	 * @var If this is true, then restrictions set in {@link $allowed_max_file_size} and
+	 * @var bool If this is true, then restrictions set in {@link $allowed_max_file_size} and
 	 * {@link $allowed_extensions} will be applied to users with admin privileges as
 	 * well.
 	 */

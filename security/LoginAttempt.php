@@ -46,9 +46,8 @@ class LoginAttempt extends DataObject {
 	private static $belongs_many_many = array();
 
 	/**
-	 *
-	 * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
-	 *
+	 * @param bool $includerelations Indicate if the labels returned include relation fields
+	 * @return array
 	 */
 	public function fieldLabels($includerelations = true) {
 		$labels = parent::fieldLabels($includerelations);

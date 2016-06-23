@@ -6,11 +6,10 @@ namespace SilverStripe\Security;
 use SilverStripe\ORM\DB;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ArrayList;
+use SilverStripe\ORM\SS_List;
 use TemplateGlobalProvider;
-use Config;
 use ClassInfo;
 use TestOnly;
-use Deprecation;
 
 /**
  * Represents a permission assigned to a group.
@@ -72,7 +71,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	 * Method to globally disable "strict" checking, which means a permission
 	 * will be granted if the key does not exist at all.
 	 *
-	 * @var bool
+	 * @var array
 	 */
 	private static $declared_permissions = null;
 
@@ -181,10 +180,14 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		}
 
 		// Turn the code into an array as we may need to add other permsissions to the set we check
-		if(!is_array($code)) $code = array($code);
+		if(!is_array($code)) {
+			$code = array($code);
+		}
+
+		// Check if admin should be treated as holding all permissions
+		$adminImpliesAll = (bool)static::config()->admin_implies_all;
 
 		if($arg == 'any') {
-			$adminImpliesAll = (bool)Config::inst()->get('SilverStripe\\Security\\Permission', 'admin_implies_all');
 			// Cache the permissions in memory
 			if(!isset(self::$cache_permissions[$memberID])) {
 				self::$cache_permissions[$memberID] = self::permissions_for_member($memberID);
@@ -217,8 +220,8 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		// Code filters
 		$codeParams = is_array($code) ? $code : array($code);
 		$codeClause = DB::placeholders($codeParams);
-		$adminParams = (self::$admin_implies_all) ? array('ADMIN') : array();
-		$adminClause = (self::$admin_implies_all) ?  ", ?" : '';
+		$adminParams = $adminImpliesAll ? array('ADMIN') : array();
+		$adminClause = $adminImpliesAll ?  ", ?" : '';
 
 		// The following code should only be used if you're not using the "any" arg.  This is kind
 		// of obselete functionality and could possibly be deprecated.
@@ -244,7 +247,6 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 					user_error("Permission::checkMember: bad arg '$arg'", E_USER_ERROR);
 				}
 		}
-		$adminFilter = (Config::inst()->get('SilverStripe\\Security\\Permission', 'admin_implies_all')) ?  ",'ADMIN'" : '';
 
 		// Raw SQL for efficiency
 		$permission = DB::prepared_query(
@@ -268,7 +270,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		if($permission) return $permission;
 
 		// Strict checking disabled?
-		if(!Config::inst()->get('SilverStripe\\Security\\Permission', 'strict_checking') || !$strict) {
+		if(!static::config()->strict_checking || !$strict) {
 			$hasPermission = DB::prepared_query(
 				"SELECT COUNT(*)
 				FROM \"Permission\"
@@ -279,7 +281,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 				array_merge($codeParams, array(self::GRANT_PERMISSION))
 			)->value();
 
-			if(!$hasPermission) return;
+			if(!$hasPermission) return false;
 		}
 
 		return false;
@@ -288,6 +290,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	/**
 	 * Get all the 'any' permission codes available to the given member.
 	 *
+	 * @param int $memberID
 	 * @return array
 	 */
 	public static function permissions_for_member($memberID) {
@@ -373,7 +376,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	 *
 	 * @param int $groupID The ID of the group
 	 * @param string $code The permission code
-	 * @param string Optional: The permission argument (e.g. a page ID).
+	 * @param string $arg Optional: The permission argument (e.g. a page ID).
 	 * @returns Permission Returns the new permission object.
 	 */
 	public static function grant($groupID, $code, $arg = "any") {
@@ -388,6 +391,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 				break;
 			case "all":
 				$perm->Arg = -1;
+				break;
 			default:
 				if(is_numeric($arg)) {
 					$perm->Arg = $arg;
@@ -407,7 +411,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	 *
 	 * @param int $groupID The ID of the group
 	 * @param string $code The permission code
-	 * @param string Optional: The permission argument (e.g. a page ID).
+	 * @param string $arg Optional: The permission argument (e.g. a page ID).
 	 * @returns Permission Returns the new permission object.
 	 */
 	public static function deny($groupID, $code, $arg = "any") {
@@ -422,6 +426,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 				break;
 			case "all":
 				$perm->Arg = -1;
+				break;
 			default:
 				if(is_numeric($arg)) {
 					$perm->Arg = $arg;
@@ -457,17 +462,18 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		if(empty($groupIDs)) return new ArrayList();
 
 		$groupClause = DB::placeholders($groupIDs);
+		/** @skipUpgrade */
 		$members = Member::get()
 			->where(array("\"Group\".\"ID\" IN ($groupClause)" => $groupIDs))
 			->leftJoin("Group_Members", '"Member"."ID" = "Group_Members"."MemberID"')
-			->leftJoin("SilverStripe\\Security\\Group", '"Group_Members"."GroupID" = "Group"."ID"');
+			->leftJoin("Group", '"Group_Members"."GroupID" = "Group"."ID"');
 
 		return $members;
 	}
 
 	/**
 	 * Return all of the groups that have one of the given permission codes
-	 * @param $codes array|string Either a single permission code, or an array of permission codes
+	 * @param array|string $codes Either a single permission code, or an array of permission codes
 	 * @return SS_List The matching group objects
 	 */
 	public static function get_groups_by_permission($codes) {
@@ -475,15 +481,16 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		$codeClause = DB::placeholders($codeParams);
 
 		// Via Roles are groups that have the permission via a role
-		return DataObject::get('SilverStripe\\Security\\Group')
+		/** @skipUpgrade */
+		return Group::get()
 			->where(array(
 				"\"PermissionRoleCode\".\"Code\" IN ($codeClause) OR \"Permission\".\"Code\" IN ($codeClause)"
 				=> array_merge($codeParams, $codeParams)
 			))
-			->leftJoin('SilverStripe\\Security\\Permission', "\"Permission\".\"GroupID\" = \"Group\".\"ID\"")
+			->leftJoin('Permission', "\"Permission\".\"GroupID\" = \"Group\".\"ID\"")
 			->leftJoin('Group_Roles', "\"Group_Roles\".\"GroupID\" = \"Group\".\"ID\"")
-			->leftJoin('SilverStripe\\Security\\PermissionRole', "\"Group_Roles\".\"PermissionRoleID\" = \"PermissionRole\".\"ID\"")
-			->leftJoin('SilverStripe\\Security\\PermissionRoleCode', "\"PermissionRoleCode\".\"RoleID\" = \"PermissionRole\".\"ID\"");
+			->leftJoin('PermissionRole', "\"Group_Roles\".\"PermissionRoleID\" = \"PermissionRole\".\"ID\"")
+			->leftJoin('PermissionRoleCode', "\"PermissionRoleCode\".\"RoleID\" = \"PermissionRole\".\"ID\"");
 	}
 
 
@@ -580,6 +587,9 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	/**
 	 * Sort permissions based on their sort value, or name
 	 *
+	 * @param array $a
+	 * @param array $b
+	 * @return int
 	 */
 	public static function sort_permissions($a, $b) {
 		if ($a['sort'] == $b['sort']) {
@@ -590,48 +600,6 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 			return $a['sort'] < $b['sort'] ? -1 : 1;
 		}
 	}
-
-	/**
-	 * add a permission represented by the $code to the {@link slef::$hidden_permissions} list
-	 *
-	 * @deprecated 4.0 Use "Permission.hidden_permissions" config setting instead
-	 * @param $code string - the permissions code
-	 * @return void
-	 */
-	public static function add_to_hidden_permissions($code){
-		if(is_string($codes)) $codes = array($codes);
-		Deprecation::notice('4.0', 'Use "Permission.hidden_permissions" config setting instead');
-		Config::inst()->update('SilverStripe\\Security\\Permission', 'hidden_permissions', $codes);
-	}
-
-	/**
-	 * remove a permission represented by the $code from the {@link slef::$hidden_permissions} list
-	 *
-	 * @deprecated 4.0 Use "Permission.hidden_permissions" config setting instead
-	 * @param $code string - the permissions code
-	 * @return void
-	 */
-	public static function remove_from_hidden_permissions($code){
-		if(is_string($codes)) $codes = array($codes);
-		Deprecation::notice('4.0', 'Use "Permission.hidden_permissions" config setting instead');
-		Config::inst()->remove('SilverStripe\\Security\\Permission', 'hidden_permissions', $codes);
-	}
-
-	/**
-	 * Declare an array of permissions for the system.
-	 *
-	 * Permissions can be grouped by nesting arrays. Scalar values are always
-	 * treated as permissions.
-	 *
-	 * @deprecated 4.0 Use "Permission.declared_permissions" config setting instead
-	 * @param array $permArray A (possibly nested) array of permissions to
-	 *                         declare for the system.
-	 */
-	public static function declare_permissions($permArray) {
-		Deprecation::notice('4.0', 'Use "Permission.declared_permissions" config setting instead');
-		self::config()->declared_permissions = $permArray;
-	}
-
 
 	/**
 	 * Get a linear list of the permissions in the system.
@@ -647,8 +615,7 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 
 		self::$declared_permissions_list = array();
 
-		self::traverse_declared_permissions(self::$declared_permissions,
-																				self::$declared_permissions_list);
+		self::traverse_declared_permissions(self::$declared_permissions, self::$declared_permissions_list);
 
 		return self::$declared_permissions_list;
 	}
@@ -656,8 +623,8 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	/**
 	 * Look up the human-readable title for the permission as defined by <code>Permission::declare_permissions</code>
 	 *
-	 * @param $perm Permission code
-	 * @return Label for the given permission, or the permission itself if the label doesn't exist
+	 * @param string $perm Permission code
+	 * @return string Label for the given permission, or the permission itself if the label doesn't exist
 	 */
 	public static function get_label_for_permission($perm) {
 		$list = self::get_declared_permissions_list();
@@ -669,8 +636,8 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 	 * Recursively traverse the nested list of declared permissions and create
 	 * a linear list.
 	 *
-	 * @param aeeay $declared Nested structure of permissions.
-	 * @param $list List of permissions in the structure. The result will be
+	 * @param array $declared Nested structure of permissions.
+	 * @param array $list List of permissions in the structure. The result will be
 	 *              written to this array.
 	 */
 	protected static function traverse_declared_permissions($declared, &$list) {

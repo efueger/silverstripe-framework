@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\Security\Group;
 use SilverStripe\Security\GroupCsvBulkLoader;
 
 /**

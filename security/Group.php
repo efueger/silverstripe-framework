@@ -5,6 +5,8 @@ namespace SilverStripe\Security;
 
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;
+use SilverStripe\ORM\HasManyList;
+use SilverStripe\ORM\ManyManyList;
 use SilverStripe\ORM\UnsavedRelationList;
 use Requirements;
 use FieldList;
@@ -84,7 +86,7 @@ class Group extends DataObject {
 	public function getAllChildren() {
 		$doSet = new ArrayList();
 
-		$children = DataObject::get('SilverStripe\\Security\\Group')->filter("ParentID", $this->ID);
+		$children = Group::get()->filter("ParentID", $this->ID);
 		foreach($children as $child) {
 			$doSet->push($child);
 			$doSet->merge($child->getAllChildren());
@@ -246,9 +248,8 @@ class Group extends DataObject {
 	}
 
 	/**
-	 *
-	 * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
-	 *
+	 * @param bool $includerelations Indicate if the labels returned include relation fields
+	 * @return array
 	 */
 	public function fieldLabels($includerelations = true) {
 		$labels = parent::fieldLabels($includerelations);

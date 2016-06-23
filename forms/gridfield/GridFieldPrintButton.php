@@ -3,6 +3,7 @@
 
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\FieldType\DBDatetime;
+use SilverStripe\ORM\FieldType\DBHTMLText;
 use SilverStripe\Security\Member;
 
 
@@ -83,10 +84,11 @@ class GridFieldPrintButton implements GridField_HTMLProvider, GridField_ActionPr
 	/**
 	 * Handle the print action.
 	 *
-	 * @param GridField
-	 * @param string
-	 * @param array
-	 * @param array
+	 * @param GridField $gridField
+	 * @param string $actionName
+	 * @param array $arguments
+	 * @param array $data
+	 * @return DBHTMLText
 	 */
 	public function handleAction(GridField $gridField, $actionName, $arguments, $data) {
 		if($actionName == 'print') {
@@ -108,7 +110,11 @@ class GridFieldPrintButton implements GridField_HTMLProvider, GridField_ActionPr
 
 	/**
 	 * Handle the print, for both the action button and the URL
- 	 */
+	 *
+	 * @param GridField $gridField
+	 * @param SS_HTTPRequest $request
+	 * @return DBHTMLText
+	 */
 	public function handlePrint($gridField, $request = null) {
 		set_time_limit(60);
 		Requirements::clear();
@@ -174,8 +180,9 @@ class GridFieldPrintButton implements GridField_HTMLProvider, GridField_ActionPr
 	/**
 	 * Export core.
 	 *
-	 * @param GridField
- 	 */
+	 * @param GridField $gridField
+	 * @return ArrayData
+	 */
 	public function generatePrintData(GridField $gridField) {
 		$printColumns = $this->getPrintColumnsForGridField($gridField);
 
@@ -236,7 +243,8 @@ class GridFieldPrintButton implements GridField_HTMLProvider, GridField_ActionPr
 	}
 
 	/**
-	 * @param array
+	 * @param array $cols
+	 * @return $this
 	 */
 	public function setPrintColumns($cols) {
 		$this->printColumns = $cols;
@@ -252,7 +260,8 @@ class GridFieldPrintButton implements GridField_HTMLProvider, GridField_ActionPr
 	}
 
 	/**
-	 * @param boolean
+	 * @param bool $bool
+	 * @return $this
 	 */
 	public function setPrintHasHeader($bool) {
 		$this->printHasHeader = $bool;

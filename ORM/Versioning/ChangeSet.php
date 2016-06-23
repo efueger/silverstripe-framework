@@ -4,7 +4,9 @@ namespace SilverStripe\ORM\Versioning;
 
 
 
+use Exception;
 use FieldList;
+use SilverStripe\ORM\HasManyList;
 use TextField;
 use ReadonlyField;
 use i18n;

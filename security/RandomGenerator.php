@@ -2,7 +2,6 @@
 
 namespace SilverStripe\Security;
 
-use COM;
 use Exception;
 
 /**
@@ -52,7 +51,7 @@ class RandomGenerator {
 		// try to read from the windows RNG
 		if($isWin && class_exists('COM')) {
 			try {
-				$comObj = new COM('CAPICOM.Utilities.1');
+				$comObj = new \COM('CAPICOM.Utilities.1');
 
 				if(is_callable(array($comObj,'GetRandom'))) {
 					return  base64_decode($comObj->GetRandom(64, 0));

@@ -50,7 +50,7 @@ abstract class Authenticator extends Object {
 	/**
 	 * Method that creates the login form for this authentication method
 	 *
-	 * @param Controller The parent controller, necessary to create the
+	 * @param Controller $controller The parent controller, necessary to create the
 	 *                   appropriate form action tag
 	 * @return Form Returns the login form to use with this authentication
 	 *              method

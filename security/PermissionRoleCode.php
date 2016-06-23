@@ -2,9 +2,7 @@
 
 namespace SilverStripe\Security;
 
-
 use SilverStripe\ORM\DataObject;
-use Config;
 
 /**
  * A PermissionRoleCode represents a single permission code assigned to a {@link PermissionRole}.
@@ -31,7 +29,7 @@ class PermissionRoleCode extends DataObject {
 		$result = parent::validate();
 
 		// Check that new code doesn't increase privileges, unless an admin is editing.
-		$privilegedCodes = Config::inst()->get('SilverStripe\\Security\\Permission', 'privileged_permissions');
+		$privilegedCodes = Permission::config()->privileged_permissions;
 		if(
 			$this->Code
 			&& in_array($this->Code, $privilegedCodes)

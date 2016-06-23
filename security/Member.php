@@ -4,6 +4,7 @@ namespace SilverStripe\Security;
 
 
 
+use SilverStripe\ORM\SS_Map;
 use SilverStripe\ORM\ValidationResult;
 use SilverStripe\ORM\FieldType\DBDatetime;
 use SilverStripe\ORM\DB;
@@ -161,7 +162,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 	/**
 	 * @config
-	 * @var Array See {@link set_title_columns()}
+	 * @var array See {@link set_title_columns()}
 	 */
 	private static $title_format = null;
 
@@ -176,8 +177,10 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	private static $unique_identifier_field = 'Email';
 
 	/**
+	 * Object for validating user's password
+	 *
 	 * @config
-	 * {@link PasswordValidator} object for validating user's password
+	 * @var PasswordValidator
 	 */
 	private static $password_validator = null;
 
@@ -271,8 +274,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		if(!Security::has_default_admin()) return null;
 
 		// Find or create ADMIN group
-		singleton('SilverStripe\\Security\\Group')->requireDefaultRecords();
-		$adminGroup = Permission::get_groups_by_permission('ADMIN')->First();
+		Group::singleton()->requireDefaultRecords();
+		$adminGroup = Permission::get_groups_by_permission('ADMIN')->first();
 
 		// Find member
 		$admin = Member::get()
@@ -451,6 +454,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 	/**
 	 * Set a {@link PasswordValidator} object to use to validate member's passwords.
+	 *
+	 * @param PasswordValidator $pv
 	 */
 	public static function set_password_validator($pv) {
 		self::$password_validator = $pv;
@@ -458,6 +463,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 	/**
 	 * Returns the current {@link PasswordValidator}
+	 *
+	 * @return PasswordValidator
 	 */
 	public static function password_validator() {
 		return self::$password_validator;
@@ -598,7 +605,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 			$deviceID = Cookie::get('alc_device');
 
-			$member = Member::get()->byId($uid);
+			$member = Member::get()->byID($uid);
 
 			$rememberLoginHash = null;
 
@@ -680,6 +687,10 @@ class Member extends DataObject implements TemplateGlobalProvider {
 
 	/**
 	 * Utility for generating secure password hashes for this member.
+	 *
+	 * @param string $string
+	 * @return string
+	 * @throws PasswordEncryptor_NotFoundException
 	 */
 	public function encryptWithUserSettings($string) {
 		if (!$string) return null;
@@ -854,13 +865,13 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	/**
 	 * Returns the current logged in user
 	 *
-	 * @return Member|null
+	 * @return Member
 	 */
 	public static function currentUser() {
 		$id = Member::currentUserID();
 
 		if($id) {
-			return Member::get()->byId($id);
+			return Member::get()->byID($id);
 		}
 	}
 
@@ -1029,8 +1040,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * Filter out admin groups to avoid privilege escalation,
 	 * If any admin groups are requested, deny the whole save operation.
 	 *
-	 * @param Array $ids Database IDs of Group records
-	 * @return boolean True if the change can be accepted
+	 * @param array $ids Database IDs of Group records
+	 * @return bool True if the change can be accepted
 	 */
 	public function onChangeGroups($ids) {
 		// unless the current user is an admin already OR the logged in user is an admin
@@ -1096,7 +1107,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * group code does not return a valid group object.
 	 *
 	 * @param string $groupcode
-	 * @param string Title of the group
+	 * @param string $title Title of the group
 	 */
 	public function addToGroupByCode($groupcode, $title = "") {
 		$group = DataObject::get_one('SilverStripe\\Security\\Group', array(
@@ -1131,7 +1142,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	}
 
 	/**
-	 * @param Array $columns Column names on the Member record to show in {@link getTitle()}.
+	 * @param array $columns Column names on the Member record to show in {@link getTitle()}.
 	 * @param String $sep Separator
 	 */
 	public static function set_title_columns($columns, $sep = ' ') {
@@ -1525,9 +1536,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	}
 
 	/**
-	 *
-	 * @param boolean $includerelations a boolean value to indicate if the labels returned include relation fields
-	 *
+	 * @param bool $includerelations Indicate if the labels returned include relation fields
+	 * @return array
 	 */
 	public function fieldLabels($includerelations = true) {
 		$labels = parent::fieldLabels($includerelations);
@@ -1548,11 +1558,14 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		return $labels;
 	}
 
-    /**
-     * Users can view their own record.
-     * Otherwise they'll need ADMIN or CMS_ACCESS_SecurityAdmin permissions.
-     * This is likely to be customized for social sites etc. with a looser permission model.
-     */
+	/**
+	 * Users can view their own record.
+	 * Otherwise they'll need ADMIN or CMS_ACCESS_SecurityAdmin permissions.
+	 * This is likely to be customized for social sites etc. with a looser permission model.
+	 *
+	 * @param Member $member
+	 * @return bool
+	 */
     public function canView($member = null) {
         //get member
         if(!($member instanceof Member)) {
@@ -1575,10 +1588,14 @@ class Member extends DataObject implements TemplateGlobalProvider {
         //standard check
         return Permission::checkMember($member, 'CMS_ACCESS_SecurityAdmin');
     }
-    /**
-     * Users can edit their own record.
-     * Otherwise they'll need ADMIN or CMS_ACCESS_SecurityAdmin permissions
-     */
+
+	/**
+	 * Users can edit their own record.
+	 * Otherwise they'll need ADMIN or CMS_ACCESS_SecurityAdmin permissions
+	 *
+	 * @param Member $member
+	 * @return bool
+	 */
     public function canEdit($member = null) {
         //get member
         if(!($member instanceof Member)) {
@@ -1609,6 +1626,9 @@ class Member extends DataObject implements TemplateGlobalProvider {
     /**
      * Users can edit their own record.
      * Otherwise they'll need ADMIN or CMS_ACCESS_SecurityAdmin permissions
+	 *
+	 * @param Member $member
+	 * @return bool
      */
     public function canDelete($member = null) {
         if(!($member instanceof Member)) {
@@ -1667,7 +1687,8 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * Change password. This will cause rehashing according to
 	 * the `PasswordEncryption` property.
 	 *
-	 * @param String $password Cleartext password
+	 * @param string $password Cleartext password
+	 * @return ValidationResult
 	 */
 	public function changePassword($password) {
 		$this->Password = $password;

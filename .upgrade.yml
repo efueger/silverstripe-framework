@@ -159,3 +159,5 @@ skipConfigs:
   - casting
   - table_name
   - fixed_fields
+  - menu_title
+  - allowed_actions

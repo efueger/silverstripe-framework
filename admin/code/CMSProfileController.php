@@ -1,6 +1,5 @@
 <?php
 
-use SilverStripe\ORM\DataObject;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\Security\Member;
 use SilverStripe\Security\Permission;
@@ -43,7 +42,7 @@ class CMSProfileController extends LeftAndMain {
 		if($member = Member::currentUser()) {
 			$form->setValidator($member->getValidator());
 		} else {
-			$form->setValidator(Injector::inst()->get('SilverStripe\\Security\\Member')->getValidator());
+			$form->setValidator(Member::singleton()->getValidator());
 		}
 
 		if($form->Fields()->hasTabset()) {
@@ -73,7 +72,7 @@ class CMSProfileController extends LeftAndMain {
 	}
 
 	public function save($data, $form) {
-		$member = DataObject::get_by_id("SilverStripe\\Security\\Member", $data['ID']);
+		$member = Member::get()->byID($data['ID']);
 		if(!$member) return $this->httpError(404);
 		$origLocale = $member->Locale;
 
@@ -96,6 +95,9 @@ class CMSProfileController extends LeftAndMain {
 	 * Only show first element, as the profile form is limited to editing
 	 * the current member it doesn't make much sense to show the member name
 	 * in the breadcrumbs.
+	 *
+	 * @param bool $unlinked
+	 * @return ArrayList
 	 */
 	public function Breadcrumbs($unlinked = false) {
 		$items = parent::Breadcrumbs($unlinked);

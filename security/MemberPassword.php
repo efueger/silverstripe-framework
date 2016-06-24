@@ -29,12 +29,8 @@ class MemberPassword extends DataObject {
 	private static $has_one = array(
 		'Member' => 'SilverStripe\\Security\\Member'
 	);
-
-	private static $has_many = array();
-
-	private static $many_many = array();
-
-	private static $belongs_many_many = array();
+	
+	private static $table_name = "MemberPassword";
 
 	/**
 	 * Log a password change from the given member.

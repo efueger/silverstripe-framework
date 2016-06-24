@@ -41,6 +41,8 @@ class PermissionRole extends DataObject {
 		"Groups" => "SilverStripe\\Security\\Group",
 	);
 
+	private static $table_name = "PermissionRole";
+
 	private static $default_sort = '"Title"';
 
 	private static $singular_name = 'Role';

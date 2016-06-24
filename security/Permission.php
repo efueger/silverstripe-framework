@@ -33,20 +33,20 @@ class Permission extends DataObject implements TemplateGlobalProvider {
 		"Arg" => "Int",
 		"Type" => "Int(1)"
 	);
+
 	private static $has_one = array(
 		"Group" => "SilverStripe\\Security\\Group"
 	);
+
 	private static $indexes = array(
 		"Code" => true
 	);
+
 	private static $defaults = array(
 		"Type" => 1
 	);
-	private static $has_many = array();
 
-	private static $many_many = array();
-
-	private static $belongs_many_many = array();
+	private static $table_name = "Permission";
 
 	/**
 	 * This is the value to use for the "Type" field if a permission should be

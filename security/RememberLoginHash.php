@@ -40,6 +40,8 @@ class RememberLoginHash extends DataObject {
 		'Hash' => true
 	);
 
+	private static $table_name = "RememberLoginHash";
+
 	/**
 	 * Determines if logging out on one device also clears existing login tokens
 	 * on all other devices owned by the member.

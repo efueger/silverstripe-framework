@@ -77,6 +77,8 @@ class Group extends DataObject {
 		"SilverStripe\\ORM\\Hierarchy\\Hierarchy",
 	);
 
+	private static $table_name = "Group";
+
 	public function populateDefaults() {
 		parent::populateDefaults();
 

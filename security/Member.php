@@ -95,16 +95,12 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		'Groups' => 'SilverStripe\\Security\\Group',
 	);
 
-	private static $has_one = array();
-
 	private static $has_many = array(
 		'LoggedPasswords' => 'SilverStripe\\Security\\MemberPassword',
 		'RememberLoginHashes' => 'SilverStripe\\Security\\RememberLoginHash'
 	);
 
-	private static $many_many = array();
-
-	private static $many_many_extraFields = array();
+	private static $table_name = "Member";
 
 	private static $default_sort = '"Surname", "FirstName"';
 

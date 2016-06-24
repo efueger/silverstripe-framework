@@ -39,11 +39,7 @@ class LoginAttempt extends DataObject {
 		'Member' => 'SilverStripe\\Security\\Member', // only linked if the member actually exists
 	);
 
-	private static $has_many = array();
-
-	private static $many_many = array();
-
-	private static $belongs_many_many = array();
+	private static $table_name = "LoginAttempt";
 
 	/**
 	 * @param bool $includerelations Indicate if the labels returned include relation fields

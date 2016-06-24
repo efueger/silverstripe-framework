@@ -25,6 +25,8 @@ class PermissionRoleCode extends DataObject {
 		"Role" => "SilverStripe\\Security\\PermissionRole",
 	);
 
+	private static $table_name = "PermissionRoleCode";
+
 	public function validate() {
 		$result = parent::validate();
 

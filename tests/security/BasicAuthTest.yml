@@ -5,7 +5,7 @@ SilverStripe\Security\Member:
   user-in-mygroup:
     Email: user-in-mygroup@test.com
     Password: test
-    Groups: =>Group.mygroup
+    Groups: '=>SilverStripe\Security\Group.mygroup'
   user-without-groups:
     Email: user-without-groups@test.com
     Password: test
@@ -16,4 +16,4 @@ SilverStripe\Security\Member:
 'SilverStripe\Security\Permission':
   mycode:
     Code: MYCODE
-    Group: =>Group.mygroup
+    Group: '=>SilverStripe\Security\Group.mygroup'

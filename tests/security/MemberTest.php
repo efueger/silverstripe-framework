@@ -26,7 +26,7 @@ class MemberTest extends FunctionalTest {
 	protected $local = null;
 
 	protected $illegalExtensions = array(
-		'Member' => array(
+		'SilverStripe\\Security\\Member' => array(
 			// TODO Coupling with modules, this should be resolved by automatically
 			// removing all applied extensions before a unit test
 			'ForumRole',

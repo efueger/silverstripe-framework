@@ -1,11 +1,11 @@
 'SilverStripe\Security\Permission':
-    admin:
-        Code: ADMIN
+  admin:
+    Code: ADMIN
 'SilverStripe\Security\Group':
-    admins:
-        Code: admins
-        Permissions: =>Permission.admin
+  admins:
+    Code: admins
+    Permissions: '=>SilverStripe\Security\Permission.admin'
 'SilverStripe\Security\Member':
-    admin:
-        Email: admin@test.com
-        Groups: =>Group.admins
+  admin:
+    Email: admin@test.com
+    Groups: '=>SilverStripe\Security\Group.admins'

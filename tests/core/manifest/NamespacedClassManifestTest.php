@@ -90,7 +90,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 		$this->assertTrue(ClassInfo::exists('silverstripe\test\ClassA'));
 
 		$this->assertEquals('SilverStripe\\Security\\PermissionProvider', $method->invokeArgs($this->manifest, array(
-			'\PermissionProvider',
+			'SilverStripe\\Security\\PermissionProvider',
 			'Test\Namespace',
 			array(
 				'TestOnly',
@@ -236,7 +236,7 @@ class NamespacedClassManifestTest extends SapphireTest {
 			'silverstripe\test\interfacea' => array('silverstripe\test\ClassE'),
 			'interfacea' => array('silverstripe\test\ClassF'),
 			'silverstripe\test\subtest\interfacea' => array('silverstripe\test\ClassG'),
-			'permissionprovider' => array('SilverStripe\Framework\Tests\ClassI'),
+			'silverstripe\security\permissionprovider' => array('SilverStripe\Framework\Tests\ClassI'),
 		);
 		$this->assertEquals($expect, $this->manifest->getImplementors());
 	}

@@ -528,10 +528,7 @@ class Member extends DataObject implements TemplateGlobalProvider {
 		// Clear the incorrect log-in count
 		$this->registerSuccessfulLogin();
 
-		// Don't set column if its not built yet (the login might be precursor to a /dev/build...)
-		if(array_key_exists('LockedOutUntil', DB::field_list('SilverStripe\\Security\\Member'))) {
-			$this->LockedOutUntil = null;
-		}
+		$this->LockedOutUntil = null;
 
 		$this->regenerateTempID();
 
@@ -1186,24 +1183,28 @@ class Member extends DataObject implements TemplateGlobalProvider {
 	 * Return a SQL CONCAT() fragment suitable for a SELECT statement.
 	 * Useful for custom queries which assume a certain member title format.
 	 *
-	 * @param String $tableName
 	 * @return String SQL
 	 */
-	public static function get_title_sql($tableName = 'SilverStripe\\Security\\Member') {
+	public static function get_title_sql() {
 		// This should be abstracted to SSDatabase concatOperator or similar.
 		$op = (DB::get_conn() instanceof MSSQLDatabase) ? " + " : " || ";
 
-		$format = self::config()->title_format;
-		if ($format) {
-			$columnsWithTablename = array();
-			foreach($format['columns'] as $column) {
-				$columnsWithTablename[] = "\"$tableName\".\"$column\"";
-			}
-
-			return "(".join(" $op '".$format['sep']."' $op ", $columnsWithTablename).")";
-		} else {
-			return "(\"$tableName\".\"Surname\" $op ' ' $op \"$tableName\".\"FirstName\")";
+		// Get title_format with fallback to default
+		$format = static::config()->title_format;
+		if (!$format) {
+			$format = [
+				'columns' => ['Surname', 'FirstName'],
+				'sep' => ' ',
+			];
 		}
+
+		$columnsWithTablename = array();
+		foreach($format['columns'] as $column) {
+			$columnsWithTablename[] = static::getSchema()->sqlColumnForField(__CLASS__, $column);
+		}
+
+		$sepSQL = \Convert::raw2sql($format['sep'], true);
+		return "(".join(" $op $sepSQL $op ", $columnsWithTablename).")";
 	}
 
 

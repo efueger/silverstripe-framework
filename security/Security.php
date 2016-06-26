@@ -2,7 +2,6 @@
 
 namespace SilverStripe\Security;
 
-
 use Form;
 use SilverStripe\ORM\ArrayList;
 use SilverStripe\ORM\DataObject;

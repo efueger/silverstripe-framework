@@ -54,7 +54,8 @@ class CMSSecurity extends Security {
 	}
 
 	public function Link($action = null) {
-		return Controller::join_links(Director::baseURL(), "SilverStripe\\Security\\CMSSecurity", $action);
+		/** @skipUpgrade */
+		return Controller::join_links(Director::baseURL(), "CMSSecurity", $action);
 	}
 
 	/**

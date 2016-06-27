@@ -843,9 +843,10 @@ class MemberTest extends FunctionalTest {
 	}
 
 	public function testRememberMeHashAutologin() {
+		/** @var Member $m1 */
 		$m1 = $this->objFromFixture('SilverStripe\\Security\\Member', 'noexpiry');
 
-		$m1->login(true);
+		$m1->logIn(true);
 		$firstHash = RememberLoginHash::get()->filter('MemberID', $m1->ID)->First();
 		$this->assertNotNull($firstHash);
 

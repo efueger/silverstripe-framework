@@ -41,8 +41,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 		'passwordsent',
 		'changepassword',
 		'ping',
-		'SilverStripe\\Security\\LoginForm',
-		'SilverStripe\\Security\\ChangePasswordForm',
+		'LoginForm',
+		'ChangePasswordForm',
 		'LostPasswordForm',
 	);
 
@@ -398,7 +398,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * @return string Returns the link to the given action
 	 */
 	public function Link($action = null) {
-		return Controller::join_links(Director::baseURL(), "SilverStripe\\Security\\Security", $action);
+		/** @skipUpgrade */
+		return Controller::join_links(Director::baseURL(), "Security", $action);
 	}
 
 	/**
@@ -471,7 +472,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 		// Use sitetree pages to render the security page
 		$tmpPage = new Page();
 		$tmpPage->Title = $title;
-		$tmpPage->URLSegment = "SilverStripe\\Security\\Security";
+		/** @skipUpgrade */
+		$tmpPage->URLSegment = "Security";
 		// Disable ID-based caching  of the log-in page by making it a random number
 		$tmpPage->ID = -1 * rand(1,10000000);
 
@@ -488,7 +490,8 @@ class Security extends Controller implements TemplateGlobalProvider {
 	 * @return array Template list
 	 */
 	public function getTemplatesFor($action) {
-		return array("Security_{$action}", 'SilverStripe\\Security\\Security', $this->stat('template_main'), 'BlankPage');
+		/** @skipUpgrade */
+		return array("Security_{$action}", 'Security', $this->stat('template_main'), 'BlankPage');
 	}
 
 	/**
@@ -767,10 +770,13 @@ class Security extends Controller implements TemplateGlobalProvider {
 	/**
 	 * Factory method for the lost password form
 	 *
-	 * @return Form Returns the lost password form
+	 * @return ChangePasswordForm Returns the lost password form
 	 */
 	public function ChangePasswordForm() {
-		return Object::create('SilverStripe\\Security\\ChangePasswordForm', $this, 'SilverStripe\\Security\\ChangePasswordForm');
+		return \Injector::inst()->createWithArgs(
+			'SilverStripe\\Security\\ChangePasswordForm',
+			[ $this, 'ChangePasswordForm' ]
+		);
 	}
 
 	/**
@@ -819,12 +825,12 @@ class Security extends Controller implements TemplateGlobalProvider {
 		}
 
 		if(!$adminGroup) {
-			singleton('SilverStripe\\Security\\Group')->requireDefaultRecords();
+			Group::singleton()->requireDefaultRecords();
 			$adminGroup = Permission::get_groups_by_permission('ADMIN')->first();
 		}
 
 		if(!$member) {
-			singleton('SilverStripe\\Security\\Member')->requireDefaultRecords();
+			Member::singleton()->requireDefaultRecords();
 			$member = Permission::get_members_by_permission('ADMIN')->first();
 		}
 

@@ -184,11 +184,13 @@ class MemberAuthenticator extends Authenticator {
 	 *              method
 	 */
 	public static function get_login_form(Controller $controller) {
-		return MemberLoginForm::create($controller, "SilverStripe\\Security\\LoginForm");
+		/** @skipUpgrade */
+		return MemberLoginForm::create($controller, "LoginForm");
 	}
 
 	public static function get_cms_login_form(\Controller $controller) {
-		return CMSMemberLoginForm::create($controller, "SilverStripe\\Security\\LoginForm");
+		/** @skipUpgrade */
+		return CMSMemberLoginForm::create($controller, "LoginForm");
 	}
 
 	public static function supports_cms() {

@@ -126,12 +126,14 @@ class Controller extends RequestHandler implements TemplateGlobalProvider {
 	}
 
 	/**
-	 * Returns a link to this controller. Overload with your own Link rules if they exist.
+	 * Returns a link to this controller.
+	 *
+	 * This must be overridden in your controller for it to be valid.
 	 *
 	 * @return string
 	 */
 	public function Link() {
-		return get_class($this) .'/';
+		throw new BadMethodCallException("No Link defined for this controller");
 	}
 
 	/**

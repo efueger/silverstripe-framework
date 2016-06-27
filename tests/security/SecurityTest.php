@@ -576,7 +576,8 @@ class SecurityTest extends FunctionalTest {
 
 		// Assumption: The database has been built correctly by the test runner,
 		// and has all columns present in the ORM
-		DB::get_schema()->renameField('SilverStripe\\Security\\Member', 'Email', 'Email_renamed');
+		/** @skipUpgrade */
+		DB::get_schema()->renameField('Member', 'Email', 'Email_renamed');
 
 		// Email column is now missing, which means we're not ready to do permission checks
 		$this->assertFalse(Security::database_is_ready());

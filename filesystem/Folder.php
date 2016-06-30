@@ -315,4 +315,24 @@ class Folder extends File {
 	public function StripThumbnail() {
 		return null;
 	}
+
+	/**
+	 * Returns a natural language folder type.
+	 * Mainly used to meaningfully override the parent behaviour on {@link File}.
+	 *
+	 * @return string
+	 */
+	public function getFileType() {
+		return _t('Folder.SINGULARNAME');
+	}
+
+	/**
+	 * Returns a category for the folder.
+	 * Mainly used to meaningfully override the parent behaviour on {@link File}.
+	 *
+	 * @return string
+	 */
+	public function appCategory() {
+		return 'folder';
+	}
 }

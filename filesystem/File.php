@@ -542,7 +542,7 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer, Thumb
 	 */
 	public function appCategory() {
 		return self::get_app_category($this->getExtension());
-		}
+	}
 
 
 	/**

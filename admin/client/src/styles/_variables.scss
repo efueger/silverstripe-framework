@@ -712,12 +712,17 @@ $cms-panel-sm: 300px;
 $cms-panel-md: 448px;
 $cms-panel-lg: 638px;
 
+// Search panel sizes
+$search-width: 360px;
+$search-width-lg: 500px;
+$search-width-max: 100%;
+
 // Shadows
 $shadow-level-1: rgba(0, 0, 0, .1);
 $shadow-level-2: rgba(0, 0, 0, .15);
 $shadow-level-3: rgba(0, 0, 0, .2);
 $shadow-level-4: rgba(0, 0, 0, .25);
-$shadow-level-5: rgba(0, 0, 0, .30);
+$shadow-level-5: rgba(0, 0, 0, .3);
 
 // TODO tidy all shadows cms wide (including AssetAdmin)
 $shadow-light: $shadow-level-3;

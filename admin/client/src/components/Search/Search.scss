@@ -88,33 +88,38 @@
   // Expand filters icon
   .search__filter-trigger,
   .search__filter-trigger:hover {
-    display: block; // Change to block;
-    width: 20px;
+    display: block;
+    width: 35px;
     height: 34px;
-    background: transparent url("../images/chosen-sprite.png") no-repeat 0 2px;
-    background-position: 4px 7px;
     border: 0;
+    margin-bottom: 0;
+    margin: 0;
+    border-radius: 0;
     margin-left: -30px;
     position: absolute;
     top: 1px;
-    right: 35px;
-    box-shadow: none;
+    right: 43px;
     outline: 0;
     overflow: visible;
 
+    .search__group & { // TODO remove nesting and !important, needed for JqueryUI
+      background-color: $white;
+      box-shadow: none;
+
+      // scss-lint:disable all
+      &:hover {
+        background-color: $white !important;
+        box-shadow: none !important;
+      }
+      // scss-lint:enable all
+    }
+
     &::before {
-      height: 20px;
-      width: 1px;
-      display: block;
-      position: absolute;
-      right: 0;
-      // border-right: 1px solid $border-color-light;
-      content: "";
-      top: 6px;
+      width: 20px;
+      margin-right: 0;
     }
 
     &::after {
-      // content: "advanced";
       width: 66px;
       position: absolute;
       top: 0;
@@ -129,13 +134,11 @@
     &:focus {
       border: 0;
       background-color: transparent;
-      background-image: url("../images/chosen-sprite.png");
       box-shadow: none;
     }
 
-    &.active {
-      background-position: -14px 7px;
-      background-image: url("../images/chosen-sprite.png");
+    &.active::before {
+      content: "1";
     }
   }
 }

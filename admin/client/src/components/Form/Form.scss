@@ -60,15 +60,6 @@
   max-width: $input-max-width;
 }
 
-.form__field-label {
-  // If word is to long force break with hyphenation
-  @include break-word();
-}
-
-.form__field-holder {
-  max-width: $input-max-width;
-}
-
 .form__field-extra-label,
 .form__field-description {
   color: $text-muted;
@@ -148,57 +139,6 @@ input.radio {
     margin-left: -$grid-gutter-width-half;
   }
 }
-
-.form-control-static {
-  padding-left: $input-padding-x;
-  padding-right: $input-padding-x;
-  background-color: $input-bg-disabled;
-  border: 1px solid $input-bg-disabled;
-  max-width: $input-max-width;
-  @include border-radius($input-border-radius);
-
-  &:focus {
-    border-color: $input-border-focus;
-    outline: none;
-  }
-}
-
-// Readonlys should be converted to an input
-// scss-lint:disable all
-.form__field-holder .readonly,
-.readonly .form__field-holder > div {
-  @extend .form-control-static;
-}
-// scss-lint:enable all
-
-
-// Radio / Checkbox
-input[type="checkbox"],
-input[type="radio"],
-input.checkbox,
-input.radio {
-  display: inline;
-  margin-right: 6px;
-  margin-bottom: 0;
-}
-
-
-// Grouped/Nested form fields
-// Nested as only as a fix for date fields within the filter panel
-.form__fieldgroup .form__fieldgroup-item {
-  display: inline-block;
-  margin-right: $spacer-x / 2;
-  margin-top: 8px;
-  min-width: 166px;
-  vertical-align: bottom; // Align fields with no labels
-}
-
-.form__fieldgroup-label {
-  display: block;
-  font-size: $font-size-sm;
-  color: $text-muted;
-}
-
 
 
 @mixin form-responsive($breakpoint-inline, $breakpoint-inline-limit-width, $breakpoint-inline-limit-width-max) {
@@ -293,16 +233,6 @@ input.radio {
     .selection-group {
       margin-top: 7px;
     }
-
-    .form__field-extra-label {
-      @include make-col();
-      @include make-col-span(9);
-      @include make-col-offset(3);
-    }
-
-    .optionset {
-      margin-top: 7px;
-    }
   }
 
   @include media-breakpoint-up($breakpoint-inline-limit-width) {
@@ -329,11 +259,6 @@ input.radio {
 
     .stacked .form__field-holder {
       @include make-col-span(10);
-    }
-
-    .form__field-extra-label {
-      @include make-col-span(2);
-      @include make-col-offset(0);
     }
 
     .form__field-extra-label {

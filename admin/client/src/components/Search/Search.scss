@@ -38,7 +38,7 @@
   // Search open icon
   .search__trigger {
     right: -4px;
-    top: 2px;
+    top: 1px;
     position: absolute;
     margin: 0;
     margin-right: -30px;
@@ -47,10 +47,11 @@
 
   &.search--active .search__trigger {
     left: 4px;
-    top: 3px;
+    top: 2px;
     color: $text-muted;
 
-    &:hover {
+    &:hover,
+    &:focus {
       // scss-lint:disable ImportantRule
       color: $text-muted !important;
       // scss-lint:enable ImportantRule
@@ -102,17 +103,18 @@
     outline: 0;
     overflow: visible;
 
-    .search__group & { // TODO remove nesting and !important, needed for JqueryUI
-      background-color: $white;
-      box-shadow: none;
-
-      // scss-lint:disable all
-      &:hover {
-        background-color: $white !important;
-        box-shadow: none !important;
-      }
-      // scss-lint:enable all
+    // scss-lint:disable all
+    &:hover,
+    &:focus {
+      background-color: $white !important;
+      box-shadow: none !important;
     }
+
+    .search__group & { // TODO remove nesting and !important, needed for JqueryUI
+      background-color: $white !important;
+      box-shadow: none !important;
+    }
+    // scss-lint:enable all
 
     &::before {
       width: 20px;

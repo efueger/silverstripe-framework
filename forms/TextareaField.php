@@ -29,6 +29,8 @@ class TextareaField extends FormField {
 		'ValueEntities' => 'HTMLFragment',
 	);
 
+	protected $schemaDataType = FormField::SCHEMA_DATA_TYPE_TEXT;
+
 	/**
 	 * Visible number of text lines.
 	 *
@@ -42,6 +44,19 @@ class TextareaField extends FormField {
 	 * @var int
 	 */
 	protected $cols = 20;
+
+	/**
+	 * Set textarea specific schema data
+	 */
+	public function getSchemaDataDefaults()
+	{
+		$data = parent::getSchemaDataDefaults();
+
+		$data['data']['rows'] = $this->getRows();
+		$data['data']['columns'] = $this->getColumns();
+
+		return $data;
+	}
 
 	/**
 	 * Set the number of rows in the textarea

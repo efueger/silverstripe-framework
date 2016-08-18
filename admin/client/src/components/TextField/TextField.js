@@ -16,24 +16,41 @@ class TextField extends SilverStripeComponent {
     if (this.props.readOnly) {
       field = <div><i>{this.props.value}</i></div>;
     } else {
-      field = <input {...this.getInputProps()} />;
+      const Field = (this.isMultiline()) ? 'textarea' : 'input';
+
+      field = <Field {...this.getInputProps()} />;
     }
 
     return field;
   }
 
   getInputProps() {
-    // @todo Merge with 'attributes' from formfield schema
-    return {
+    const props = {
       // The extraClass property is defined on both the holder and element
       // for legacy reasons (same behaviour as PHP rendering)
       className: ['form-control', this.props.extraClass].join(' '),
       id: `gallery_${this.props.name}`,
       name: this.props.name,
       onChange: this.handleChange,
-      type: 'text',
       value: this.props.value,
     };
+
+    if (this.isMultiline()) {
+      Object.assign(props, {
+        rows: this.props.data.rows,
+        cols: this.props.data.columns,
+      });
+    } else {
+      Object.assign(props, {
+        type: 'text',
+      });
+    }
+
+    return props;
+  }
+
+  isMultiline() {
+    return this.props.data.rows > 2;
   }
 
   /**

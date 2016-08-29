@@ -81,7 +81,7 @@ class FormSchema {
 
 			if ($field instanceof CompositeField) {
 				$subFields = $field->FieldList();
-				array_merge($states, $this->getFieldStates($subFields));
+				$states = array_merge($states, $this->getFieldStates($subFields));
 			}
 		}
 		return $states;

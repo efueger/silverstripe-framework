@@ -194,14 +194,11 @@ class Folder extends File {
 		// Don't show readonly path until we can implement parent folder selection,
 		// it's too confusing when readonly (makes sense for files only).
 
-		$fields = FieldList::create([
-			HeaderField::create('TitleHeader', $this->Title, 1),
-			LiteralField::create("ImageFull", $this->PreviewThumbnail()),
-			TextField::create("Name", $this->fieldLabel('Filename')),
-			HiddenField::create('ID', $this->ID)
-		]);
+		$fields = parent::getCMSFields();
 
-		$this->extend('updateCMSFields', $fields);
+		$fields->removeByName('Title');
+		$fields->removeByName('Path');
+		$fields->removeByName('Usage');
 
 		return $fields;
 	}

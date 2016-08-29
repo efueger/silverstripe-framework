@@ -528,4 +528,19 @@ class DBFile extends DBComposite implements AssetContainer, Thumbnail {
 				->getStore()
 				->canView($this->Filename, $this->Hash);
 	}
+
+	public function PreviewLink($action = null) {
+		// Since AbsoluteURL can whitelist protected assets,
+		// do permission check first
+		if (!$this->failover->canView()) {
+			return false;
+		}
+		if ($this->getIsImage()) {
+			$link = $this->getAbsoluteURL();
+		} else {
+			$link = Convert::raw2att($this->failover->getIcon());
+		}
+		$this->extend('updatePreviewLink', $link, $action);
+		return $link;
+	}
 }

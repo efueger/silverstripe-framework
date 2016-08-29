@@ -37,10 +37,35 @@ class Image extends File implements ShortcodeHandler {
 
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
+
+		$width = (int)Config::inst()->get('Image', 'asset_preview_width');
+		$previewLink = Convert::raw2att($this->ScaleMaxWidth($width)->PreviewLink());
+		$image = "<img src=\"{$previewLink}\" class=\"editor__thumbnail\" />";
+
 		$fields->insertAfter(
-			'LastEdited',
-			new ReadonlyField("Dimensions", _t('AssetTableField.DIM','Dimensions') . ':')
+			'IconFull',
+			LiteralField::create("ImageFull", $image)
+				->addExtraClass('editor__file-preview')
 		);
+		$fields->removeByName('IconFull');
+		$fields->insertAfter(
+			'TitleHeader',
+			LiteralField::create(
+				"DisplaySize",
+				sprintf('<div><i>%spx, %s</i></div>',
+					$this->getDimensions(), $this->getSize())
+			)
+		);
+		$fields->insertAfter(
+			'Path',
+			HTMLReadonlyField::create(
+				'ClickableURL',
+				_t('AssetTableField.URL','URL'),
+				sprintf('<i class="%s"></i><a href="%s" target="_blank">%s</a>',
+					'icon font-icon-link editor__url-icon', $this->Link(), $this->Link())
+			)
+		);
+
 		return $fields;
 	}
 

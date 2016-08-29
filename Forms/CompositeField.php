@@ -76,6 +76,10 @@ class CompositeField extends FormField {
 			}
 			$defaults['children'] = $childSchema;
 		}
+
+		$defaults['data']['tag'] = $this->getTag();
+		$defaults['data']['legend'] = $this->getLegend();
+
 		return $defaults;
 	}
 

@@ -155,9 +155,16 @@ body.cms {
 
 // We have a faux three column layout when displaying Page content in the CMS.
 .has-panel {
+
 	.cms-tree-view-sidebar,
 	.cms-versions-form {
-		padding: $grid-gutter-width-half $grid-gutter-width-half $grid-gutter-width-half $grid-gutter-width-half;
+		padding: $grid-gutter-width-half;
+	}
+
+	.cms-tree-view-sidebar {
+		> .cms-content-toolbar {
+			margin-top: -$grid-gutter-width-half / 2;
+		}
 	}
 
 	.cms-content-header.north {
@@ -299,12 +306,17 @@ body.cms {
  * Icon buttons styles should always take presedence over Tab styles.
  * Tabs should be refactored to use weaker selectors.
  * ----------------------------------------------------------------- */
+
+.ui-button .ui-button-text {
+	line-height: $line-height;
+}
+
 .cms {
 	a.icon-button,
 	button.ss-ui-button.icon-button {
 		vertical-align: middle;
 		margin: 0 2px 0 0;
-		padding: 5px 8px;
+		padding: 6px 8px;
 		font-size: 14px;
 		text-indent: 0;
 		text-shadow: none;
@@ -464,7 +476,7 @@ body.cms {
 	}
 
 	.ui-tabs-panel {
-		padding: 0 $grid-gutter-width-half;
+		padding: $grid-gutter-width-half;
 		background: transparent; // default it's white
 		border: 0; // suppress default borders
 
@@ -479,7 +491,7 @@ body.cms {
         margin-right: $grid-gutter-width-half;
         float: none;
         border-bottom: 1px solid $nav-tabs-link-hover-border-color;
-        margin-bottom: $spacer-y;
+        margin-bottom: 0;
       }
 
       .first .ui-tabs-anchor {
@@ -489,11 +501,20 @@ body.cms {
     }
 	}
 
-  .ui-tabs-panel .toolbar--content {
-    margin-left: -20px;
-    margin-right: -20px;
-  }
+  .ui-tabs-panel {
+		.toolbar--content {
+			margin-left: -20px;
+			margin-right: -20px;
+		}
 
+		> .grid-field:first-child > .toolbar--content {
+			margin-top: -$grid-gutter-width-half;
+		}
+
+		.alert + .grid-field {
+			margin-top: -$spacer-y;
+		}
+	}
 
 	.ui-widget-header {
 		border: 0;
@@ -713,6 +734,10 @@ body.cms {
 	}
 }
 
+.cms-content-fields > .message {
+	margin: $grid-gutter-width-half $grid-gutter-width-half 0;
+}
+
 /** -------------------------------------------------------
  * Loading Interface
  * ------------------------------------------------------- */
@@ -869,8 +894,8 @@ body.cms {
 }
 
 .cms-edit-form .ui-tabs-panel .message {
-			margin: $grid-x*2 0; // gets padding from tab panel
-		}
+	margin: 0 0 $grid-x*2; // gets padding from tab panel
+}
 
 .notice-item {
 	border-radius: 3px;
@@ -1025,7 +1050,10 @@ body.cms {
 .cms-content-toolbar {
 	min-height: 29px;
 	display: block;
-	margin: $spacer-y * .625 0 0;
+	margin-top: $spacer-y * .625;
+	margin-left: -$grid-gutter-width-half / 2;
+	margin-right: -$grid-gutter-width-half / 2;
+	margin-bottom: 0;
 	padding-bottom: 0;
 	@include legacy-pie-clearfix();
 	border-bottom: 0;

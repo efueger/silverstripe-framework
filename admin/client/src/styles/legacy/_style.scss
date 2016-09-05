@@ -1614,21 +1614,28 @@ form.member-profile-form {
 }
 
 .cms .cms-panel-padded {
-		&.ReportAdmin {
-      .ss-gridfield-buttonrow {
-        margin-left: -20px;
-        margin-right: -20px;
-      }
+  &.ReportAdmin {
+    padding: $grid-gutter-width-half;
+    width: 100% !important;
 
-      > fieldset {
-  				padding: 0 $grid-gutter-width-half;
-  		}
+    > .message {
+      margin-bottom: $grid-gutter-width-half;
     }
 
-		.cms-content-view {
-			padding: 0 $grid-gutter-width-half $grid-y*1.5;
-		}
+    > fieldset {
+      margin-top: -$grid-gutter-width-half;
+    }
+
+    .ss-gridfield-buttonrow {
+      margin-left: -20px;
+      margin-right: -20px;
+    }
+  }
+
+	.cms-content-view {
+		padding: 0 $grid-gutter-width-half $grid-y*1.5;
 	}
+}
 
 .CMSPageAddController .cms-panel-padded {
 	padding: $grid-gutter-width-half;

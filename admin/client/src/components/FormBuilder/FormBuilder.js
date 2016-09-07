@@ -299,6 +299,8 @@ export class FormBuilderComponent extends SilverStripeComponent {
 
     if (Component === null) {
       return null;
+    } else if (field.component !== null && Component === undefined) {
+      throw Error(`Component not found in injector: ${field.component}`);
     }
 
     // Props which every form field receives.

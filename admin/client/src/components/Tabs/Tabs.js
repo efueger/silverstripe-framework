@@ -38,8 +38,6 @@ class Tabs extends SilverStripeComponent {
    * @returns {object}
    */
   getContainerProps() {
-    const defaultActive = this.getDefaultActiveKey();
-
     return {
       defaultActiveKey: this.getDefaultActiveKey(),
       activeKey: this.props.active,

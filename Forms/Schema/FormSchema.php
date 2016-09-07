@@ -35,13 +35,13 @@ class FormSchema {
 			'actions' => []
 		];
 
+		/** @var FormField $action */
 		foreach ($form->Actions() as $action) {
-			/** @var FormField $action */
 			$schema['actions'][] = $action->getSchemaData();
 		}
 
+		/** @var FormField $field */
 		foreach ($form->Fields() as $field) {
-			/** @var FormField $field */
 			$schema['fields'][] = $field->getSchemaData();
 		}
 

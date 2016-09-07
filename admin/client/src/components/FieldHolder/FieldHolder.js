@@ -36,8 +36,8 @@ function fieldHolder(Field) {
   }
 
   FieldHolder.propTypes = {
-    leftTitle: React.PropTypes.string,
-    title: React.PropTypes.string,
+    leftTitle: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool]),
+    title: React.PropTypes.oneOfType([React.PropTypes.string, React.PropTypes.bool]),
     extraClass: React.PropTypes.string,
     holder_id: React.PropTypes.string,
     id: React.PropTypes.string,

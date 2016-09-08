@@ -1,5 +1,6 @@
 <?php
 
+use SilverStripe\ORM\ValidationResult;
 use SilverStripe\ORM\Versioning\Versioned;
 /**
  * Represents a logical folder, which may be used to organise assets
@@ -315,5 +316,11 @@ class Folder extends File {
 
 	public function StripThumbnail() {
 		return null;
+	}
+
+	public function validate() {
+		$result = ValidationResult::create();
+		$this->extend('validate', $result);
+		return $result;
 	}
 }

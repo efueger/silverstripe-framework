@@ -3,7 +3,8 @@
 namespace SilverStripe\Assets;
 
 use SilverStripe\Core\Convert;
-use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\Forms\HTMLReadonlyField;
+use SilverStripe\Forms\LiteralField;
 use SilverStripe\View\Parsers\ShortcodeParser;
 use SilverStripe\View\Parsers\ShortcodeHandler;
 
@@ -38,7 +39,7 @@ class Image extends File implements ShortcodeHandler {
 	public function getCMSFields() {
 		$fields = parent::getCMSFields();
 
-		$width = (int)Config::inst()->get('Image', 'asset_preview_width');
+		$width = (int)Image::config()->get('asset_preview_width');
 		$previewLink = Convert::raw2att($this->ScaleMaxWidth($width)->PreviewLink());
 		$image = "<img src=\"{$previewLink}\" class=\"editor__thumbnail\" />";
 

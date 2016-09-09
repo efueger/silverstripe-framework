@@ -15,7 +15,8 @@ use SilverStripe\Forms\DatetimeField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\HeaderField;
 use SilverStripe\Forms\HiddenField;
-use SilverStripe\Forms\HTMLReadonlyField;
+use SilverStripe\Forms\Tab;
+use SilverStripe\Forms\TabSet;
 use SilverStripe\Forms\LiteralField;
 use SilverStripe\Forms\ReadonlyField;
 use SilverStripe\Forms\TextField;
@@ -472,7 +473,7 @@ class File extends DataObject implements ShortcodeHandler, AssetContainer, Thumb
 	public function getCMSFields() {
 		$path = '/' . dirname($this->getFilename());
 
-		$width = (int)Config::inst()->get('Image', 'asset_preview_width');
+		$width = (int)Image::config()->get('asset_preview_width');
 		$previewLink = Convert::raw2att($this->ScaleMaxWidth($width)->getIcon());
 		$image = "<img src=\"{$previewLink}\" class=\"editor__thumbnail\" />";
 

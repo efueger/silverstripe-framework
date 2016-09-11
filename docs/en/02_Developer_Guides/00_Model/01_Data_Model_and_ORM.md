@@ -10,7 +10,7 @@ information.
 *  Each database row maps to a PHP object.
 *  Each database column maps to a property on a PHP object.
 
-All data tables in SilverStripe are defined as subclasses of [api:DataObject]. The [api:DataObject] class represents a 
+All data tables in SilverStripe are defined as subclasses of [api:SilverStripe\ORM\DataObject]. The [api:SilverStripe\ORM\DataObject] class represents a 
 single row in a database table, following the ["Active Record"](http://en.wikipedia.org/wiki/Active_record_pattern) 
 design pattern. Database Columns are defined as [Data Types](/developer_guides/model/data_types_and_casting) in the static `$db` variable 
 along with any [relationships](relations) defined as `$has_one`, `$has_many`, `$many_many` properties on the class.
@@ -107,7 +107,7 @@ Generates the following `SQL`.
 
 ## Creating Data Records
 
-A new instance of a [api:DataObject] can be created using the `new` syntax.
+A new instance of a [api:SilverStripe\ORM\DataObject] can be created using the `new` syntax.
 	
 	:::php
 	$player = new Player();
@@ -510,7 +510,7 @@ automatically generated for them. In the above case, the table name would have b
 `SilverStripe\BannerManager\BannerImage`
 
 When creating raw SQL queries that contain table names, it is necessary to ensure your queries have the correct
-table. This functionality can be provided by the [api:DataObjectSchema] service, which can be accessed via
+table. This functionality can be provided by the [api:SilverStripe\ORM\DataObjectSchema] service, which can be accessed via
 `DataObject::getSchema()`. This service provides the following methods, most of which have a table and class
 equivalent version.
 
@@ -650,7 +650,7 @@ Accessing the data is transparent to the developer.
 
 The way the ORM stores the data is this:
 
-*  "Base classes" are direct sub-classes of [api:DataObject].  They are always given a table, whether or not they have
+*  "Base classes" are direct sub-classes of [api:SilverStripe\ORM\DataObject].  They are always given a table, whether or not they have
 special fields.  This is called the "base table". In our case, `SiteTree` is the base table.
 
 *  The base table's ClassName field is set to class of the given record.  It's an enumeration of all possible
@@ -660,9 +660,9 @@ sub-classes of the base class (including the base class itself).
 example above, NewsSection didn't have its own data, so an extra table would be redundant.
 
 *  In all the tables, ID is the primary key.  A matching ID number is used for all parts of a particular record: 
-record #2 in Page refers to the same object as record #2 in [api:SiteTree].
+record #2 in Page refers to the same object as record #2 in [api:SilverStripe\CMS\Model\SiteTree].
 
-To retrieve a news article, SilverStripe joins the [api:SiteTree], [api:Page] and NewsPage tables by their ID fields. 
+To retrieve a news article, SilverStripe joins the [api:SilverStripe\CMS\Model\SiteTree], [api:Page] and NewsPage tables by their ID fields. 
 
 ## Related Documentation
 
@@ -670,7 +670,7 @@ To retrieve a news article, SilverStripe joins the [api:SiteTree], [api:Page] an
 
 ## API Documentation
 
-* [api:DataObject]
+* [api:SilverStripe\ORM\DataObject]
 * [api:DataList]
 * [api:DataQuery]
-* [api:DataObjectSchema]
+* [api:SilverStripe\ORM\DataObjectSchema]

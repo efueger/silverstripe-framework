@@ -36,11 +36,11 @@ final page. Lets look at each one individually:
 
 ### Model
 
-All content on our site is stored in a database. Each class that is a child of the [api:DataObject] class will have its own table in our database. 
+All content on our site is stored in a database. Each class that is a child of the [api:SilverStripe\ORM\DataObject] class will have its own table in our database. 
 
 Every object of such a class will correspond to a row in that table -
 this is our "data object", the **"model"** of Model-View-Controller. A page type has a data object that represents all the data for our page. Rather than inheriting 
-directly from [api:DataObject], it inherits from [api:SiteTree].  We generally create a "Page" data object, and subclass this for all other page types. This allows us to define behavior that is consistent across all pages in our site.
+directly from [api:SilverStripe\ORM\DataObject], it inherits from [api:SilverStripe\CMS\Model\SiteTree].  We generally create a "Page" data object, and subclass this for all other page types. This allows us to define behavior that is consistent across all pages in our site.
 
 ### View
 
@@ -49,7 +49,7 @@ presentation of our website.
 
 ### Controller
 
-Each page type also has a **"controller"**. The controller contains all the code used to manipulate our data before it is rendered. For example, suppose we were making an auction site, and we only wanted to display the auctions closing in the next ten minutes. We would implement this logic in the controller. The controller for a page should inherit from [api:ContentController]. Just as we create a "Page" data object and subclass it for the rest of the site, we also create a "Page_Controller" that is subclassed.
+Each page type also has a **"controller"**. The controller contains all the code used to manipulate our data before it is rendered. For example, suppose we were making an auction site, and we only wanted to display the auctions closing in the next ten minutes. We would implement this logic in the controller. The controller for a page should inherit from [api:SilverStripe\CMS\Controllers\ContentController]. Just as we create a "Page" data object and subclass it for the rest of the site, we also create a "Page_Controller" that is subclassed.
 
 
 Creating a new page type requires creating each of these three elements. We will then have full control over presentation, the database, and editable CMS fields. 
@@ -95,7 +95,7 @@ Let's create the *ArticleHolder* page type.
 Here we have done something interesting: the *$allowed_children* field. This is one of a number of static fields we can define to change the properties of a page type. The *$allowed_children* field is an array of page types that are allowed
 to be children of the page in the site tree. As we only want **news articles** in the news section, we only want pages of the type *ArticlePage* as children. We can enforce this in the CMS by setting the *$allowed_children* field within this class.
 
-We will be introduced to other fields like this as we progress; there is a full list in the documentation for [api:SiteTree].
+We will be introduced to other fields like this as we progress; there is a full list in the documentation for [api:SilverStripe\CMS\Model\SiteTree].
 
 Now that we have created our page types, we need to let SilverStripe rebuild the database: [http://localhost/your_site_name/dev/build](http://localhost/your_site_name/dev/build). SilverStripe should detect that there are two new page types, and add them to the list of page types in the database.
 
@@ -269,7 +269,7 @@ First, the template for displaying a single article:
 
 Most of the code is just like the regular Page.ss, we include an informational div with the date and the author of the Article.
 
-To access the new fields, we use *$Date* and *$Author*. In fact, all template variables and page controls come from either the data object or the controller for the page being displayed. The *$Title* variable comes from the *Title* field of the [api:SiteTree] class. *$Date* and *$Author* come from the *ArticlePage* table through your custom Page. *$Content* comes from the *SiteTree* table through the same data object. The data for your page is
+To access the new fields, we use *$Date* and *$Author*. In fact, all template variables and page controls come from either the data object or the controller for the page being displayed. The *$Title* variable comes from the *Title* field of the [api:SilverStripe\CMS\Model\SiteTree] class. *$Date* and *$Author* come from the *ArticlePage* table through your custom Page. *$Content* comes from the *SiteTree* table through the same data object. The data for your page is
 spread across several tables in the database matched by id - e.g. *Content* is in the *SiteTree* table, and *Date* and
 *Author* are in the *ArticlePage* table. SilverStripe matches this data, and collates it into a single data object.
 

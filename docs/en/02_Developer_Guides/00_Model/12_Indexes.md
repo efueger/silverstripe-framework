@@ -52,4 +52,4 @@ In order to use more database specific or complex index notations, we also suppo
 
 ## API Documentation
 
-* [api:DataObject]
+* [api:SilverStripe\ORM\DataObject]

@@ -3,7 +3,7 @@
 ## Introduction
 
 A lot can be achieved in SilverStripe by adding properties and form fields
-to your own page types (via [api:SiteTree::getCMSFields()]), as well as creating
+to your own page types (via [api:SilverStripe\CMS\Model\SiteTree::getCMSFields()]), as well as creating
 your own data management interfaces through [api:ModelAdmin]. But sometimes
 you'll want to go deeper and tailor the underlying interface to your needs as well.
 For example, to build a personalized CMS dashboard, or content "slots" where authors

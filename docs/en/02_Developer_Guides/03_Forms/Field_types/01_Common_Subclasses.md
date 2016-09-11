@@ -62,7 +62,7 @@ doesn't necessarily have any visible styling.
  * [api:TableField]: In-place editing of tabular data.
  * [api:TreeDropdownField]: Dropdown-like field that allows you to select an item from a hierarchical AJAX-expandable tree.
  * [api:TreeMultiselectField]: Represents many-many joins using a tree selector shown in a dropdown-like element
- * [api:GridField]: Displays a [api:SS_List] in a tabular format. Versatile base class which can be configured to allow editing, sorting, etc.
+ * [api:SilverStripe\Forms\GridField\GridField]: Displays a [api:SS_List] in a tabular format. Versatile base class which can be configured to allow editing, sorting, etc.
  * [api:ListboxField]: Multi-line listbox field, through `<select multiple>`.
 
 

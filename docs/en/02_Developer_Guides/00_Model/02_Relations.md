@@ -3,7 +3,7 @@ summary: Relate models together using the ORM using has_one, has_many, and many_
 
 # Relations between Records
 
-In most situations you will likely see more than one [api:DataObject] and several classes in your data model may relate
+In most situations you will likely see more than one [api:SilverStripe\ORM\DataObject] and several classes in your data model may relate
 to one another. An example of this is a `Player` object may have a relationship to one or more `Team` or `Coach` classes
 and could take part in many `Games`. Relations are a key part of designing and building a good data model.
 
@@ -305,7 +305,7 @@ and `remove()` method.
 You can use the ORM to get a filtered result list without writing any SQL. For example, this snippet gets you the 
 "Players"-relation on a team, but only containing active players.
 
-See [api:DataObject::$has_many] for more info on the described relations.
+See [api:SilverStripe\ORM\DataObject::$has_many] for more info on the described relations.
 
 	:::php
 	<?php
@@ -347,4 +347,4 @@ for displaying the objects contained in the relation.
 
 * [api:HasManyList]
 * [api:ManyManyList]
-* [api:DataObject]
+* [api:SilverStripe\ORM\DataObject]

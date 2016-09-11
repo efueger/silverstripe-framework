@@ -145,7 +145,7 @@ To include relations (`$has_one`, `$has_many` and `$many_many`) in your search, 
 
 ### Summary Fields
 
-Summary fields can be used to show a quick overview of the data for a specific [api:DataObject] record. The most common use 
+Summary fields can be used to show a quick overview of the data for a specific [api:SilverStripe\ORM\DataObject] record. The most common use 
 is their display as table columns, e.g. in the search results of a [api:ModelAdmin] CMS interface.
 
 	:::php
@@ -225,4 +225,4 @@ Non-textual elements (such as images and their manipulations) can also be used i
 ## API Documentation
 
 * [api:FormScaffolder]
-* [api:DataObject]
+* [api:SilverStripe\ORM\DataObject]

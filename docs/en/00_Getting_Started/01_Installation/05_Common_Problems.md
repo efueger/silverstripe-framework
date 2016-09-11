@@ -16,7 +16,7 @@ If you can log-in to the CMS as an administrator, append `?isDev=1` to any URL t
 (don't forget to remove it afterwards!):
 
 	:::php
-	Director:
+	SilverStripe\Control\Director:
 	  # temporary debugging statement
 	  environment_type: 'dev'
 
@@ -71,12 +71,10 @@ every page on the site, if that's easier.
 
 ## I can see unparsed PHP output in my browser
 
-Please make sure all code inside `*.php` files is wrapped in classes. Due to the way [api:ManifestBuilder]
-includes all files with this extension, any **procedural code will be executed on every call**. The most common error here
-is putting a test.php/phpinfo.php file in the document root. See [datamodel](/developer_guides/model/data_model_and_orm) and [controllers](/developer_guides/controllers)
-for ways how to structure your code.
+Please make sure all code inside `*.php` files is wrapped in classes. This is due to class loading
+executing procedural code when loading class files.
 
-Also, please check that you have PHP enabled on the webserver, and you're running PHP 5.1 or later.
+Also, please check that you have PHP enabled on the webserver, and you're running PHP 5.5 or later.
 The web-based [SilverStripe installer](/getting_started/installation) can help you with this.
 
 ## I've got file permission problems during installation

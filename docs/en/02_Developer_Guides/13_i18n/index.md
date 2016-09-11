@@ -133,7 +133,7 @@ and `TimeField.default_config` [configuration arrays](/developer_guides/configur
 If no 'locale' default is set on the field, [api:i18n::get_locale()] will be used.
 
 **Important:** Form fields in the CMS are automatically configured according to the profile settings for the logged-in user (`Member->Locale`, `Member->DateFormat` and `Member->TimeFormat`). This means that in most cases,
-fields created through [api:DataObject::getCMSFields()] will get their i18n settings from a specific member
+fields created through [api:SilverStripe\ORM\DataObject::getCMSFields()] will get their i18n settings from a specific member
 
 The [api:DateField] API can be enhanced by JavaScript, and comes with
 [jQuery UI datepicker](http://jqueryui.com/demos/datepicker/) capabilities built-in.

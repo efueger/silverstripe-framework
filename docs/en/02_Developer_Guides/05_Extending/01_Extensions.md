@@ -7,7 +7,7 @@ An [api:Extension] allows for adding additional functionality to a [api:Object] 
 without the hassle of creating a subclass. Developers can add Extensions to any [api:Object] subclass within core, modules
 or even their own code to make it more reusable.
 
-Extensions are defined as subclasses of either [api:DataExtension] for extending a [api:DataObject] subclass or 
+Extensions are defined as subclasses of either [api:DataExtension] for extending a [api:SilverStripe\ORM\DataObject] subclass or 
 the [api:Extension] class for non DataObject subclasses (such as [api:Controllers])
 
 **mysite/code/extensions/MyMemberExtension.php**

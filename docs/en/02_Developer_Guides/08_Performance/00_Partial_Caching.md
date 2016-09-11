@@ -53,7 +53,7 @@ user does not influence your template content, you can update this key as below;
 
 Often you want to invalidate a cache when any object in a set of objects change, or when the objects in a relationship 
 change. To do this, SilverStripe introduces the concept of Aggregates. These calculate and return SQL aggregates
-on sets of [api:DataObject]s - the most useful for us being the `max` aggregate.
+on sets of [api:SilverStripe\ORM\DataObject]s - the most useful for us being the `max` aggregate.
 
 For example, if we have a menu, we want that menu to update whenever _any_ page is edited, but would like to cache it
 otherwise. By using aggregates, we do that like this:

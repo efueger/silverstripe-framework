@@ -3,7 +3,7 @@ summary: Learn how how data is stored going in and coming out of the ORM and how
 
 # Data Types and Casting
 
-Each model in a SilverStripe [api:DataObject] will handle data at some point. This includes database columns such as 
+Each model in a SilverStripe [api:SilverStripe\ORM\DataObject] will handle data at some point. This includes database columns such as 
 the ones defined in a `$db` array or simply a method that returns data for the template. 
 
 A Data Type is represented in SilverStripe by a [api:DBField] subclass. The class is responsible for telling the ORM 
@@ -193,7 +193,7 @@ See the [Template casting](/developer_guides/templates/casting) section for cont
 
 ## Overloading
 
-"Getters" and "Setters" are functions that help us save fields to our [api:DataObject] instances. By default, the 
+"Getters" and "Setters" are functions that help us save fields to our [api:SilverStripe\ORM\DataObject] instances. By default, the 
 methods `getField()` and `setField()` are used to set column data.  They save to the protected array, `$obj->record`. 
 We can overload the default behavior by making a function called "get`<fieldname>`" or "set`<fieldname>`".
 
@@ -216,5 +216,5 @@ database column using `dbObject`.
 
 ## API Documentation
 
-* [api:DataObject]
+* [api:SilverStripe\ORM\DataObject]
 * [api:DBField]

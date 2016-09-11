@@ -275,7 +275,7 @@ An alternative approach would be a custom getter in the object definition.
 
 ## API Documentation
 
-* [api:DataObject]
+* [api:SilverStripe\ORM\DataObject]
 * [api:SQLSelect]
 * [api:DB]
 * [api:Query]

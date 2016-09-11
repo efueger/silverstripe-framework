@@ -11,7 +11,7 @@ files. In addition to the markup managed by TinyMCE, we use [shortcodes](/develo
 information about inserted images or media elements.
 
 The framework comes with a [api:HTMLEditorField] form field class which encapsulates most of the required
-functionality. It is usually added through the [api:DataObject::getCMSFields()] method:
+functionality. It is usually added through the [api:SilverStripe\ORM\DataObject::getCMSFields()] method:
 
 **mysite/code/MyObject.php**
 

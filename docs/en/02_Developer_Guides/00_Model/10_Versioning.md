@@ -10,7 +10,7 @@ It is most commonly applied to pages in the CMS (the `SiteTree` class). Draft co
 from published content shown to your website visitors. 
 
 Versioning in SilverStripe is handled through the [api:Versioned] class. As a [api:DataExtension] it is possible to 
-be applied to any [api:DataObject] subclass. The extension class will automatically update read and write operations
+be applied to any [api:SilverStripe\ORM\DataObject] subclass. The extension class will automatically update read and write operations
 done via the ORM via the `augmentSQL` database hook.
 
 Adding Versioned to your `DataObject` subclass works the same as any other extension. It has one of two behaviours,

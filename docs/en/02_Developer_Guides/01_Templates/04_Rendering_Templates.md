@@ -32,7 +32,7 @@ instance with a template name or an array of templates to render.
 
 <div class="info" markdown="1">
 Most classes in SilverStripe you want in your template extend `ViewableData` and allow you to call `renderWith`. This 
-includes [api:Controller], [api:FormField] and [api:SilverStripe\ORM\DataObject] instances.
+includes [api:Controller], [api:SilverStripe\Forms\FormField] and [api:SilverStripe\ORM\DataObject] instances.
 </div>
 
 	:::php

@@ -75,10 +75,10 @@ Let's step through this code.
 
 First we create our form fields.
 We do this by creating a [api:FieldList] and passing our fields as arguments.
-The first field is a [api:TextField] with the name 'Name'.
+The first field is a [api:SilverStripe\Forms\TextField] with the name 'Name'.
 There is a second argument when creating a field which specifies the text on the label of the field. If no second
 argument is passed, as in this case, it is assumed the label is the same as the name of the field.
-The second field we create is an [api:OptionsetField]. This is a dropdown, and takes a third argument - an
+The second field we create is an [api:SilverStripe\Forms\OptionsetField]. This is a dropdown, and takes a third argument - an
 array mapping the values to the options listed in the dropdown.
 
 	```php

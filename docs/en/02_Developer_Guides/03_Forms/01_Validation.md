@@ -49,7 +49,7 @@ In this example we will be required to input a value for `Name` and a valid emai
 `doSubmitForm` method is called.
 
 <div class="info" markdown="1">
-Each individual [api:FormField] instance is responsible for validating the submitted content through the 
+Each individual [api:SilverStripe\Forms\FormField] instance is responsible for validating the submitted content through the 
 [api:FormField::validate()] method. By default, this just checks the value exists. Fields like `EmailField` override 
 `validate` to check for a specific format.
 </div>

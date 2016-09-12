@@ -6,7 +6,7 @@ summary: Learn how how data is stored going in and coming out of the ORM and how
 Each model in a SilverStripe [api:SilverStripe\ORM\DataObject] will handle data at some point. This includes database columns such as 
 the ones defined in a `$db` array or simply a method that returns data for the template. 
 
-A Data Type is represented in SilverStripe by a [api:DBField] subclass. The class is responsible for telling the ORM 
+A Data Type is represented in SilverStripe by a [api:SilverStripe\Forms\DBField] subclass. The class is responsible for telling the ORM 
 about how to store its data in the database and how to format the information coming out of the database, i.e. on a template.
 
 In the `Player` example, we have four database columns each with a different data type (Int, Varchar).
@@ -42,7 +42,7 @@ In the `Player` example, we have four database columns each with a different dat
 *  [api:Time]: A time field
 *  [api:Varchar]: A variable-length string of up to 255 characters, designed to store raw text.
 
-See the [API documentation](api:DBField) for a full list of available Data Types. You can define your own [api:DBField] instances if required as well. 
+See the [API documentation](api:DBField) for a full list of available Data Types. You can define your own [api:SilverStripe\Forms\DBField] instances if required as well. 
 
 ## Default Values
 
@@ -141,7 +141,7 @@ Rather than manually returning objects from your custom functions. You can use t
 	}
 
 The properties on any SilverStripe object can be type casted automatically, by transforming its scalar value into an 
-instance of the [api:DBField] class, providing additional helpers. For example, a string can be cast as a [api:Text] 
+instance of the [api:SilverStripe\Forms\DBField] class, providing additional helpers. For example, a string can be cast as a [api:Text] 
 type, which has a `FirstSentence()` method to retrieve the first sentence in a longer piece of text.
 
 On the most basic level, the class can be used as simple conversion class from one value to another, e.g. to round a 
@@ -150,7 +150,7 @@ number.
 	:::php
 	DBField::create_field('Double', 1.23456)->Round(2); // results in 1.23
 
-Of course that's much more verbose than the equivalent PHP call. The power of [api:DBField] comes with its more 
+Of course that's much more verbose than the equivalent PHP call. The power of [api:SilverStripe\Forms\DBField] comes with its more 
 sophisticated helpers, like showing the time difference to the current date:
 
 	:::php
@@ -217,4 +217,4 @@ database column using `dbObject`.
 ## API Documentation
 
 * [api:SilverStripe\ORM\DataObject]
-* [api:DBField]
+* [api:SilverStripe\Forms\DBField]

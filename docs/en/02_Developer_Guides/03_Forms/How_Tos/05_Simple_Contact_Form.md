@@ -34,7 +34,7 @@ There's quite a bit in this function, so we'll step through one piece at a time.
 		new TextareaField('Message')
 	);
 
-First we create all the fields we want in the contact form, and put them inside a FieldList. You can find a list of form fields available on the [api:FormField] page.
+First we create all the fields we want in the contact form, and put them inside a FieldList. You can find a list of form fields available on the [api:SilverStripe\Forms\FormField] page.
 
 	:::php
 	$actions = FieldList(

@@ -561,7 +561,7 @@ For more information, see the [Howto: Customise the CMS tree](/developer_guides/
 
 Note that a similar tree logic is also used for the
 form fields to select one or more entries from those hierarchies
-([api:TreeDropdownField] and [api:TreeMultiselectField]).
+([api:SilverStripe\Forms\TreeDropdownField] and [api:SilverStripe\Forms\TreeMultiselectField]).
 
 ## Tabs
 

@@ -214,7 +214,7 @@ We recommend configuring [shortcodes](/developer_guides/extending/shortcodes) th
 ### Escaping model properties
 
 [api:SSViewer] (the SilverStripe template engine) automatically takes care of escaping HTML tags from specific
-object-properties by [casting](/developer_guides/model/data_types_and_casting) its string value into a [api:DBField] object.
+object-properties by [casting](/developer_guides/model/data_types_and_casting) its string value into a [api:SilverStripe\Forms\DBField] object.
 
 PHP:
 

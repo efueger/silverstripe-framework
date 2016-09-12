@@ -120,7 +120,7 @@ Please refer to [W3C: Introduction to IDN and IRI](http://www.w3.org/Internation
 
 ### i18n in Form Fields
 
-Date- and time related form fields support i18n ([api:DateField], [api:TimeField], [api:DatetimeField]).
+Date- and time related form fields support i18n ([api:SilverStripe\Forms\DateField], [api:SilverStripe\Forms\TimeField], [api:SilverStripe\Forms\DatetimeField]).
 
 	:::php
 	i18n::set_locale('ca_AD');
@@ -135,7 +135,7 @@ If no 'locale' default is set on the field, [api:i18n::get_locale()] will be use
 **Important:** Form fields in the CMS are automatically configured according to the profile settings for the logged-in user (`Member->Locale`, `Member->DateFormat` and `Member->TimeFormat`). This means that in most cases,
 fields created through [api:SilverStripe\ORM\DataObject::getCMSFields()] will get their i18n settings from a specific member
 
-The [api:DateField] API can be enhanced by JavaScript, and comes with
+The [api:SilverStripe\Forms\DateField] API can be enhanced by JavaScript, and comes with
 [jQuery UI datepicker](http://jqueryui.com/demos/datepicker/) capabilities built-in.
 The field tries to translate the date formats and locales into a format compatible with jQuery UI
 (see [api:DateField_View_JQuery::$locale_map_] and [api:DateField_View_JQuery::convert_iso_to_jquery_format()]).

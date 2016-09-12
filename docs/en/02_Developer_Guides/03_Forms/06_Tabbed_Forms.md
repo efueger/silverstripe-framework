@@ -16,7 +16,7 @@ name, and normally they all exist under the `Root` [api:TabSet].
 
 <div class="notice" markdown="1">
 [api:TabSet] instances can contain child [api:Tab] and further [api:TabSet] instances, however the CMS UI will only 
-display up to two levels of tabs in the interface. If you want to group data further than that, try [api:ToggleField].
+display up to two levels of tabs in the interface. If you want to group data further than that, try [api:SilverStripe\Forms\ToggleField].
 </div>
 
 ## Adding a field to a tab

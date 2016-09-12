@@ -33,7 +33,7 @@ Any public method from the object in scope can be called within the template. If
 	<!-- <div class="about-us"> -->
 
 <div class="notice" markdown="1">
-See the API documentation for [api:HtmlText], [api:StringField], [api:Text] for all the methods you can use to format 
+See the API documentation for [api:HtmlText], [api:SilverStripe\Forms\StringField], [api:Text] for all the methods you can use to format 
 your text instances. For other objects such as [api:SS_Datetime] objects see their respective API documentation pages.
 </div>
 
@@ -125,7 +125,7 @@ instructions on configuring your model to declare casting types for fields.
 ## Escape methods in templates
 
 Within the template, fields can have their encoding customised at a certain level with format methods.
-See [api:DBField] for the specific implementation, but they will generally follow the below rules:
+See [api:SilverStripe\Forms\DBField] for the specific implementation, but they will generally follow the below rules:
 
 * `$Field` with no format method supplied will correctly cast itself for the HTML template, as defined
   by the casting helper for that field. In most cases this is the best method to use for templates.

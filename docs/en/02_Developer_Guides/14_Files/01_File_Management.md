@@ -155,7 +155,7 @@ You may also notice the 'Sync files' button (highlighted below). This button all
 
 Files can be managed through forms in three ways:
 
- * [api:FileField]: provides a simple HTML input with a type of "file".
+ * [api:SilverStripe\Forms\FileField]: provides a simple HTML input with a type of "file".
  * [UploadField](/developer_guides/forms/field_types/uploadfield): more feature-rich field (
     including AJAX-based uploads, previews, relationship management and file data management).
  * [AssetField](/developer_guides/forms/field_types/assetfield): Similar to UploadField,

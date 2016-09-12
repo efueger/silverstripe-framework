@@ -10,7 +10,7 @@ On top of the base functionality, we use our own insertion dialogs to ensure you
 files. In addition to the markup managed by TinyMCE, we use [shortcodes](/developer_guides/extending/shortcodes) to store 
 information about inserted images or media elements.
 
-The framework comes with a [api:HTMLEditorField] form field class which encapsulates most of the required
+The framework comes with a [api:SilverStripe\Forms\HTMLEditorField] form field class which encapsulates most of the required
 functionality. It is usually added through the [api:SilverStripe\ORM\DataObject::getCMSFields()] method:
 
 **mysite/code/MyObject.php**
@@ -33,14 +33,14 @@ functionality. It is usually added through the [api:SilverStripe\ORM\DataObject:
 
 ### Specify which configuration to use
 
-By default, a config named 'cms' is used in any new [api:HTMLEditorField].
+By default, a config named 'cms' is used in any new [api:SilverStripe\Forms\HTMLEditorField].
 
 If you have created your own [api:HtmlEditorConfig] and would like to use it,
-you can call `HtmlEditorConfig::set_active('myConfig')` and all subsequently created [api:HTMLEditorField]
+you can call `HtmlEditorConfig::set_active('myConfig')` and all subsequently created [api:SilverStripe\Forms\HTMLEditorField]
 will use the configuration with the name 'myConfig'.
 
 You can also specify which [api:HtmlEditorConfig] to use on a per field basis via the construct argument.
-This is particularly useful if you need different configurations for multiple [api:HTMLEditorField] on the same page or form.
+This is particularly useful if you need different configurations for multiple [api:SilverStripe\Forms\HTMLEditorField] on the same page or form.
 
 	:::php
 	class MyObject extends DataObject {
@@ -155,7 +155,7 @@ You can learn how to [create a plugin](http://www.tinymce.com/wiki.php/Creating_
 
 ## Image and media insertion
 
-The [api:HtmlEditorField] API also handles inserting images and media files into the managed HTML content. It can be 
+The [api:SilverStripe\Forms\HtmlEditorField] API also handles inserting images and media files into the managed HTML content. It can be 
 used both for referencing files on the webserver filesystem (through the [api:File] and [api:Image] APIs), as well 
 as hotlinking files from the web. 
 
@@ -169,7 +169,7 @@ The ["oEmbed" standard](http://www.oembed.com/) is implemented by many media ser
 representation of files just by referencing a website URL. For example, a content author can insert a playable youtube 
 video just by knowing its URL, as opposed to dealing with manual HTML code.
 
-oEmbed powers the "Insert from web" feature available through [api:HtmlEditorField]. Internally, it makes HTTP 
+oEmbed powers the "Insert from web" feature available through [api:SilverStripe\Forms\HtmlEditorField]. Internally, it makes HTTP 
 queries to a list of external services if it finds a matching URL. These services are described in the 
 `Oembed.providers` configuration. Since these requests are performed on page rendering, they typically have a long 
 cache time (multiple days). 

@@ -3,7 +3,7 @@ summary: Provide read-only and disabled views of your Form data.
 
 # Read-only and Disabled Forms
 
-[api:Form] and [api:FormField] instances can be turned into a read-only version for things like confirmation pages or 
+[api:Form] and [api:SilverStripe\Forms\FormField] instances can be turned into a read-only version for things like confirmation pages or 
 when certain fields cannot be edited due to permissions. Creating the form is done the same way and markup is similar, 
 `readonly` mode converts the `input`, `select` and `textarea` tags to static HTML elements like `span`.
 
@@ -21,7 +21,7 @@ To make all the fields within a [api:FieldList] read-only (i.e to make fields re
 	$fields = $fields->makeReadonly();
 
 
-To make a [api:FormField] read-only you need to know the name of the form field or call it direct on the object
+To make a [api:SilverStripe\Forms\FormField] read-only you need to know the name of the form field or call it direct on the object
 
 	:::php
 	$field = new TextField(..);
@@ -41,7 +41,7 @@ To make a [api:FormField] read-only you need to know the name of the form field 
 
 ## Disabled FormFields
 
-Disabling [api:FormField] instances, sets the `disabled` property on the class. This will use the same HTML markup as 
+Disabling [api:SilverStripe\Forms\FormField] instances, sets the `disabled` property on the class. This will use the same HTML markup as 
 a normal form, but set the `disabled` attribute on the `input` tag.
 
 	:::php

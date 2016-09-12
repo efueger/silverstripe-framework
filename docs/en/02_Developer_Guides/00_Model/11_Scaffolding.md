@@ -72,7 +72,7 @@ system. The default is a set of array values listing the fields.
 	}
 
 
-Searchable fields will be appear in the search interface with a default form field (usually a [api:TextField]) and a 
+Searchable fields will be appear in the search interface with a default form field (usually a [api:SilverStripe\Forms\TextField]) and a 
 default search filter assigned (usually an [api:ExactMatchFilter]). To override these defaults, you can specify 
 additional information on `$searchable_fields`:
 
@@ -87,7 +87,7 @@ additional information on `$searchable_fields`:
 		);
 	}
 
-If you assign a single string value, you can set it to be either a [api:FormField] or [api:SearchFilter]. To specify 
+If you assign a single string value, you can set it to be either a [api:SilverStripe\Forms\FormField] or [api:SearchFilter]. To specify 
 both, you can assign an array:
 
 	:::php

@@ -170,14 +170,14 @@ returned is a [api:FieldList] object.
 
 
 We can then add our new fields with *addFieldToTab*. The first argument is the tab on which we want to add the field to:
-"Root.Main" is the tab which the content editor is on. The second argument is the field to add; this is not a database field, but a [api:FormField] - see the documentation for more details. 
+"Root.Main" is the tab which the content editor is on. The second argument is the field to add; this is not a database field, but a [api:SilverStripe\Forms\FormField] - see the documentation for more details. 
 
 <div class="hint" markdown="1">
 Note: By default, the CMS only has one tab. Creating new tabs is much like adding to existing tabs. For instance: `$fields->addFieldToTab('Root.NewTab', new TextField('Author'));`
 would create a new tab called "New Tab", and a single "Author" textfield inside.
 </div>
 
-We have added two fields: A simple [api:TextField] and a [api:DateField]. 
+We have added two fields: A simple [api:SilverStripe\Forms\TextField] and a [api:SilverStripe\Forms\DateField]. 
 There are many more fields available in the default installation, listed in ["form field types"](/developer_guides/forms/field_types/common_subclasses).
 
 	:::php
@@ -232,7 +232,7 @@ By enabling *showCalendar* you show a calendar overlay when clicking on the fiel
 	:::php
 	$dateField->setConfig('dateformat', 'dd/MM/YYYY');
 
-*dateFormat* allows you to specify how you wish the date to be entered and displayed in the CMS field.  See the [api:DateField] documentation for more configuration options.
+*dateFormat* allows you to specify how you wish the date to be entered and displayed in the CMS field.  See the [api:SilverStripe\Forms\DateField] documentation for more configuration options.
 
 	:::php
 	$fields->addFieldToTab('Root.Main', new TextField('Author', 'Author Name'), 'Content');
@@ -483,7 +483,7 @@ Nothing here should be new. The *StaffPage* page type is more interesting though
 
 Instead of adding our *Image* as a field in *$db*, we have used the *$has_one* array. This is because an *Image* is not a simple database field like all the fields we have seen so far, but has its own database table. By using the *$has_one* array, we create a relationship between the *StaffPage* table and the *Image* table by storing the id of the respective *Image* in the *StaffPage* table.
 
-We then add an [api:UploadField] in the *getCMSFields* function to the tab "Root.Images". Since this tab doesn't exist,
+We then add an [api:SilverStripe\Forms\UploadField] in the *getCMSFields* function to the tab "Root.Images". Since this tab doesn't exist,
 the *addFieldToTab* function will create it for us. The *UploadField* allows us to select an image or upload a new one in
 the CMS.
 

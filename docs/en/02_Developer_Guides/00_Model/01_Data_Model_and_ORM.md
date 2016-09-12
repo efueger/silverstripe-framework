@@ -232,7 +232,7 @@ can use `byID($id)`:
 	:::php
 	$player = Player::get()->byID(5);
 
-`get()` returns a [api:DataList] instance. You can use operations on that to get back a single record.
+`get()` returns a [api:SilverStripe\ORM\DataList] instance. You can use operations on that to get back a single record.
 
 	:::php
 	$players = Player::get();
@@ -455,7 +455,7 @@ You can use [SearchFilters](searchfilters) to add additional behavior to your `e
 
 ### Subtract
 
-You can subtract entries from a [api:DataList] by passing in another DataList to `subtract()`
+You can subtract entries from a [api:SilverStripe\ORM\DataList] by passing in another DataList to `subtract()`
 
 	:::php
 	$sam = Player::get()->filter('FirstName', 'Sam');
@@ -548,7 +548,7 @@ Occasionally, the system described above won't let you do exactly what you need 
 methods that manipulate the SQL query at a lower level.  When using these, please ensure that all table and field names 
 are escaped with double quotes, otherwise some DB backends (e.g. PostgreSQL) won't work.
 
-Under the hood, query generation is handled by the [api:DataQuery] class. This class does provide more direct access 
+Under the hood, query generation is handled by the [api:SilverStripe\ORM\DataQuery] class. This class does provide more direct access 
 to certain SQL features that `DataList` abstracts away from you.
 
 In general, we advise against using these methods unless it's absolutely necessary. If the ORM doesn't do quite what 
@@ -671,6 +671,6 @@ To retrieve a news article, SilverStripe joins the [api:SilverStripe\CMS\Model\S
 ## API Documentation
 
 * [api:SilverStripe\ORM\DataObject]
-* [api:DataList]
-* [api:DataQuery]
+* [api:SilverStripe\ORM\DataList]
+* [api:SilverStripe\ORM\DataQuery]
 * [api:SilverStripe\ORM\DataObjectSchema]

@@ -16,7 +16,7 @@ GridField can only be used with `$list` data sets that are of the type `SS_List`
 </div>
 
 <div class="notice" markdown="1">
-[api:SilverStripe\Forms\GridField\GridField] powers the automated data UI of [api:ModelAdmin]. For more information about `ModelAdmin` see the 
+[api:SilverStripe\Forms\GridField\GridField] powers the automated data UI of [api:SilverStripe\Admin\ModelAdmin]. For more information about `ModelAdmin` see the 
 [Customizing the CMS](/developer_guides/customising_the_admin_interface) guide.
 </div>
 

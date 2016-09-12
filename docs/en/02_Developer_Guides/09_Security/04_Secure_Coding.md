@@ -61,7 +61,7 @@ SilverStripe internally will use parameterised queries in SQL statements whereve
 If necessary Silverstripe performs any required escaping through database-specific methods (see [api:Database::addslashes()]).
 For [api:MySQLDatabase], this will be `[mysql_real_escape_string()](http://de3.php.net/mysql_real_escape_string)`.
 
-*  Most [api:DataList] accessors (see escaping note in method documentation)
+*  Most [api:SilverStripe\ORM\DataList] accessors (see escaping note in method documentation)
 *  DataObject::get_by_id()
 *  DataObject::update()
 *  DataObject::castedUpdate()

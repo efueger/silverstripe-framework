@@ -100,4 +100,4 @@ Our final import looks like this.
 ## Related
 
 *  [api:CsvParser]
-*  [api:ModelAdmin]
+*  [api:SilverStripe\Admin\ModelAdmin]

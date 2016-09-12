@@ -2,10 +2,10 @@
 
 ## Adding an administration panel
 
-Every time you add a new extension of the [api:LeftAndMain] class to the CMS,
+Every time you add a new extension of the [api:SilverStripe\Admin\LeftAndMain] class to the CMS,
 SilverStripe will automatically create a new [api:CMSMenuItem] for it
 
-The most popular extension of LeftAndMain is a [api:ModelAdmin] class, so
+The most popular extension of LeftAndMain is a [api:SilverStripe\Admin\ModelAdmin] class, so
 for a more detailed introduction to creating new `ModelAdmin` interfaces, read
 the [ModelAdmin reference](../modeladmin).
 

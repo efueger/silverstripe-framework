@@ -4,7 +4,7 @@ summary: The SS_List interface allows you to iterate through and manipulate a li
 # Managing Lists
 
 Whenever using the ORM to fetch records or navigate relationships you will receive an [api:SS_List] instance commonly as
-either [api:DataList] or [api:RelationList]. This object gives you the ability to iterate over each of the results or
+either [api:SilverStripe\ORM\DataList] or [api:RelationList]. This object gives you the ability to iterate over each of the results or
 modify.
 
 ## Iterating over the list.
@@ -89,6 +89,6 @@ This functionality is provided by the [api:Map] class, which can be used to buil
 
 * [api:SS_List]
 * [api:RelationList]
-* [api:DataList]
+* [api:SilverStripe\ORM\DataList]
 * [api:ArrayList]
 * [api:Map]

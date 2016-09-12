@@ -279,7 +279,7 @@ Although the form is not shown, you'll still see the 'Browser Poll' heading. We'
 
 Now that we're collecting data, it would be nice to show the results on the website as well. We could simply output every vote, but that's boring. Let's group the results by browser, through the SilverStripe data model.
 
-In the [second tutorial](/tutorials/extending_a_basic_site), we got a collection of news articles for the home page by using the 'ArticleHolder::get()' function, which returns a [api:DataList]. We can get all submissions in the same fashion, through `BrowserPollSubmission::get()`. This list will be the starting point for our result aggregation.
+In the [second tutorial](/tutorials/extending_a_basic_site), we got a collection of news articles for the home page by using the 'ArticleHolder::get()' function, which returns a [api:SilverStripe\ORM\DataList]. We can get all submissions in the same fashion, through `BrowserPollSubmission::get()`. This list will be the starting point for our result aggregation.
 
 Create the function 'BrowserPollResults' on the *HomePage_Controller* class.
 
@@ -306,7 +306,7 @@ This code introduces a few new concepts, so let's step through it.
 	```php
 	$submissions = new GroupedList(BrowserPollSubmission::get());
 ```
-First we get all of the `BrowserPollSubmission` records from the database. This returns the submissions as a [api:DataList]. Then we wrap it inside a [api:GroupedList], which adds the ability to group those records. The resulting object will behave just like the original `DataList`, though (with the addition of a `groupBy()` method).
+First we get all of the `BrowserPollSubmission` records from the database. This returns the submissions as a [api:SilverStripe\ORM\DataList]. Then we wrap it inside a [api:GroupedList], which adds the ability to group those records. The resulting object will behave just like the original `DataList`, though (with the addition of a `groupBy()` method).
 
 ```php
 	$total = $submissions->Count();
@@ -324,7 +324,7 @@ We get the total number of submissions, which is needed to calculate the percent
 	}
 ```
 
-Now we create an empty [api:ArrayList] to hold the data we'll pass to the template. Its similar to [api:DataList], but can hold arbitrary objects rather than just DataObject` instances. Then we iterate over the 'Browser' submissions field.
+Now we create an empty [api:ArrayList] to hold the data we'll pass to the template. Its similar to [api:SilverStripe\ORM\DataList], but can hold arbitrary objects rather than just DataObject` instances. Then we iterate over the 'Browser' submissions field.
 
 The `groupBy()` method splits our list by the 'Browser' field passed to it, creating new lists with submissions just for a specific browser. Each of those lists is keyed by the browser name. The aggregated result is then contained in an [api:ArrayData] object, which behaves much like a standard PHP array, but allows us to use it in SilverStripe templates.
 

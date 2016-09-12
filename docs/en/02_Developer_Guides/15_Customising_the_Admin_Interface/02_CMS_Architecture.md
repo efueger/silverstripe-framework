@@ -4,7 +4,7 @@
 
 A lot can be achieved in SilverStripe by adding properties and form fields
 to your own page types (via [api:SilverStripe\CMS\Model\SiteTree::getCMSFields()]), as well as creating
-your own data management interfaces through [api:ModelAdmin]. But sometimes
+your own data management interfaces through [api:SilverStripe\Admin\ModelAdmin]. But sometimes
 you'll want to go deeper and tailor the underlying interface to your needs as well.
 For example, to build a personalized CMS dashboard, or content "slots" where authors
 can drag their content into. At its core, SilverStripe is a web application
@@ -99,10 +99,10 @@ You can also create your own classes that extend the `[api:AdminRootController]`
 
 ## Templates and Controllers
 
-The CMS backend is handled through the [api:LeftAndMain] controller class,
+The CMS backend is handled through the [api:SilverStripe\Admin\LeftAndMain] controller class,
 which contains base functionality like displaying and saving a record.
 This is extended through various subclasses, e.g. to add a group hierarchy ([api:SecurityAdmin]),
-a search interface ([api:ModelAdmin]) or an "Add Page" form ([api:CMSPageAddController]).
+a search interface ([api:SilverStripe\Admin\ModelAdmin]) or an "Add Page" form ([api:CMSPageAddController]).
 
 The controller structure is too complex to document here, a good starting point
 for following the execution path in code are [api:LeftAndMain::getRecord()] and [api:LeftAndMain::getEditForm()].
@@ -546,7 +546,7 @@ which is picked up by the menu:
 		return 'my response';
 	}
 
-This is usually handled by the existing [api:LeftAndMain] logic,
+This is usually handled by the existing [api:SilverStripe\Admin\LeftAndMain] logic,
 so you don't need to worry about it. The same concept applies for
 'X-Title' (change the window title) and 'X-ControllerURL' (change the URL recorded in browser history).
 Note: You can see any additional HTTP headers through the web developer tools in your browser of choice.

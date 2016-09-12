@@ -8,7 +8,7 @@ CMS and other scaffolded interfaces, it will output [api:TabSet] and [api:Tab] o
 parts of the data model. 
 
 <div class="notice" markdown="1">
-All interfaces within the CMS such as [api:ModelAdmin] and [api:LeftAndMain] use tabbed interfaces by default.
+All interfaces within the CMS such as [api:SilverStripe\Admin\ModelAdmin] and [api:SilverStripe\Admin\LeftAndMain] use tabbed interfaces by default.
 </div>
 
 When dealing with tabbed forms, modifying the fields in the form has a few differences. Each [api:Tab] will be given a

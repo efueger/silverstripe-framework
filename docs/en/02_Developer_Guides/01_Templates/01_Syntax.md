@@ -231,7 +231,7 @@ include.
 
 ## Looping Over Lists
 
-The `<% loop %>` tag is used to iterate or loop over a collection of items such as [api:DataList] or a [api:ArrayList] 
+The `<% loop %>` tag is used to iterate or loop over a collection of items such as [api:SilverStripe\ORM\DataList] or a [api:ArrayList] 
 collection.
 
 	:::ss
@@ -256,8 +256,8 @@ object that is being looped over.
 
 ### Altering the list
 
-`<% loop %>` statements iterate over a [api:DataList] instance. As the template has access to the list object, 
-templates can call [api:DataList] methods. 
+`<% loop %>` statements iterate over a [api:SilverStripe\ORM\DataList] instance. As the template has access to the list object, 
+templates can call [api:SilverStripe\ORM\DataList] methods. 
 
 Sorting the list by a given field.
 

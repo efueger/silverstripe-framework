@@ -42,7 +42,7 @@ default site search, have a look at those extensions and modify as required.
 ### Fulltext Filter
 
 SilverStripe provides a [api:FulltextFilter] which you can use to perform custom fulltext searches on
-[api:DataList]s.
+[api:SilverStripe\ORM\DataList]s.
 
 Example DataObject:
 

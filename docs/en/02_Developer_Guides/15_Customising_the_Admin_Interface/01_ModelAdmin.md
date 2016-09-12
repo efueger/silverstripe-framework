@@ -3,7 +3,7 @@ summary: Create admin UI's for managing your data records.
 
 # ModelAdmin
 
-[api:ModelAdmin] provides a simple way to utilize the SilverStripe Admin UI with your own data models. It can create
+[api:SilverStripe\Admin\ModelAdmin] provides a simple way to utilize the SilverStripe Admin UI with your own data models. It can create
 searchables list and edit views of [api:SilverStripe\ORM\DataObject] subclasses, and even provides import and export of your data.
 
 It uses the framework's knowledge about the model to provide sensible defaults, allowing you to get started in a couple
@@ -90,7 +90,7 @@ Each new `ModelAdmin` subclass creates its' own [permission code](../security), 
 For more information on the security and permission system see the [Security Documentation](../security)
 </div>
 
-The [api:SilverStripe\ORM\DataObject] API has more granular permission control, which is enforced in [api:ModelAdmin] by default.
+The [api:SilverStripe\ORM\DataObject] API has more granular permission control, which is enforced in [api:SilverStripe\Admin\ModelAdmin] by default.
 Available checks are `canEdit()`, `canCreate()`, `canView()` and `canDelete()`. Models check for administrator
 permissions by default. For most cases, less restrictive checks make sense, e.g. checking for general CMS access rights.
 
@@ -119,7 +119,7 @@ permissions by default. For most cases, less restrictive checks make sense, e.g.
 
 ## Searching Records
 
-[api:ModelAdmin] uses the [SearchContext](../search/searchcontext) class to provide a search form, as well as get the
+[api:SilverStripe\Admin\ModelAdmin] uses the [SearchContext](../search/searchcontext) class to provide a search form, as well as get the
 searched results. Every [api:SilverStripe\ORM\DataObject] can have its own context, based on the fields which should be searchable. The
 class makes a guess at how those fields should be searched, e.g. showing a checkbox for any boolean fields in your
 `$db` definition.
@@ -168,7 +168,7 @@ model class, where you can add or remove columns. To change the title, use [api:
 	}
 
 The results list are retrieved from [api:SearchContext::getResults()], based on the parameters passed through the search
-form. If no search parameters are given, the results will show every record. Results are a [api:DataList] instance, so
+form. If no search parameters are given, the results will show every record. Results are a [api:SilverStripe\ORM\DataList] instance, so
 can be customized by additional SQL filters, joins.
 
 For example, we might want to exclude all products without prices in our sample `MyAdmin` implementation.
@@ -326,8 +326,8 @@ To customize the exported columns, create a new method called `getExportFields` 
 
 ## API Documentation
 
-* [api:ModelAdmin]
-* [api:LeftAndMain]
+* [api:SilverStripe\Admin\ModelAdmin]
+* [api:SilverStripe\Admin\LeftAndMain]
 * [api:SilverStripe\Forms\GridField\GridField]
-* [api:DataList]
+* [api:SilverStripe\ORM\DataList]
 * [api:CsvBulkLoader]

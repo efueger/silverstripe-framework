@@ -220,7 +220,7 @@ provides a [api:SilverStripe\ORM\DataObject::validate()] method to validate data
 
 In the CMS, we're not creating the forms for editing CMS records. The `Form` instance is generated for us so we cannot
 call `setValidator` easily. However, a `DataObject` can provide its' own `Validator` instance through the 
-`getCMSValidator()` method. The CMS interfaces such as [api:LeftAndMain], [api:ModelAdmin] and [api:SilverStripe\Forms\GridField\GridField] will 
+`getCMSValidator()` method. The CMS interfaces such as [api:SilverStripe\Admin\LeftAndMain], [api:SilverStripe\Admin\ModelAdmin] and [api:SilverStripe\Forms\GridField\GridField] will 
 respect the provided `Validator` and handle displaying error and success responses to the user. 
 
 <div class="info" markdown="1">
